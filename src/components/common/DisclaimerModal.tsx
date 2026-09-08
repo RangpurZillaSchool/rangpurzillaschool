@@ -29,28 +29,28 @@ export const DisclaimerModal: React.FC = () => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/75 backdrop-blur-sm animate-in fade-in duration-200">
       <div 
         role="dialog" 
         aria-modal="true" 
         aria-labelledby="disclaimer-title"
-        className="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-amber-200 overflow-hidden animate-in zoom-in-95 duration-200"
+        className="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200/80 overflow-hidden animate-in zoom-in-95 duration-200 ring-1 ring-black/10"
       >
         {/* Top Accent Strip */}
-        <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 h-2 w-full" />
+        <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-institutional-navy h-2 w-full" />
 
         <div className="p-6 sm:p-7 space-y-5">
           {/* Header Badge & Title */}
-          <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-xl bg-amber-100 border border-amber-200 flex items-center justify-center text-amber-800 shrink-0">
-                <AlertCircle className="w-6 h-6 text-amber-700" />
+              <div className="w-10 h-10 rounded-xl bg-amber-100/80 border border-amber-200 flex items-center justify-center text-amber-800 shrink-0">
+                <AlertCircle className="w-5 h-5 text-amber-700" />
               </div>
               <div>
-                <span className="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wide uppercase bg-amber-100 text-amber-900 border border-amber-200 mb-1">
-                  Important Notice / গুরুত্বপূর্ণ ঘোষণা
+                <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-amber-100 text-amber-900 border border-amber-200 mb-0.5">
+                  General Notice / অবগতির জন্য
                 </span>
-                <h3 id="disclaimer-title" className="text-lg sm:text-xl font-bold text-slate-900 font-serif leading-tight">
+                <h3 id="disclaimer-title" className="text-base sm:text-lg font-bold text-slate-900 font-serif leading-tight">
                   শিক্ষার্থী প্রকল্প ও সাধারণ ঘোষণা
                 </h3>
               </div>
@@ -58,7 +58,7 @@ export const DisclaimerModal: React.FC = () => {
             <button
               onClick={handleDismiss}
               type="button"
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
               aria-label="Close disclaimer"
             >
               <X className="w-5 h-5" />
@@ -66,8 +66,8 @@ export const DisclaimerModal: React.FC = () => {
           </div>
 
           {/* Primary Highlight Banner */}
-          <div className="bg-amber-50 rounded-xl p-4 border border-amber-200/90 space-y-2">
-            <p className="text-sm sm:text-base font-bold text-amber-950 leading-snug">
+          <div className="bg-amber-50/80 rounded-xl p-4 border border-amber-200/80 space-y-2.5">
+            <p className="text-sm sm:text-[15px] font-bold text-amber-950 leading-relaxed">
               &ldquo;Unofficial student project — educational/demo purposes only. Not the official website of Rangpur Zilla School.&rdquo;
             </p>
             <p className="text-xs sm:text-[13px] text-amber-900/90 leading-relaxed">
@@ -76,12 +76,12 @@ export const DisclaimerModal: React.FC = () => {
           </div>
 
           {/* Additional details */}
-          <div className="space-y-2 text-xs sm:text-[13px] text-slate-600 leading-relaxed border-l-2 border-slate-200 pl-3.5">
+          <div className="space-y-1.5 text-xs text-slate-600 leading-relaxed border-l-2 border-slate-200 pl-3">
             <p>
-              • সমস্ত তথ্য ও নোটিশ মূল ওয়েবসাইট থেকে শুধুমাত্র রিড-অনলি হিসেবে প্রদর্শিত হচ্ছে।
+              • সমস্ত নোটিশ ও ডেটা মূল সার্ভার থেকে সরাসরি রিড-অনলি হিসেবে প্রদর্শিত হচ্ছে।
             </p>
             <p>
-              • স্কুলের প্রাতিষ্ঠানিক তথ্যের জন্য সর্বদা বিদ্যালয়ের প্রধান শিক্ষক বা অফিস কর্তৃপক্ষের সাথে সরাসরি যোগাযোগ করুন।
+              • প্রাতিষ্ঠানিক বা দাপ্তরিক তথ্যের জন্য সর্বদা বিদ্যালয়ের প্রধান শিক্ষক বা কার্যালয়ের সাথে সরাসরি যোগাযোগ করুন।
             </p>
           </div>
 
@@ -101,7 +101,7 @@ export const DisclaimerModal: React.FC = () => {
             <button
               onClick={handleDismiss}
               type="button"
-              className="px-5 py-2.5 rounded-xl bg-institutional-navy hover:bg-institutional-navyDark text-white text-xs sm:text-sm font-semibold shadow-md hover:shadow-lg transition-all text-center cursor-pointer"
+              className="px-5 py-2 rounded-xl bg-institutional-navy hover:bg-institutional-navyDark text-white text-xs sm:text-sm font-semibold shadow-sm hover:shadow transition-all text-center cursor-pointer"
             >
               বুঝেছি / Understood & Continue
             </button>
