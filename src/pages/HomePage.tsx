@@ -1,0 +1,387 @@
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import {
+  GraduationCap,
+  Users,
+  Award,
+  BookOpen,
+  Calendar,
+  ChevronRight,
+  FileText,
+  Download,
+  Building,
+  CheckCircle,
+  ExternalLink,
+  Clock,
+  ArrowRight
+} from 'lucide-react';
+import { schoolInfo } from '../data/schoolInfo';
+import { api } from '../services/api';
+import { Notice, NewsItem, DownloadItem } from '../types';
+
+export const HomePage: React.FC = () => {
+  const [notices, setNotices] = useState<Notice[]>([]);
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [downloads, setDownloads] = useState<DownloadItem[]>([]);
+
+  useEffect(() => {
+    api.getNotices().then(data => setNotices(data.slice(0, 6)));
+    api.getNews().then(data => setNews(data.slice(0, 4)));
+    api.getDownloads().then(data => setDownloads(data.slice(0, 4)));
+  }, []);
+
+  return (
+    <div className="space-y-10 pb-16">
+      {/* 1. Hero Section - Institutional & Trustworthy */}
+      <section className="relative bg-gradient-to-b from-institutional-navy to-institutional-navyDark text-white pt-10 pb-14 sm:pt-14 sm:pb-20 px-4 sm:px-6 overflow-hidden">
+        {/* Subtle decorative grid */}
+        <div className="absolute inset-0 opacity-5 bg-[linear-gradient(to_right,#ffffff10_1px,transparent_1px),linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Left 8 Cols: Main Pitch */}
+            <div className="lg:col-span-8 space-y-4 sm:space-y-5">
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold">
+                  <span className="w-2 h-2 rounded-full bg-amber-400"></span>
+                  <span>ঐতিহ্যের ১৯৪ বছর | ১৮৩২ — ২০২৬</span>
+                </div>
+                {/* Explicit Student Project Notice Badge */}
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-400/10 border border-blue-400/30 text-blue-200 text-xs font-medium">
+                  <span>🎓</span>
+                  <span>শিক্ষার্থী প্রকল্প (Educational Purpose Only)</span>
+                </div>
+              </div>
+
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white font-serif leading-tight">
+                উত্তরবঙ্গের শ্রেষ্ঠ বিদ্যাপীঠ <br />
+                <span className="text-amber-400">{schoolInfo.nameBn}</span>
+              </h1>
+
+              <p className="text-slate-200 text-xs sm:text-base leading-relaxed max-w-2xl font-light">
+                ১৮৩২ খ্রিষ্টাব্দে তৎকালীন ব্রিটিশ ভারতের গভর্নর লর্ড উইলিয়াম বেন্টিঙ্ক কর্তৃক প্রতিষ্ঠিত। শতবর্ষের ঐতিহ্য, সুশৃঙ্খল পরিবেশ ও আধুনিক পাঠদানের সমন্বয়ে মেধা ও নৈতিকতা বিকাশের আদর্শ শিক্ষা প্রতিষ্ঠান।
+              </p>
+
+              {/* Action Buttons - Mobile Responsive Stack */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 pt-1 sm:pt-2">
+                <Link
+                  to="/students"
+                  className="px-5 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 text-center"
+                >
+                  <GraduationCap className="w-4 h-4" />
+                  অধ্যয়নরত শিক্ষার্থী তালিকা
+                </Link>
+                <Link
+                  to="/notices"
+                  className="px-5 py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold text-sm transition-all border border-white/20 flex items-center justify-center gap-2 text-center"
+                >
+                  <FileText className="w-4 h-4" />
+                  সকল নোটিশ দেখুন
+                </Link>
+                <Link
+                  to="/about/history"
+                  className="px-4 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 sm:bg-transparent text-slate-200 hover:text-white text-sm font-medium transition-colors flex items-center justify-center gap-1.5 text-center border border-white/10 sm:border-transparent"
+                >
+                  বিদ্যালয়ের ইতিহাস <ChevronRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Right 4 Cols: Key Metrics Quick Panel */}
+            <div className="lg:col-span-4 bg-white/5 backdrop-blur-xs border border-white/10 rounded-xl p-4 sm:p-6 space-y-3.5 sm:space-y-4 shadow-xl">
+              <h2 className="text-xs sm:text-sm font-bold text-amber-300 uppercase tracking-wider border-b border-white/10 pb-2">
+                এক নজরে প্রতিষ্ঠান
+              </h2>
+
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-4">
+                <div className="bg-institutional-navyDark/60 p-2.5 sm:p-3 rounded-lg border border-white/5">
+                  <div className="text-xl sm:text-2xl font-bold text-white font-mono">১৮৩২</div>
+                  <div className="text-[11px] sm:text-xs text-slate-300 mt-0.5">প্রতিষ্ঠা সাল</div>
+                </div>
+
+                <div className="bg-institutional-navyDark/60 p-2.5 sm:p-3 rounded-lg border border-white/5">
+                  <div className="text-xl sm:text-2xl font-bold text-emerald-400 font-mono">{schoolInfo.totalStudents.toLocaleString('bn-BD')} জন</div>
+                  <div className="text-[11px] sm:text-xs text-slate-300 mt-0.5">শিক্ষার্থী</div>
+                </div>
+
+                <div className="bg-institutional-navyDark/60 p-2.5 sm:p-3 rounded-lg border border-white/5">
+                  <div className="text-xl sm:text-2xl font-bold text-amber-400 font-mono">{schoolInfo.totalTeachers.toLocaleString('bn-BD')} জন</div>
+                  <div className="text-[11px] sm:text-xs text-slate-300 mt-0.5">শিক্ষক-কর্মকর্তা</div>
+                </div>
+
+                <div className="bg-institutional-navyDark/60 p-2.5 sm:p-3 rounded-lg border border-white/5">
+                  <div className="text-xl sm:text-2xl font-bold text-cyan-400 font-mono">১০০%</div>
+                  <div className="text-[11px] sm:text-xs text-slate-300 mt-0.5">পাসের হার</div>
+                </div>
+              </div>
+
+              <div className="pt-2 text-[11px] sm:text-xs text-slate-300 flex items-center justify-between border-t border-white/10">
+                <span>EIIN: <strong className="text-white font-mono">{schoolInfo.eiin}</strong></span>
+                <span>শিফট: <strong className="text-white">প্রভাতি ও দিবা</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. Quick Portals Bar */}
+      <section className="max-w-7xl mx-auto px-3 sm:px-6 -mt-6 sm:-mt-8 relative z-20">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4">
+          <Link
+            to="/students"
+            className="bg-white p-3 sm:p-4 rounded-xl shadow-xs border border-slate-200 hover:border-institutional-navy hover:shadow-md transition-all group flex items-center gap-2.5 sm:gap-3.5"
+          >
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-blue-50 text-institutional-navy flex items-center justify-center shrink-0 group-hover:bg-institutional-navy group-hover:text-white transition-colors">
+              <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <div className="min-w-0">
+              <div className="text-xs sm:text-sm font-semibold text-slate-900 group-hover:text-institutional-navy truncate">শিক্ষার্থী তালিকা</div>
+              <div className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 truncate">রোল ও আইডি ভিত্তিক</div>
+            </div>
+          </Link>
+
+          <Link
+            to="/teachers"
+            className="bg-white p-3 sm:p-4 rounded-xl shadow-xs border border-slate-200 hover:border-institutional-navy hover:shadow-md transition-all group flex items-center gap-2.5 sm:gap-3.5"
+          >
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center shrink-0 group-hover:bg-emerald-800 group-hover:text-white transition-colors">
+              <Users className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <div className="min-w-0">
+              <div className="text-xs sm:text-sm font-semibold text-slate-900 group-hover:text-emerald-800 truncate">শিক্ষকমণ্ডলী</div>
+              <div className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 truncate">{schoolInfo.totalTeachers} জন কর্মকর্তা</div>
+            </div>
+          </Link>
+
+          <Link
+            to="/academics/results"
+            className="bg-white p-3 sm:p-4 rounded-xl shadow-xs border border-slate-200 hover:border-institutional-navy hover:shadow-md transition-all group flex items-center gap-2.5 sm:gap-3.5"
+          >
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-amber-50 text-amber-800 flex items-center justify-center shrink-0 group-hover:bg-amber-800 group-hover:text-white transition-colors">
+              <Award className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <div className="min-w-0">
+              <div className="text-xs sm:text-sm font-semibold text-slate-900 group-hover:text-amber-800 truncate">পরীক্ষার ফলাফল</div>
+              <div className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 truncate">এসএসসি ও জেএসসি</div>
+            </div>
+          </Link>
+
+          <a
+            href="http://gsa.teletalk.com.bd"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-white p-3 sm:p-4 rounded-xl shadow-xs border border-slate-200 hover:border-emerald-600 hover:shadow-md transition-all group flex items-center gap-2.5 sm:gap-3.5"
+          >
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-purple-50 text-purple-800 flex items-center justify-center shrink-0 group-hover:bg-emerald-700 group-hover:text-white transition-colors">
+              <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5" />
+            </div>
+            <div className="min-w-0">
+              <div className="text-xs sm:text-sm font-semibold text-slate-900 group-hover:text-emerald-700 truncate">ভর্তি আবেদন</div>
+              <div className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 truncate">টেলিটক জিএসএ পোর্টাল</div>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      {/* 3. Main Content Columns: Left (60%) & Right (40%) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* Left Column: Headmaster's Desk + Brief History */}
+          <div className="lg:col-span-8 space-y-8">
+            {/* Principal / Headmaster Message Card */}
+            <div className="bg-white rounded-xl border border-slate-200 p-6 sm:p-7 shadow-xs">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-5">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-sm">
+                    প্রধান শিক্ষকের বাণী
+                  </span>
+                  <h2 className="text-xl font-bold text-slate-900 font-serif mt-1">
+                    জ্ঞান, শৃঙ্খলা ও নেতৃত্বের সূতিকাগার
+                  </h2>
+                </div>
+                <Building className="w-6 h-6 text-slate-300 hidden sm:block" />
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-6 items-start">
+                <div className="shrink-0 text-center mx-auto sm:mx-0">
+                  <div className="w-28 h-36 rounded-lg overflow-hidden border-2 border-slate-200 shadow-sm bg-slate-100 mx-auto">
+                    <img
+                      src={schoolInfo.headmaster.photo}
+                      alt={schoolInfo.headmaster.name}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.onerror = null;
+                        target.src = 'https://ui-avatars.com/api/?name=Abul+Kalam+Azad&background=0f2b5c&color=fff&size=150';
+                      }}
+                    />
+                  </div>
+                  <div className="mt-2">
+                    <h3 className="text-sm font-bold text-slate-900">{schoolInfo.headmaster.name}</h3>
+                    <p className="text-xs text-slate-500 font-medium">{schoolInfo.headmaster.designation}</p>
+                    <p className="text-[11px] text-slate-400 font-mono">PDS: {schoolInfo.headmaster.pdsId}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-3 text-slate-700 text-sm leading-relaxed text-justify">
+                  <p>
+                    {schoolInfo.headmaster.message}
+                  </p>
+                  <p>
+                    রংপুর জিলা স্কুল কেবল একটি বিদ্যাপীঠ নয়, এটি প্রায় দুই শতকের একটি সমৃদ্ধ ইতিহাস ও ঐতিহ্য। এখানকার শিক্ষার্থীবৃন্দ জাতীয় ও আন্তর্জাতিক পর্যায়ে কৃতিত্বের স্বাক্ষর রেখে চলেছে। আমাদের লক্ষ্য শিক্ষার্থীদের সুনাগরিক, দেশপ্রেমিক এবং আধুনিক জ্ঞান-বিজ্ঞানে দক্ষ হিসেবে গড়ে তোলা।
+                  </p>
+                  <div className="pt-2 flex items-center justify-between flex-wrap gap-2 text-xs text-slate-500 border-t border-slate-100">
+                    <span>যোগদান: {schoolInfo.headmaster.joiningDate}</span>
+                    <Link to="/about/history" className="text-institutional-navy font-semibold hover:underline flex items-center gap-1">
+                      বিদ্যালয়ের বিস্তারিত ইতিহাস <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* School History Highlights */}
+            <div className="bg-white rounded-xl border border-slate-200 p-6 sm:p-7 shadow-xs space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h2 className="text-lg font-bold text-slate-900 font-serif flex items-center gap-2">
+                  <BookOpen className="w-5 h-5 text-institutional-navy" />
+                  সংক্ষিপ্ত ইতিহাস ও প্রেক্ষাপট
+                </h2>
+                <Link to="/about/history" className="text-xs font-semibold text-institutional-navy hover:underline">
+                  সম্পূর্ণ ইতিহাস
+                </Link>
+              </div>
+
+              <div className="space-y-3 text-slate-700 text-sm leading-relaxed text-justify">
+                {schoolInfo.historyNarrative.slice(0, 3).map((paragraph, idx) => (
+                  <p key={idx}>{paragraph}</p>
+                ))}
+              </div>
+
+              {/* Milestones bar */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3">
+                <div className="bg-slate-50 p-3 rounded-md border border-slate-200/80">
+                  <div className="text-amber-700 font-bold font-mono text-sm">১৮২৮ খ্রিষ্টাব্দ</div>
+                  <div className="text-xs text-slate-600 mt-0.5">শিখন কার্যক্রম শুরু (জমিদার স্কুল)</div>
+                </div>
+                <div className="bg-slate-50 p-3 rounded-md border border-slate-200/80">
+                  <div className="text-amber-700 font-bold font-mono text-sm">১৮৩২ খ্রিষ্টাব্দ</div>
+                  <div className="text-xs text-slate-600 mt-0.5">লর্ড বেন্টিঙ্ক কর্তৃক ভিত্তিপ্রস্তর স্থাপন</div>
+                </div>
+                <div className="bg-slate-50 p-3 rounded-md border border-slate-200/80">
+                  <div className="text-amber-700 font-bold font-mono text-sm">১৮৬২ খ্রিষ্টাব্দ</div>
+                  <div className="text-xs text-slate-600 mt-0.5">সরকারি রংপুর জিলা স্কুল হিসেবে আত্মপ্রকাশ</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Notices Card + News + Downloads */}
+          <div className="lg:col-span-4 space-y-6">
+            {/* Notice Board Card */}
+            <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+              <div className="bg-institutional-navy text-white px-5 py-3.5 flex items-center justify-between">
+                <div className="flex items-center gap-2 font-semibold text-sm">
+                  <FileText className="w-4 h-4 text-amber-400" />
+                  <span>সর্বশেষ নোটিশ</span>
+                </div>
+                <Link
+                  to="/notices"
+                  className="text-xs text-amber-300 hover:text-white transition-colors"
+                >
+                  সবগুলো ({notices.length > 0 ? notices.length : 494}+)
+                </Link>
+              </div>
+
+              <div className="divide-y divide-slate-100">
+                {notices.map((notice) => (
+                  <Link
+                    key={notice.id}
+                    to={`/notices/${notice.id}`}
+                    className="p-3.5 block hover:bg-slate-50 transition-colors group"
+                  >
+                    <div className="text-xs font-semibold text-slate-900 group-hover:text-institutional-navy line-clamp-2 leading-snug">
+                      {notice.title}
+                    </div>
+                    <div className="flex items-center justify-between mt-2 text-[11px] text-slate-400">
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {notice.date}
+                      </span>
+                      <span className="text-institutional-navy group-hover:underline font-medium">
+                        বিস্তারিত &rarr;
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="p-3 bg-slate-50 border-t border-slate-100 text-center">
+                <Link
+                  to="/notices"
+                  className="text-xs font-semibold text-institutional-navy hover:underline block py-1"
+                >
+                  সকল নোটিশ আর্কাইভ দেখুন &rarr;
+                </Link>
+              </div>
+            </div>
+
+            {/* News & Announcements Card */}
+            <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-5 space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-emerald-700" />
+                  খবর ও সমসাময়িক ঘোষণা
+                </h3>
+                <Link to="/news" className="text-xs font-semibold text-emerald-700 hover:underline">
+                  সকল খবর
+                </Link>
+              </div>
+
+              <div className="space-y-3">
+                {news.map((item) => (
+                  <div key={item.id} className="text-xs space-y-1 border-b border-slate-50 pb-2.5 last:border-none last:pb-0">
+                    <span className="text-[11px] text-slate-400 font-mono">{item.date}</span>
+                    <p className="font-medium text-slate-800 leading-snug hover:text-emerald-800 cursor-pointer">
+                      {item.title}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Quick Downloads Card */}
+            <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-5 space-y-3">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+                  <Download className="w-4 h-4 text-blue-700" />
+                  গুরুত্বপূর্ণ ডাউনলোড
+                </h3>
+                <Link to="/downloads" className="text-xs font-semibold text-blue-700 hover:underline">
+                  সকল ফরম ({downloads.length > 0 ? 195 : 0})
+                </Link>
+              </div>
+
+              <div className="space-y-2">
+                {downloads.map((item, idx) => (
+                  <a
+                    key={idx}
+                    href={item.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2.5 rounded-md bg-slate-50 hover:bg-blue-50/80 border border-slate-200/80 transition-all flex items-center justify-between gap-2 group text-xs"
+                  >
+                    <span className="text-slate-800 group-hover:text-blue-900 font-medium line-clamp-1">
+                      {item.title}
+                    </span>
+                    <Download className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-700 shrink-0" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};

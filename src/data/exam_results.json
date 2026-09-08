@@ -1,0 +1,263 @@
+[
+  {
+    "examName": "প্রাথমিক সমাপনী",
+    "year": "2018",
+    "total": 242,
+    "passed": 242,
+    "gpa5": 232,
+    "passRate": "100",
+    "scholarships": 31
+  },
+  {
+    "examName": "প্রাথমিক সমাপনী",
+    "year": "2017",
+    "total": 252,
+    "passed": 252,
+    "gpa5": 0,
+    "passRate": "100",
+    "scholarships": 40
+  },
+  {
+    "examName": "প্রাথমিক সমাপনী",
+    "year": "2016",
+    "total": 253,
+    "passed": 253,
+    "gpa5": 0,
+    "passRate": "100",
+    "scholarships": 50
+  },
+  {
+    "examName": "প্রাথমিক সমাপনী",
+    "year": "2015",
+    "total": 230,
+    "passed": 230,
+    "gpa5": 0,
+    "passRate": "100",
+    "scholarships": 29
+  },
+  {
+    "examName": "প্রাথমিক সমাপনী",
+    "year": "2014",
+    "total": 221,
+    "passed": 221,
+    "gpa5": 0,
+    "passRate": "100",
+    "scholarships": 12
+  },
+  {
+    "examName": "প্রাথমিক সমাপনী",
+    "year": "2013",
+    "total": 228,
+    "passed": 228,
+    "gpa5": 0,
+    "passRate": "100",
+    "scholarships": 38
+  },
+  {
+    "examName": "প্রাথমিক সমাপনী",
+    "year": "2012",
+    "total": 235,
+    "passed": 235,
+    "gpa5": 0,
+    "passRate": "100",
+    "scholarships": 28
+  },
+  {
+    "examName": "প্রাথমিক সমাপনী",
+    "year": "2011",
+    "total": 214,
+    "passed": 214,
+    "gpa5": 0,
+    "passRate": "100",
+    "scholarships": 24
+  },
+  {
+    "examName": "জেএসসি",
+    "year": "2018",
+    "total": 234,
+    "passed": 234,
+    "gpa5": 96,
+    "passRate": "100",
+    "scholarships": 13
+  },
+  {
+    "examName": "জেএসসি",
+    "year": "2017",
+    "total": 252,
+    "passed": 252,
+    "gpa5": 185,
+    "passRate": "100",
+    "scholarships": 0
+  },
+  {
+    "examName": "জেএসসি",
+    "year": "2016",
+    "total": 253,
+    "passed": 253,
+    "gpa5": 217,
+    "passRate": "100",
+    "scholarships": 0
+  },
+  {
+    "examName": "জেএসসি",
+    "year": "2015",
+    "total": 230,
+    "passed": 230,
+    "gpa5": 186,
+    "passRate": "100",
+    "scholarships": 0
+  },
+  {
+    "examName": "জেএসসি",
+    "year": "2014",
+    "total": 221,
+    "passed": 221,
+    "gpa5": 166,
+    "passRate": "100",
+    "scholarships": 0
+  },
+  {
+    "examName": "জেএসসি",
+    "year": "2013",
+    "total": 228,
+    "passed": 228,
+    "gpa5": 190,
+    "passRate": "100",
+    "scholarships": 0
+  },
+  {
+    "examName": "জেএসসি",
+    "year": "2012",
+    "total": 235,
+    "passed": 234,
+    "gpa5": 132,
+    "passRate": "100",
+    "scholarships": 0
+  },
+  {
+    "examName": "এসএসসি",
+    "year": "2020",
+    "total": 250,
+    "passed": 250,
+    "gpa5": 160,
+    "passRate": "100",
+    "scholarships": 0
+  },
+  {
+    "examName": "এসএসসি",
+    "year": "2019",
+    "total": 246,
+    "passed": 245,
+    "gpa5": 158,
+    "passRate": "100",
+    "scholarships": 0
+  },
+  {
+    "examName": "এসএসসি",
+    "year": "2018",
+    "total": 86,
+    "passed": 77,
+    "gpa5": 7,
+    "passRate": "90",
+    "scholarships": 0
+  },
+  {
+    "examName": "এসএসসি",
+    "year": "2017",
+    "total": 243,
+    "passed": 243,
+    "gpa5": 190,
+    "passRate": "100",
+    "scholarships": 0
+  },
+  {
+    "examName": "এসএসসি",
+    "year": "2016",
+    "total": 245,
+    "passed": 245,
+    "gpa5": 237,
+    "passRate": "100",
+    "scholarships": 0
+  },
+  {
+    "examName": "এসএসসি",
+    "year": "2015",
+    "total": 247,
+    "passed": 247,
+    "gpa5": 217,
+    "passRate": "100",
+    "scholarships": 0
+  },
+  {
+    "examName": "এসএসসি",
+    "year": "2014",
+    "total": 236,
+    "passed": 236,
+    "gpa5": 219,
+    "passRate": "100",
+    "scholarships": 0
+  },
+  {
+    "examName": "এসএসসি",
+    "year": "2013",
+    "total": 244,
+    "passed": 243,
+    "gpa5": 179,
+    "passRate": "100",
+    "scholarships": 0
+  },
+  {
+    "examName": "এসএসসি",
+    "year": "2012",
+    "total": 223,
+    "passed": 223,
+    "gpa5": 201,
+    "passRate": "100",
+    "scholarships": 0
+  },
+  {
+    "examName": "এসএসসি",
+    "year": "2011",
+    "total": 239,
+    "passed": 239,
+    "gpa5": 156,
+    "passRate": "100",
+    "scholarships": 0
+  },
+  {
+    "examName": "এসএসসি",
+    "year": "2010",
+    "total": 224,
+    "passed": 222,
+    "gpa5": 150,
+    "passRate": "99",
+    "scholarships": 0
+  },
+  {
+    "examName": "এসএসসি",
+    "year": "2009",
+    "total": 237,
+    "passed": 237,
+    "gpa5": 195,
+    "passRate": "100",
+    "scholarships": 0
+  },
+  {
+    "examName": "এসএসসি",
+    "year": "2008",
+    "total": 224,
+    "passed": 222,
+    "gpa5": 163,
+    "passRate": "99",
+    "scholarships": 0
+  },
+  {
+    "examName": "এসএসসি",
+    "year": "2007",
+    "total": 214,
+    "passed": 214,
+    "gpa5": 139,
+    "passRate": "100",
+    "scholarships": 0
+  }
+]

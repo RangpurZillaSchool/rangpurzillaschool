@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Purno';
+  src: url('https://assets.selfstudy.xyz/fonts/purno/Purno-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Purno';
+  src: url('https://assets.selfstudy.xyz/fonts/purno/Purno-Regular.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Purno';
+  src: url('https://assets.selfstudy.xyz/fonts/purno/Purno-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Purno';
+  src: url('https://assets.selfstudy.xyz/fonts/purno/Purno-Bold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Purno';
+  src: url('https://assets.selfstudy.xyz/fonts/purno/Purno-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Purno';
+  src: url('https://assets.selfstudy.xyz/fonts/purno/Purno-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@layer base {
+  body {
+    /* Inter for English, Purno for all Bengali text */
+    font-family: 'Inter', 'Purno', system-ui, -apple-system, sans-serif;
+    @apply text-slate-800 bg-slate-50 antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight text-slate-900;
+    font-family: 'Inter', 'Purno', sans-serif;
+  }
+}
+
+.font-bangla {
+  font-family: 'Purno', sans-serif;
+}
+
+.font-english {
+  font-family: 'Inter', sans-serif;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Custom scrollbar for institutional look */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
