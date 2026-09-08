@@ -54,7 +54,7 @@ export const ContactPage: React.FC = () => {
                       href={`tel:${schoolInfo.contact.phone.replace(/[^0-9+]/g, '')}`}
                       className="text-institutional-navy dark:text-sky-400 font-mono font-semibold hover:underline"
                     >
-                      {schoolInfo.contact.phone}
+                      {schoolInfo.contact.phoneBn} ({schoolInfo.contact.phone})
                     </a>
                   </p>
                   <p className="text-slate-400 dark:text-slate-500 text-xs mt-0.5">অফিস চলাকালীন ফোন করার অনুরোধ করা যাচ্ছে</p>
@@ -220,6 +220,150 @@ export const ContactPage: React.FC = () => {
               </li>
             </ul>
           </div>
+        </div>
+      </div>
+
+      {/* Official Government Record Table */}
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
+        <div className="bg-slate-50 dark:bg-slate-800/80 px-5 py-3.5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <School className="w-4 h-4 text-institutional-navy dark:text-sky-400" />
+            <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100 font-serif">
+              যোগাযোগ সংক্রান্ত সরকারি তথ্য বিবরণী (অফিসিয়াল ছক)
+            </h2>
+          </div>
+          <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 px-2.5 py-0.5 rounded border border-slate-200 dark:border-slate-700">
+            EIIN: {schoolInfo.eiin}
+          </span>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs border-collapse">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
+                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 w-1/3 sm:w-1/4 border-r border-slate-100 dark:border-slate-800">
+                  বিদ্যালয়ের নাম
+                </td>
+                <td className="py-2.5 px-5 text-slate-900 dark:text-slate-100 font-semibold">
+                  {schoolInfo.nameBn}
+                </td>
+              </tr>
+              <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
+                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                  গ্রাম/বাড়ী ও সড়কের বিবরণ
+                </td>
+                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200">
+                  {schoolInfo.address.road}
+                </td>
+              </tr>
+              <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
+                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                  ওয়ার্ড নম্বর
+                </td>
+                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200 font-mono">
+                  ১৯
+                </td>
+              </tr>
+              <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
+                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                  ইউনিয়ন/পৌরসভা/সিটি কর্পোরেশন
+                </td>
+                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200">
+                  {schoolInfo.address.city}
+                </td>
+              </tr>
+              <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
+                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                  পোস্ট অফিস
+                </td>
+                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200">
+                  {schoolInfo.address.postOffice}
+                </td>
+              </tr>
+              <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
+                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                  পোস্ট কোড
+                </td>
+                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200 font-mono">
+                  {schoolInfo.address.postCode}
+                </td>
+              </tr>
+              <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
+                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                  পুলিশ স্টেশন
+                </td>
+                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200">
+                  {schoolInfo.address.policeStation}
+                </td>
+              </tr>
+              <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
+                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                  উপজেলা
+                </td>
+                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200">
+                  {schoolInfo.address.upazila}
+                </td>
+              </tr>
+              <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
+                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                  জেলা
+                </td>
+                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200">
+                  {schoolInfo.address.district}
+                </td>
+              </tr>
+              <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
+                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                  বিভাগ
+                </td>
+                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200">
+                  {schoolInfo.address.division}
+                </td>
+              </tr>
+              <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
+                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                  টেলিফোন
+                </td>
+                <td className="py-2.5 px-5">
+                  <a
+                    href={`tel:${schoolInfo.contact.phone.replace(/[^0-9+]/g, '')}`}
+                    className="font-mono font-bold text-institutional-navy dark:text-sky-400 hover:underline"
+                  >
+                    {schoolInfo.contact.phoneBn} ({schoolInfo.contact.phone})
+                  </a>
+                </td>
+              </tr>
+              <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
+                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                  E-Mail
+                </td>
+                <td className="py-2.5 px-5">
+                  <a
+                    href={`mailto:${schoolInfo.contact.email}`}
+                    className="font-mono text-institutional-navy dark:text-sky-400 hover:underline"
+                  >
+                    {schoolInfo.contact.email}
+                  </a>
+                </td>
+              </tr>
+              <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
+                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                  Website
+                </td>
+                <td className="py-2.5 px-5">
+                  <a
+                    href={schoolInfo.contact.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-institutional-navy dark:text-sky-400 hover:underline inline-flex items-center gap-1.5"
+                  >
+                    <span>{schoolInfo.contact.website.replace(/^https?:\/\//, '')}</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

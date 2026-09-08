@@ -15,7 +15,9 @@ export interface SchoolInfo {
     city: string;
     postOffice: string;
     postCode: string;
+    policeStation: string;
     thana: string;
+    upazila: string;
     district: string;
     division: string;
     fullBn: string;
@@ -23,6 +25,7 @@ export interface SchoolInfo {
   };
   contact: {
     phone: string;
+    phoneBn: string;
     email: string;
     website: string;
     facebook: string;
@@ -53,18 +56,21 @@ export const schoolInfo: SchoolInfo = {
   address: {
     road: "প্রধান সড়ক, কাচারী বাজার",
     ward: "১৯ নম্বর ওয়ার্ড",
-    city: "রংপুর সিটি কর্পোরেশন",
+    city: "সিটি কর্পোরেশন",
     postOffice: "রংপুর",
     postCode: "৫৪০০",
+    policeStation: "কোতয়ালী",
     thana: "কোতয়ালী",
+    upazila: "রংপুর সদর",
     district: "রংপুর",
     division: "রংপুর",
     fullBn: "প্রধান সড়ক, কাচারী বাজার, ১৯ নম্বর ওয়ার্ড, কোতয়ালী, রংপুর সদর, রংপুর - ৫৪০০",
     fullEn: "Main Road, Kachari Bazar, Ward 19, Kotwali, Rangpur Sadar, Rangpur - 5400"
   },
   contact: {
-    phone: "01716-386096",
-    email: "rangpurzillaschool@gmail.com",
+    phone: "01339-127372",
+    phoneBn: "০১৩৩৯১২৭৩৭২",
+    email: "rzsrangpur@gmail.com",
     website: "http://www.rangpurzillaschool.edu.bd",
     facebook: "https://facebook.com"
   },
