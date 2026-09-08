@@ -40,6 +40,8 @@ export async function onRequestGet({ request }) {
         const mobileMatch = html.match(new RegExp(`id="ContentPlaceHolder1_grdvTeachers_lblMobile_${i}"[^>]*>([^<]*)<\\/span>`));
         const imgMatch = html.match(new RegExp(`id="ContentPlaceHolder1_grdvTeachers_imgEMp_${i}"[^>]*src="([^"]*)"`));
 
+        const rawPhoto = imgMatch && imgMatch[1] && !imgMatch[1].includes('no-image') ? imgMatch[1] : null;
+
         teachers.push({
           sl: parseInt(i) + 1,
           pdsId,
@@ -49,7 +51,7 @@ export async function onRequestGet({ request }) {
           joiningDate: joinMatch ? joinMatch[1].trim() : '',
           homeDistrict: distMatch ? distMatch[1].trim() : '',
           mobile: mobileMatch ? mobileMatch[1].trim() : '',
-          photo: imgMatch && imgMatch[1] && !imgMatch[1].includes('no-image') ? imgMatch[1] : null
+          photo: rawPhoto ? `/api/teachers/photo?url=${encodeURIComponent(rawPhoto)}` : null
         });
       }
 

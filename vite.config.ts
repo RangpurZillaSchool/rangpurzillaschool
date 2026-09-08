@@ -5,8 +5,8 @@ import fs from 'fs';
 
 // 12-Hour Default Cache Policy (43200 seconds)
 const DEV_CACHE_TTL_MS = 43200 * 1000; // 12 hours in ms
-const devCache = new Map<string, { body: string; expiresAt: number; status: number }>();
-const devInFlight = new Map<string, Promise<{ body: string; status: number }>>();
+const devCache = new Map<string, { body: string | Buffer; headers?: Record<string, string>; expiresAt: number; status: number }>();
+const devInFlight = new Map<string, Promise<{ body?: string; rawBody?: Buffer; headers?: Record<string, string>; status: number }>>();
 
 function normalizeDevUrlKey(urlStr: string): string {
   try {
@@ -38,7 +38,6 @@ function localApiPlugin(): Plugin {
         const url = new URL(req.url, 'http://localhost');
         const pathname = url.pathname;
 
-        res.setHeader('Content-Type', 'application/json; charset=utf-8');
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Cache-Control', 'public, max-age=43200, s-maxage=43200');
 
@@ -46,6 +45,13 @@ function localApiPlugin(): Plugin {
         const cached = devCache.get(normalizedKey);
         const now = Date.now();
         if (cached && cached.expiresAt > now) {
+          if (cached.headers) {
+            for (const [k, v] of Object.entries(cached.headers)) {
+              res.setHeader(k, v);
+            }
+          } else {
+            res.setHeader('Content-Type', 'application/json; charset=utf-8');
+          }
           res.setHeader('X-Cache', 'HIT');
           res.setHeader('X-Cache-TTL', '43200s');
           res.statusCode = cached.status;
@@ -80,10 +86,104 @@ function localApiPlugin(): Plugin {
                 };
               }
 
+              if (pathname === '/api/teachers/photo') {
+                const imageUrl = url.searchParams.get('url');
+                if (!imageUrl) {
+                  return { status: 400, body: 'Missing url parameter' };
+                }
+                try {
+                  const imgRes = await fetch(imageUrl, {
+                    headers: {
+                      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+                      'Referer': 'http://www.rangpurzillaschool.edu.bd/'
+                    }
+                  });
+                  if (!imgRes.ok) {
+                    return { status: imgRes.status, body: 'Image fetch failed' };
+                  }
+                  const contentType = imgRes.headers.get('content-type') || 'image/jpeg';
+                  const buffer = Buffer.from(await imgRes.arrayBuffer());
+                  return {
+                    status: 200,
+                    headers: {
+                      'Content-Type': contentType,
+                      'Cache-Control': 'public, max-age=43200'
+                    },
+                    rawBody: buffer
+                  };
+                } catch (imgErr: any) {
+                  return { status: 502, body: imgErr.message };
+                }
+              }
+
               if (pathname === '/api/teachers') {
+                try {
+                  const homeRes = await fetch('http://www.rangpurzillaschool.edu.bd/', {
+                    headers: { 'User-Agent': 'Mozilla/5.0' }
+                  });
+                  const cookies = homeRes.headers.getSetCookie ? homeRes.headers.getSetCookie() : [homeRes.headers.get('set-cookie')];
+                  const cookieHeader = cookies.filter(Boolean).map((c: string) => c.split(';')[0]).join('; ');
+
+                  const res = await fetch('http://www.rangpurzillaschool.edu.bd/officer-teacher.aspx', {
+                    headers: {
+                      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+                      'Cookie': cookieHeader,
+                      'Referer': 'http://www.rangpurzillaschool.edu.bd/'
+                    }
+                  });
+
+                  if (res.ok) {
+                    const html = await res.text();
+                    const teachers: any[] = [];
+                    const idMatches = [...html.matchAll(/id="ContentPlaceHolder1_grdvTeachers_lblID_(\d+)"[^>]*>([^<]*)<\/span>/g)];
+
+                    for (const m of idMatches) {
+                      const i = m[1];
+                      const pdsId = m[2].trim();
+                      const nameMatch = html.match(new RegExp(`id="ContentPlaceHolder1_grdvTeachers_lblName_${i}"[^>]*>([^<]*)<\\/span>`));
+                      const orgPostMatch = html.match(new RegExp(`id="ContentPlaceHolder1_grdvTeachers_lblOrgPost_${i}"[^>]*>([^<]*)<\\/span>`));
+                      const desigMatch = html.match(new RegExp(`id="ContentPlaceHolder1_grdvTeachers_lblDesig_${i}"[^>]*>([^<]*)<\\/span>`));
+                      const joinMatch = html.match(new RegExp(`id="ContentPlaceHolder1_grdvTeachers_lblStationJoin_${i}"[^>]*>([^<]*)<\\/span>`));
+                      const distMatch = html.match(new RegExp(`id="ContentPlaceHolder1_grdvTeachers_lblDist_${i}"[^>]*>([^<]*)<\\/span>`));
+                      const mobileMatch = html.match(new RegExp(`id="ContentPlaceHolder1_grdvTeachers_lblMobile_${i}"[^>]*>([^<]*)<\\/span>`));
+                      const imgMatch = html.match(new RegExp(`id="ContentPlaceHolder1_grdvTeachers_imgEMp_${i}"[^>]*src="([^"]*)"`));
+                      const rawPhoto = imgMatch && imgMatch[1] && !imgMatch[1].includes('no-image') ? imgMatch[1] : null;
+
+                      teachers.push({
+                        sl: parseInt(i) + 1,
+                        pdsId,
+                        name: nameMatch ? nameMatch[1].trim() : '',
+                        originalPost: orgPostMatch ? orgPostMatch[1].trim() : '',
+                        designation: desigMatch ? desigMatch[1].trim() : '',
+                        joiningDate: joinMatch ? joinMatch[1].trim() : '',
+                        homeDistrict: distMatch ? distMatch[1].trim() : '',
+                        mobile: mobileMatch ? mobileMatch[1].trim() : '',
+                        photo: rawPhoto ? `/api/teachers/photo?url=${encodeURIComponent(rawPhoto)}` : null
+                      });
+                    }
+
+                    if (teachers.length > 0) {
+                      return {
+                        status: 200,
+                        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                        body: JSON.stringify({ total: teachers.length, teachers })
+                      };
+                    }
+                  }
+                } catch (teacherErr) {
+                  console.warn('Live dev teachers fetch failed, using fallback:', teacherErr);
+                }
+
                 const data = fs.readFileSync(path.resolve(__dirname, 'src/data/teachers.json'), 'utf8');
-                const teachers = JSON.parse(data);
-                return { status: 200, body: JSON.stringify({ total: teachers.length, teachers }) };
+                const teachers = JSON.parse(data).map((t: any) => ({
+                  ...t,
+                  photo: t.photo ? `/api/teachers/photo?url=${encodeURIComponent(t.photo)}` : null
+                }));
+                return {
+                  status: 200,
+                  headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                  body: JSON.stringify({ total: teachers.length, teachers })
+                };
               }
 
               if (pathname === '/api/news') {
@@ -246,10 +346,19 @@ function localApiPlugin(): Plugin {
 
         const result = await flight;
 
+        if (result.headers) {
+          for (const [k, v] of Object.entries(result.headers)) {
+            res.setHeader(k, v);
+          }
+        } else if (!res.getHeader('Content-Type')) {
+          res.setHeader('Content-Type', 'application/json; charset=utf-8');
+        }
+
         // If 200, store in 12-hour dev cache
         if (result.status === 200) {
           devCache.set(normalizedKey, {
-            body: result.body,
+            body: result.rawBody || result.body || '',
+            headers: result.headers,
             status: result.status,
             expiresAt: Date.now() + DEV_CACHE_TTL_MS
           });
@@ -260,7 +369,7 @@ function localApiPlugin(): Plugin {
         res.setHeader('X-Cache', 'MISS');
         res.setHeader('X-Cache-TTL', '43200s');
         res.statusCode = result.status;
-        return res.end(result.body);
+        return res.end(result.rawBody || result.body);
       });
     }
   };

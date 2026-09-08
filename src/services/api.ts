@@ -114,18 +114,30 @@ export const api = {
 
   // Teachers
   async getTeachers(): Promise<Teacher[]> {
+    const normalizePhoto = (photo: string | null) => {
+      if (!photo) return null;
+      if (photo.startsWith('/api/')) return photo;
+      return `/api/teachers/photo?url=${encodeURIComponent(photo)}`;
+    };
+
     try {
       const res = await fetchWithTimeout('/api/teachers');
       if (res.ok) {
         const data = await res.json();
         if (data.teachers && data.teachers.length > 0) {
-          return data.teachers;
+          return data.teachers.map((t: Teacher) => ({
+            ...t,
+            photo: normalizePhoto(t.photo)
+          }));
         }
       }
     } catch (err) {
       console.warn('Live teachers fetch failed, using fallback:', err);
     }
-    return teachersData as Teacher[];
+    return (teachersData as Teacher[]).map((t: Teacher) => ({
+      ...t,
+      photo: normalizePhoto(t.photo)
+    }));
   },
 
   // Student Filter Options
