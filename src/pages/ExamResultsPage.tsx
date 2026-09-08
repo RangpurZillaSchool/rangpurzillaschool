@@ -36,8 +36,8 @@ export const ExamResultsPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-amber-100 text-amber-900 border border-amber-200 px-3 py-1.5 rounded-lg text-xs font-semibold self-start sm:self-auto flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+          <div className="bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-300/40 dark:border-amber-700/40 px-3 py-1.5 rounded-lg text-xs font-semibold self-start sm:self-auto flex items-center gap-1.5">
+            <CheckCircle2 className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
             <span>গড় পাসের হার: ১০০%</span>
           </div>
         </div>
@@ -45,36 +45,36 @@ export const ExamResultsPage: React.FC = () => {
 
       {/* Highlights Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center gap-4">
+          <div className="w-12 h-12 rounded-lg bg-emerald-50 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0">
             <TrendingUp className="w-6 h-6" />
           </div>
           <div>
-            <div className="text-xs text-slate-500 font-medium">পাসের ধারাবাহিকতা</div>
-            <div className="text-xl font-bold text-slate-900 mt-0.5">শতভাগ (১০০%) সাফল্য</div>
-            <div className="text-[11px] text-emerald-700 mt-0.5">দিনাজপুর শিক্ষা বোর্ডে শীর্ষ স্থান</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">পাসের ধারাবাহিকতা</div>
+            <div className="text-xl font-bold text-slate-900 dark:text-slate-100 mt-0.5">শতভাগ (১০০%) সাফল্য</div>
+            <div className="text-[11px] text-emerald-700 dark:text-emerald-400 mt-0.5">দিনাজপুর শিক্ষা বোর্ডে শীর্ষ স্থান</div>
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center gap-4">
+          <div className="w-12 h-12 rounded-lg bg-amber-50 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0">
             <Award className="w-6 h-6" />
           </div>
           <div>
-            <div className="text-xs text-slate-500 font-medium">জিপিএ ৫.০০ প্রাপ্তি</div>
-            <div className="text-xl font-bold text-slate-900 mt-0.5">সর্বোচ্চ গ্রেড অর্জন</div>
-            <div className="text-[11px] text-amber-700 mt-0.5">প্রতিবছর বিপুল সংখ্যক এ+</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">জিপিএ ৫.০০ প্রাপ্তি</div>
+            <div className="text-xl font-bold text-slate-900 dark:text-slate-100 mt-0.5">সর্বোচ্চ গ্রেড অর্জন</div>
+            <div className="text-[11px] text-amber-700 dark:text-amber-400 mt-0.5">প্রতিবছর বিপুল সংখ্যক এ+</div>
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center shrink-0">
+        <div className="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center gap-4">
+          <div className="w-12 h-12 rounded-lg bg-blue-50 text-blue-700 dark:text-blue-400 flex items-center justify-center shrink-0">
             <GraduationCap className="w-6 h-6" />
           </div>
           <div>
-            <div className="text-xs text-slate-500 font-medium">সরকারি বৃত্তিপ্রাপ্তি</div>
-            <div className="text-xl font-bold text-slate-900 mt-0.5">ট্যালেন্টপুল ও সাধারণ</div>
-            <div className="text-[11px] text-blue-700 mt-0.5">বোর্ড মেধা তালিকায় গৌরবময় অর্জন</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">সরকারি বৃত্তিপ্রাপ্তি</div>
+            <div className="text-xl font-bold text-slate-900 dark:text-slate-100 mt-0.5">ট্যালেন্টপুল ও সাধারণ</div>
+            <div className="text-[11px] text-blue-700 dark:text-blue-400 mt-0.5">বোর্ড মেধা তালিকায় গৌরবময় অর্জন</div>
           </div>
         </div>
       </div>
@@ -85,10 +85,10 @@ export const ExamResultsPage: React.FC = () => {
           <button
             key={e.value}
             onClick={() => setSelectedExam(e.value)}
-            className={`px-3 py-1.5 rounded-md whitespace-nowrap transition-all font-medium ${
+            className={`px-3 py-1.5 rounded-md whitespace-nowrap transition-all font-medium cursor-pointer ${
               selectedExam === e.value
-                ? 'bg-institutional-navy text-white font-semibold shadow-xs'
-                : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                ? 'bg-institutional-navy dark:bg-sky-600 text-white font-semibold shadow-xs'
+                : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
             }`}
           >
             {e.label}
@@ -97,7 +97,7 @@ export const ExamResultsPage: React.FC = () => {
       </div>
 
       {/* Results Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">

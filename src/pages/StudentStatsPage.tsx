@@ -42,33 +42,33 @@ export const StudentStatsPage: React.FC = () => {
 
       {/* Aggregate Overview Metric Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
-          <div className="text-xs text-slate-500 font-medium">মোট শিক্ষার্থী সংখ্যা</div>
-          <div className="text-2xl sm:text-3xl font-bold text-institutional-navy font-mono mt-1">
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+          <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">মোট শিক্ষার্থী সংখ্যা</div>
+          <div className="text-2xl sm:text-3xl font-bold text-institutional-navy dark:text-sky-400 font-mono mt-1">
             ২,১০৯
           </div>
-          <div className="text-[11px] text-emerald-700 mt-1 font-semibold">১০০% ছাত্র (বালক বিদ্যালয়)</div>
+          <div className="text-[11px] text-emerald-700 dark:text-emerald-400 mt-1 font-semibold">১০০% ছাত্র (বালক বিদ্যালয়)</div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
-          <div className="text-xs text-slate-500 font-medium">মুসলিম শিক্ষার্থী</div>
-          <div className="text-2xl sm:text-3xl font-bold text-slate-900 font-mono mt-1">
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+          <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">মুসলিম শিক্ষার্থী</div>
+          <div className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 font-mono mt-1">
             ১,৯১৫
           </div>
           <div className="text-[11px] text-slate-400 mt-1">৯০.৮%</div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
-          <div className="text-xs text-slate-500 font-medium">হিন্দু শিক্ষার্থী</div>
-          <div className="text-2xl sm:text-3xl font-bold text-slate-900 font-mono mt-1">
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+          <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">হিন্দু শিক্ষার্থী</div>
+          <div className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 font-mono mt-1">
             ১৯৪
           </div>
           <div className="text-[11px] text-slate-400 mt-1">৯.২%</div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
-          <div className="text-xs text-slate-500 font-medium">বিজ্ঞান বিভাগ (৯ম-১০ম)</div>
-          <div className="text-2xl sm:text-3xl font-bold text-purple-900 font-mono mt-1">
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+          <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">বিজ্ঞান বিভাগ (৯ম-১০ম)</div>
+          <div className="text-2xl sm:text-3xl font-bold text-purple-900 dark:text-purple-300 font-mono mt-1">
             ৫৩২
           </div>
           <div className="text-[11px] text-slate-400 mt-1">ব্যবসায়: ৪ | মানবিক: ১</div>
@@ -79,30 +79,30 @@ export const StudentStatsPage: React.FC = () => {
       <div className="flex items-center gap-2">
         <button
           onClick={() => setFilterShift('all')}
-          className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+          className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
             filterShift === 'all'
-              ? 'bg-institutional-navy text-white shadow-xs'
-              : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+              ? 'bg-institutional-navy dark:bg-sky-600 text-white shadow-xs'
+              : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
           }`}
         >
           উভয় শিফট ({stats.length} টি শাখা)
         </button>
         <button
           onClick={() => setFilterShift('Morning')}
-          className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+          className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
             filterShift === 'Morning'
-              ? 'bg-institutional-navy text-white shadow-xs'
-              : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+              ? 'bg-institutional-navy dark:bg-sky-600 text-white shadow-xs'
+              : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
           }`}
         >
           প্রভাতি শাখা (Morning)
         </button>
         <button
           onClick={() => setFilterShift('Day')}
-          className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+          className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${
             filterShift === 'Day'
-              ? 'bg-institutional-navy text-white shadow-xs'
-              : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+              ? 'bg-institutional-navy dark:bg-sky-600 text-white shadow-xs'
+              : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
           }`}
         >
           দিবা শাখা (Day)
@@ -110,7 +110,7 @@ export const StudentStatsPage: React.FC = () => {
       </div>
 
       {/* Detailed Section Breakdown Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">

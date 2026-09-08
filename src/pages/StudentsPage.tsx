@@ -147,13 +147,13 @@ export const StudentsPage: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
           {/* Class Selector */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1.5">
               ১. শ্রেণি (Class) <span className="text-rose-500">*</span>
             </label>
             <select
               value={selectedClass}
               onChange={(e) => handleClassChange(e.target.value)}
-              className="w-full text-xs sm:text-sm border border-slate-300 rounded-md py-2 px-3 focus:outline-hidden focus:ring-2 focus:ring-institutional-navy focus:border-institutional-navy bg-white text-slate-800"
+              className="w-full text-xs sm:text-sm border border-slate-300 dark:border-slate-700 rounded-md py-2 px-3 focus:outline-hidden focus:ring-2 focus:ring-institutional-navy dark:focus:ring-sky-400 focus:border-institutional-navy bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100"
             >
               <option value="">-- শ্রেণি নির্বাচন করুন --</option>
               {classes.map(c => (
@@ -164,14 +164,14 @@ export const StudentsPage: React.FC = () => {
 
           {/* Shift Selector */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1.5">
               ২. শিফট (Shift) <span className="text-rose-500">*</span>
             </label>
             <select
               value={selectedShift}
               disabled={!selectedClass}
               onChange={(e) => handleShiftChange(e.target.value)}
-              className="w-full text-xs sm:text-sm border border-slate-300 rounded-md py-2 px-3 focus:outline-hidden focus:ring-2 focus:ring-institutional-navy focus:border-institutional-navy bg-white text-slate-800 disabled:bg-slate-100 disabled:text-slate-400"
+              className="w-full text-xs sm:text-sm border border-slate-300 dark:border-slate-700 rounded-md py-2 px-3 focus:outline-hidden focus:ring-2 focus:ring-institutional-navy dark:focus:ring-sky-400 focus:border-institutional-navy bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-400 dark:disabled:text-slate-600"
             >
               <option value="">-- শিফট নির্বাচন করুন --</option>
               {selectedClass && shifts.map(s => (
@@ -182,14 +182,14 @@ export const StudentsPage: React.FC = () => {
 
           {/* Section Selector */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-200 mb-1.5">
               ৩. শাখা (Section) <span className="text-rose-500">*</span>
             </label>
             <select
               value={selectedSection}
               disabled={!selectedShift}
               onChange={(e) => handleSectionChange(e.target.value)}
-              className="w-full text-xs sm:text-sm border border-slate-300 rounded-md py-2 px-3 focus:outline-hidden focus:ring-2 focus:ring-institutional-navy focus:border-institutional-navy bg-white text-slate-800 disabled:bg-slate-100 disabled:text-slate-400"
+              className="w-full text-xs sm:text-sm border border-slate-300 dark:border-slate-700 rounded-md py-2 px-3 focus:outline-hidden focus:ring-2 focus:ring-institutional-navy dark:focus:ring-sky-400 focus:border-institutional-navy bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-400 dark:disabled:text-slate-600"
             >
               <option value="">-- শাখা নির্বাচন করুন --</option>
               {selectedShift && sections.map(sec => (
@@ -204,7 +204,7 @@ export const StudentsPage: React.FC = () => {
               onClick={fetchStudents}
               disabled={loading || !selectedClass || !selectedShift || !selectedSection}
               type="button"
-              className="w-full py-2 px-4 rounded-md bg-institutional-navy hover:bg-institutional-navyDark text-white text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 shadow-xs disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="w-full py-2 px-4 rounded-md bg-institutional-navy dark:bg-sky-500 hover:bg-institutional-navyDark dark:hover:bg-sky-400 text-white dark:text-slate-950 text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 shadow-xs disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {loading ? (
                 <>
@@ -224,15 +224,15 @@ export const StudentsPage: React.FC = () => {
 
       {/* Initial Blank State (Before Search) */}
       {!hasSearched && !loading && (
-        <div className="bg-white rounded-xl border border-dashed border-slate-300 p-12 text-center space-y-4 shadow-2xs">
-          <div className="w-16 h-16 rounded-full bg-slate-100 text-institutional-navy flex items-center justify-center mx-auto">
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 p-12 text-center space-y-4 shadow-2xs">
+          <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 text-institutional-navy dark:text-sky-400 flex items-center justify-center mx-auto">
             <GraduationCap className="w-8 h-8" />
           </div>
           <div className="max-w-md mx-auto space-y-1.5">
-            <h3 className="text-base font-bold text-slate-900 font-serif">
+            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 font-serif">
               কোন শ্রেণি ও শাখা নির্বাচন করা হয়নি
             </h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
               সার্ভার থেকে শিক্ষার্থী তথ্য দেখতে উপরের ড্রপডাউন হতে প্রথমে <strong>শ্রেণি</strong>, এরপর <strong>শিফট</strong> ও <strong>শাখা</strong> নির্বাচন করে <strong>'শিক্ষার্থী দেখুন'</strong> বাটনে চাপুন।
             </p>
           </div>
@@ -241,12 +241,12 @@ export const StudentsPage: React.FC = () => {
 
       {/* Results Bar (Only when searched) */}
       {hasSearched && !loading && filteredStudents.length > 0 && (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-100/80 p-3 rounded-lg border border-slate-200 text-xs">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-100/90 dark:bg-slate-800/90 p-3 rounded-lg border border-slate-200 dark:border-slate-700 text-xs">
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-slate-800">
+            <span className="font-semibold text-slate-800 dark:text-slate-200">
               {selectedClass} শ্রেণির {selectedShift === 'Morning' ? 'প্রভাতি' : 'দিবা'} শিফটের শাখা {selectedSection} এর তালিকা:
             </span>
-            <span className="bg-institutional-navy text-white font-mono px-2 py-0.5 rounded-sm font-bold">
+            <span className="bg-institutional-navy dark:bg-sky-500/20 text-white dark:text-sky-300 font-mono px-2 py-0.5 rounded-sm font-bold border border-transparent dark:border-sky-500/30">
               {filteredStudents.length} জন
             </span>
           </div>
@@ -259,23 +259,23 @@ export const StudentsPage: React.FC = () => {
                 placeholder="নাম, রোল বা আইডি দিয়ে খুঁজুন..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white border border-slate-300 rounded-md pl-8 pr-3 py-1.5 text-xs focus:outline-hidden focus:ring-1 focus:ring-institutional-navy"
+                className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-md pl-8 pr-3 py-1.5 text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-hidden focus:ring-1 focus:ring-institutional-navy dark:focus:ring-sky-400"
               />
               <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
             </div>
 
             {/* View Toggles */}
-            <div className="flex items-center bg-white border border-slate-200 rounded-md p-0.5 shrink-0">
+            <div className="flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md p-0.5 shrink-0">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-1 rounded-sm ${viewMode === 'grid' ? 'bg-institutional-navy text-white' : 'text-slate-600 hover:text-slate-900'}`}
+                className={`p-1 rounded-sm cursor-pointer transition-colors ${viewMode === 'grid' ? 'bg-institutional-navy dark:bg-sky-600 text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
                 title="গ্রিড ভিউ"
               >
                 <LayoutGrid className="w-3.5 h-3.5" />
               </button>
               <button
                 onClick={() => setViewMode('table')}
-                className={`p-1 rounded-sm ${viewMode === 'table' ? 'bg-institutional-navy text-white' : 'text-slate-600 hover:text-slate-900'}`}
+                className={`p-1 rounded-sm cursor-pointer transition-colors ${viewMode === 'table' ? 'bg-institutional-navy dark:bg-sky-600 text-white' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
                 title="টেবিল ভিউ"
               >
                 <List className="w-3.5 h-3.5" />
@@ -386,10 +386,10 @@ export const StudentsPage: React.FC = () => {
             {filteredStudents.map((student) => (
               <div
                 key={student.id || student.roll}
-                className="bg-white rounded-lg border border-slate-200 p-4 shadow-xs hover:border-institutional-navy hover:shadow-md transition-all flex items-center gap-3.5 group"
+                className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-4 shadow-xs hover:border-institutional-navy dark:hover:border-sky-400 hover:shadow-md transition-all flex items-center gap-3.5 group"
               >
                 {/* Photo */}
-                <div className="w-14 h-16 rounded-md overflow-hidden bg-slate-100 border border-slate-200 shrink-0 flex items-center justify-center">
+                <div className="w-14 h-16 rounded-md overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shrink-0 flex items-center justify-center">
                   <img
                     src={student.photo || ''}
                     alt={student.name}
@@ -397,7 +397,7 @@ export const StudentsPage: React.FC = () => {
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.onerror = null;
-                      target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(student.name)}&background=f1f5f9&color=0f2b5c&size=100`;
+                      target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(student.name)}&background=1e293b&color=38bdf8&size=100`;
                     }}
                   />
                 </div>
@@ -405,14 +405,14 @@ export const StudentsPage: React.FC = () => {
                 {/* Details */}
                 <div className="flex-grow min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="px-2 py-0.5 rounded-sm bg-institutional-navy text-white text-[11px] font-bold font-mono">
+                    <span className="px-2 py-0.5 rounded-sm bg-institutional-navy dark:bg-sky-500/20 text-white dark:text-sky-300 border border-transparent dark:border-sky-500/30 text-[11px] font-bold font-mono">
                       রোল: {student.roll}
                     </span>
                   </div>
-                  <h3 className="text-xs font-bold text-slate-900 truncate mt-1 group-hover:text-institutional-navy leading-snug">
+                  <h3 className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate mt-1 group-hover:text-institutional-navy dark:group-hover:text-sky-400 leading-snug">
                     {student.name}
                   </h3>
-                  <p className="text-[11px] text-slate-400 font-mono mt-0.5 truncate">
+                  <p className="text-[11px] text-slate-400 dark:text-slate-400 font-mono mt-0.5 truncate">
                     ID: {student.id}
                   </p>
                 </div>
@@ -421,10 +421,10 @@ export const StudentsPage: React.FC = () => {
           </div>
         ) : (
           /* Table View */
-          <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-xs">
+          <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                <thead className="bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-semibold border-b border-slate-200 dark:border-slate-700">
                   <tr>
                     <th className="py-3 px-4 w-16 text-center">ছবি</th>
                     <th className="py-3 px-4 w-20">রোল</th>
@@ -433,11 +433,11 @@ export const StudentsPage: React.FC = () => {
                     <th className="py-3 px-4">শ্রেণি ও শাখা</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                   {filteredStudents.map((student) => (
-                    <tr key={student.id || student.roll} className="hover:bg-slate-50/80 transition-colors">
+                    <tr key={student.id || student.roll} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/60 transition-colors">
                       <td className="py-2.5 px-4 text-center">
-                        <div className="w-9 h-11 rounded-sm overflow-hidden bg-slate-100 border border-slate-200 mx-auto">
+                        <div className="w-9 h-11 rounded-sm overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 mx-auto">
                           <img
                             src={student.photo || ''}
                             alt={student.name}
@@ -445,21 +445,21 @@ export const StudentsPage: React.FC = () => {
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
                               target.onerror = null;
-                              target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(student.name)}&background=f1f5f9&color=0f2b5c&size=60`;
+                              target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(student.name)}&background=1e293b&color=38bdf8&size=60`;
                             }}
                           />
                         </div>
                       </td>
-                      <td className="py-2.5 px-4 font-mono font-bold text-institutional-navy text-sm">
+                      <td className="py-2.5 px-4 font-mono font-bold text-institutional-navy dark:text-sky-400 text-sm">
                         {student.roll}
                       </td>
-                      <td className="py-2.5 px-4 font-mono text-slate-600">
+                      <td className="py-2.5 px-4 font-mono text-slate-600 dark:text-slate-400">
                         {student.id}
                       </td>
-                      <td className="py-2.5 px-4 font-semibold text-slate-900">
+                      <td className="py-2.5 px-4 font-semibold text-slate-900 dark:text-slate-100">
                         {student.name}
                       </td>
-                      <td className="py-2.5 px-4 text-slate-500">
+                      <td className="py-2.5 px-4 text-slate-500 dark:text-slate-400">
                         {selectedClass} ({selectedShift === 'Morning' ? 'প্রভাতি' : 'দিবা'} - শাখা {selectedSection})
                       </td>
                     </tr>

@@ -109,14 +109,14 @@ export const Header: React.FC = () => {
       </div>
 
       {/* Desktop Institutional Navbar */}
-      <nav ref={navRef} className="bg-institutional-navy text-white hidden lg:block border-t border-institutional-navyDark shadow-sm relative z-40">
+      <nav ref={navRef} className="bg-institutional-navy dark:bg-slate-950 text-white hidden lg:block border-t border-institutional-navyDark dark:border-slate-800 shadow-sm relative z-40 transition-colors">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 flex items-center justify-between">
-          <ul className="flex items-center text-[12.5px] xl:text-[14px] font-medium divide-x divide-institutional-navyDark/60 whitespace-nowrap shrink-0">
+          <ul className="flex items-center text-[12.5px] xl:text-[14px] font-medium divide-x divide-institutional-navyDark/60 dark:divide-slate-800 whitespace-nowrap shrink-0">
             <li className="shrink-0">
               <Link
                 to="/"
                 className={`px-2.5 xl:px-3.5 py-2.5 block whitespace-nowrap transition-colors ${
-                  isActive('/') ? 'bg-institutional-navyDark text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 text-slate-100'
+                  isActive('/') ? 'bg-institutional-navyDark dark:bg-slate-900 text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 dark:hover:bg-slate-900/60 text-slate-100'
                 }`}
               >
                 প্রচ্ছদ
@@ -137,7 +137,7 @@ export const Header: React.FC = () => {
                   setNewsDropdown(false);
                 }}
                 className={`px-2.5 xl:px-3.5 py-2.5 flex items-center gap-1 whitespace-nowrap transition-colors cursor-pointer select-none ${
-                  location.pathname.startsWith('/about') || aboutDropdown ? 'bg-institutional-navyDark text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 text-slate-100'
+                  location.pathname.startsWith('/about') || aboutDropdown ? 'bg-institutional-navyDark dark:bg-slate-900 text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 dark:hover:bg-slate-900/60 text-slate-100'
                 }`}
                 aria-expanded={aboutDropdown}
               >
@@ -169,11 +169,11 @@ export const Header: React.FC = () => {
               <Link
                 to="/teachers"
                 className={`px-2.5 xl:px-3.5 py-2.5 flex items-center gap-1.5 whitespace-nowrap transition-colors ${
-                  isActive('/teachers') ? 'bg-institutional-navyDark text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 text-slate-100'
+                  isActive('/teachers') ? 'bg-institutional-navyDark dark:bg-slate-900 text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 dark:hover:bg-slate-900/60 text-slate-100'
                 }`}
               >
                 <span>শিক্ষক ও কর্মকর্তা</span>
-                <span className="px-1.5 py-0.5 rounded-full bg-institutional-navyLight/90 text-[10px] xl:text-[11px] font-mono text-amber-300 font-semibold">
+                <span className="px-1.5 py-0.5 rounded-full bg-institutional-navyLight/90 dark:bg-slate-800 text-[10px] xl:text-[11px] font-mono text-amber-300 font-semibold border border-transparent dark:border-slate-700">
                   ৫৫
                 </span>
               </Link>
@@ -193,7 +193,7 @@ export const Header: React.FC = () => {
                   setNewsDropdown(false);
                 }}
                 className={`px-2.5 xl:px-3.5 py-2.5 flex items-center gap-1 whitespace-nowrap transition-colors cursor-pointer select-none ${
-                  location.pathname.startsWith('/students') || studentsDropdown ? 'bg-institutional-navyDark text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 text-slate-100'
+                  location.pathname.startsWith('/students') || studentsDropdown ? 'bg-institutional-navyDark dark:bg-slate-900 text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 dark:hover:bg-slate-900/60 text-slate-100'
                 }`}
                 aria-expanded={studentsDropdown}
               >
@@ -225,7 +225,7 @@ export const Header: React.FC = () => {
               <Link
                 to="/notices"
                 className={`px-2.5 xl:px-3.5 py-2.5 block whitespace-nowrap transition-colors ${
-                  isActive('/notices') ? 'bg-institutional-navyDark text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 text-slate-100'
+                  isActive('/notices') ? 'bg-institutional-navyDark dark:bg-slate-900 text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 dark:hover:bg-slate-900/60 text-slate-100'
                 }`}
               >
                 নোটিশ বোর্ড
@@ -246,7 +246,7 @@ export const Header: React.FC = () => {
                   setStudentsDropdown(false);
                 }}
                 className={`px-2.5 xl:px-3.5 py-2.5 flex items-center gap-1 whitespace-nowrap transition-colors cursor-pointer select-none ${
-                  isActive('/news') || isActive('/downloads') || newsDropdown ? 'bg-institutional-navyDark text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 text-slate-100'
+                  isActive('/news') || isActive('/downloads') || newsDropdown ? 'bg-institutional-navyDark dark:bg-slate-900 text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 dark:hover:bg-slate-900/60 text-slate-100'
                 }`}
                 aria-expanded={newsDropdown}
               >
@@ -278,7 +278,7 @@ export const Header: React.FC = () => {
               <Link
                 to="/academics/results"
                 className={`px-2.5 xl:px-3.5 py-2.5 block whitespace-nowrap transition-colors ${
-                  isActive('/academics/results') ? 'bg-institutional-navyDark text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 text-slate-100'
+                  isActive('/academics/results') ? 'bg-institutional-navyDark dark:bg-slate-900 text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 dark:hover:bg-slate-900/60 text-slate-100'
                 }`}
               >
                 পরীক্ষার ফলাফল
@@ -289,7 +289,7 @@ export const Header: React.FC = () => {
               <Link
                 to="/gallery"
                 className={`px-2.5 xl:px-3.5 py-2.5 block whitespace-nowrap transition-colors ${
-                  isActive('/gallery') ? 'bg-institutional-navyDark text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 text-slate-100'
+                  isActive('/gallery') ? 'bg-institutional-navyDark dark:bg-slate-900 text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 dark:hover:bg-slate-900/60 text-slate-100'
                 }`}
               >
                 গ্যালারি
@@ -300,7 +300,7 @@ export const Header: React.FC = () => {
               <Link
                 to="/contact"
                 className={`px-2.5 xl:px-3.5 py-2.5 block whitespace-nowrap transition-colors ${
-                  isActive('/contact') ? 'bg-institutional-navyDark text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 text-slate-100'
+                  isActive('/contact') ? 'bg-institutional-navyDark dark:bg-slate-900 text-amber-400 font-semibold' : 'hover:bg-institutional-navyDark/60 dark:hover:bg-slate-900/60 text-slate-100'
                 }`}
               >
                 যোগাযোগ
@@ -308,7 +308,7 @@ export const Header: React.FC = () => {
             </li>
           </ul>
 
-          <div className="text-xs font-semibold text-amber-300 whitespace-nowrap shrink-0 pl-3 hidden sm:block">
+          <div className="text-xs font-semibold text-amber-300 dark:text-amber-400 whitespace-nowrap shrink-0 pl-3 hidden sm:block">
             প্রতিষ্ঠা: ১৮৩২ খ্রিঃ
           </div>
         </div>

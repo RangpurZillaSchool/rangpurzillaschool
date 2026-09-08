@@ -224,11 +224,16 @@
     color: var(--theme-text);
   }
 
-  [data-theme]:not([data-theme="light"]) .bg-slate-50 {
+  [data-theme]:not([data-theme="light"]) .bg-slate-50,
+  [data-theme]:not([data-theme="light"]) .bg-slate-50\/80,
+  [data-theme]:not([data-theme="light"]) .bg-slate-50\/90 {
     background-color: var(--theme-bg) !important;
   }
 
-  [data-theme]:not([data-theme="light"]) .bg-slate-100 {
+  [data-theme]:not([data-theme="light"]) .bg-slate-100,
+  [data-theme]:not([data-theme="light"]) .bg-slate-100\/80,
+  [data-theme]:not([data-theme="light"]) .bg-slate-100\/90,
+  [data-theme]:not([data-theme="light"]) .bg-slate-200 {
     background-color: var(--theme-surface-alt) !important;
   }
 
@@ -284,9 +289,48 @@
     background-color: var(--theme-primary) !important;
     color: #ffffff !important;
   }
+  .dark button.bg-institutional-navy,
+  .dark a.bg-institutional-navy {
+    background-color: var(--theme-primary) !important;
+    color: #0b1320 !important;
+    font-weight: 600 !important;
+  }
   .dark button.bg-institutional-navy:hover,
   .dark a.bg-institutional-navy:hover {
-    color: #090d16 !important;
+    background-color: var(--theme-primary-light) !important;
+    color: #0b1320 !important;
+  }
+
+  /* Badges with bg-institutional-navy across dark themes */
+  .dark span.bg-institutional-navy {
+    background-color: rgba(56, 189, 248, 0.18) !important;
+    color: var(--theme-primary) !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+  }
+  [data-theme="nord"] span.bg-institutional-navy {
+    background-color: rgba(136, 192, 208, 0.2) !important;
+    color: #88c0d0 !important;
+    border: 1px solid rgba(136, 192, 208, 0.4) !important;
+  }
+  [data-theme="dracula"] span.bg-institutional-navy {
+    background-color: rgba(189, 147, 249, 0.2) !important;
+    color: #bd93f9 !important;
+    border: 1px solid rgba(189, 147, 249, 0.4) !important;
+  }
+  [data-theme="cyberpunk"] span.bg-institutional-navy {
+    background-color: rgba(244, 63, 94, 0.2) !important;
+    color: #fb7185 !important;
+    border: 1px solid rgba(244, 63, 94, 0.4) !important;
+  }
+  [data-theme="forest"] span.bg-institutional-navy {
+    background-color: rgba(52, 211, 153, 0.2) !important;
+    color: #6ee7b7 !important;
+    border: 1px solid rgba(52, 211, 153, 0.4) !important;
+  }
+  [data-theme="coffee"] span.bg-institutional-navy {
+    background-color: rgba(217, 119, 6, 0.2) !important;
+    color: #f59e0b !important;
+    border: 1px solid rgba(217, 119, 6, 0.4) !important;
   }
 
   /* Ensure emerald/green, amber, blue, and purple text are crisp & readable in dark themes */

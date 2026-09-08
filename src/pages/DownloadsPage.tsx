@@ -42,14 +42,14 @@ export const DownloadsPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-blue-50 text-blue-900 border border-blue-200 px-3 py-1.5 rounded-lg text-xs font-semibold font-mono self-start sm:self-auto">
+          <div className="bg-blue-500/15 text-blue-800 dark:text-blue-300 border border-blue-300/40 dark:border-blue-700/40 px-3 py-1.5 rounded-lg text-xs font-semibold font-mono self-start sm:self-auto">
             সর্বমোট ফাইল: {downloads.length} টি
           </div>
         </div>
       </div>
 
       {/* Search */}
-      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 shadow-xs">
         <div className="relative">
           <input
             type="text"
@@ -59,14 +59,14 @@ export const DownloadsPage: React.FC = () => {
               setSearchQuery(e.target.value);
               setCurrentPage(1);
             }}
-            className="w-full bg-slate-50 border border-slate-300 rounded-md pl-9 pr-4 py-2 text-xs sm:text-sm focus:outline-hidden focus:ring-2 focus:ring-institutional-navy focus:bg-white"
+            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 rounded-md pl-9 pr-4 py-2 text-xs sm:text-sm focus:outline-hidden focus:ring-2 focus:ring-institutional-navy dark:focus:ring-sky-400 focus:bg-white dark:focus:bg-slate-800"
           />
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
         </div>
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-sm text-slate-600">
             ডাউনলোড তালিকা লোড হচ্ছে...
