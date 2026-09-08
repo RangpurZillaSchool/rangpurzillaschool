@@ -1,6 +1,7 @@
 import React from 'react';
 import { Phone, Mail, Award, ExternalLink, Github } from 'lucide-react';
 import { schoolInfo } from '../../data/schoolInfo';
+import { ThemeSelector } from '../common/ThemeSelector';
 
 export const TopBar: React.FC = () => {
   return (
@@ -44,6 +45,9 @@ export const TopBar: React.FC = () => {
             <Github className="w-3 h-3 text-amber-400" />
             <span className="font-semibold">GitHub</span>
           </a>
+
+          {/* Theme Selector Dropdown */}
+          <ThemeSelector />
 
           {/* Desktop National Education Portals */}
           <div className="hidden md:flex items-center gap-2 text-slate-300 pl-2 border-l border-slate-700">

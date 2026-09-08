@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, BookOpen, Users, GraduationCap, Bell, FileText, Award, Image, PhoneCall, Github } from 'lucide-react';
 import { schoolInfo } from '../../data/schoolInfo';
+import { ThemeSelector } from '../common/ThemeSelector';
 
 export const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -92,15 +93,18 @@ export const Header: React.FC = () => {
           </Link>
         </div>
 
-        {/* Mobile menu button */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          type="button"
-          className="lg:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 hover:text-institutional-navy border border-slate-200 focus:outline-hidden shrink-0 ml-2"
-          aria-label="Toggle navigation menu"
-        >
-          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        {/* Mobile quick theme + menu button */}
+        <div className="flex items-center gap-1.5 lg:hidden ml-2 shrink-0">
+          <ThemeSelector />
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            type="button"
+            className="p-2 rounded-lg text-slate-700 hover:bg-slate-100 hover:text-institutional-navy border border-slate-200 focus:outline-hidden"
+            aria-label="Toggle navigation menu"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Desktop Institutional Navbar */}
