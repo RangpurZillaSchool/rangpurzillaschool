@@ -11,17 +11,11 @@ export async function onRequestGet({ request }) {
     return new Response('Missing target image url parameter.', { status: 400 });
   }
 
-  // Domain security whitelist
+  // Domain security whitelist - strictly teacher photo origin hosts
   try {
     const parsed = new URL(targetUrl);
-    const allowedHosts = [
-      'pds.sib.gov.bd',
-      'automation.sib.gov.bd',
-      'sib.gov.bd',
-      'www.rangpurzillaschool.edu.bd',
-      'rangpurzillaschool.edu.bd'
-    ];
-    if (!allowedHosts.includes(parsed.hostname.toLowerCase())) {
+    const allowedHosts = ['pds.sib.gov.bd', 'sib.gov.bd'];
+    if (!['http:', 'https:'].includes(parsed.protocol) || !allowedHosts.includes(parsed.hostname.toLowerCase())) {
       return new Response('Forbidden image origin.', { status: 403 });
     }
   } catch {
@@ -32,6 +26,7 @@ export async function onRequestGet({ request }) {
   return withEdgeCacheAndCoalescing(request, CACHE_TTL.teachers, async () => {
     try {
       const res = await fetch(targetUrl, {
+        signal: AbortSignal.timeout(8000), // 8-second timeout
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)',
           'Referer': 'http://www.rangpurzillaschool.edu.bd/'
@@ -42,7 +37,12 @@ export async function onRequestGet({ request }) {
         return new Response(`Origin returned ${res.status}`, { status: res.status });
       }
 
-      const contentType = res.headers.get('content-type') || 'image/jpeg';
+      const contentType = (res.headers.get('content-type') || '').toLowerCase();
+      // Ensure origin actually returned an image (not an HTML error page)
+      if (!contentType.startsWith('image/')) {
+        return new Response('Origin returned non-image content-type.', { status: 502 });
+      }
+
       const body = await res.arrayBuffer();
 
       return new Response(body, {

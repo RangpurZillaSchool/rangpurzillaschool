@@ -92,7 +92,18 @@ function localApiPlugin(): Plugin {
                   return { status: 400, body: 'Missing url parameter' };
                 }
                 try {
+                  const parsed = new URL(imageUrl);
+                  const allowedHosts = ['pds.sib.gov.bd', 'sib.gov.bd'];
+                  if (!['http:', 'https:'].includes(parsed.protocol) || !allowedHosts.includes(parsed.hostname.toLowerCase())) {
+                    return { status: 403, body: 'Forbidden image origin.' };
+                  }
+                } catch {
+                  return { status: 400, body: 'Invalid image URL' };
+                }
+
+                try {
                   const imgRes = await fetch(imageUrl, {
+                    signal: AbortSignal.timeout(8000),
                     headers: {
                       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
                       'Referer': 'http://www.rangpurzillaschool.edu.bd/'
@@ -101,7 +112,10 @@ function localApiPlugin(): Plugin {
                   if (!imgRes.ok) {
                     return { status: imgRes.status, body: 'Image fetch failed' };
                   }
-                  const contentType = imgRes.headers.get('content-type') || 'image/jpeg';
+                  const contentType = (imgRes.headers.get('content-type') || '').toLowerCase();
+                  if (!contentType.startsWith('image/')) {
+                    return { status: 502, body: 'Origin returned non-image content-type.' };
+                  }
                   const buffer = Buffer.from(await imgRes.arrayBuffer());
                   return {
                     status: 200,
