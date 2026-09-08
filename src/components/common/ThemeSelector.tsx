@@ -23,17 +23,17 @@ export const ThemeSelector: React.FC = () => {
       <button
         type="button"
         onClick={() => setIsOpen(prev => !prev)}
-        className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium bg-white/10 hover:bg-white/20 text-slate-100 transition-all border border-white/20 shadow-xs cursor-pointer select-none"
+        className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700 shadow-xs cursor-pointer select-none"
         title="থিম পরিবর্তন করুন (Change Theme)"
         aria-expanded={isOpen}
       >
-        <Palette className="w-3.5 h-3.5 text-amber-300" />
-        <span className="hidden sm:inline">থিম:</span>
-        <span className="font-semibold text-amber-300 truncate max-w-[85px]">
+        <Palette className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0" />
+        <span className="hidden sm:inline text-slate-500 dark:text-slate-400 text-[11px]">থিম:</span>
+        <span className="font-semibold text-slate-800 dark:text-slate-100 truncate max-w-[85px]">
           {themeInfo.nameBn.split(' ')[0]}
         </span>
         <span
-          className="w-2.5 h-2.5 rounded-full border border-white/40 ml-0.5 shrink-0"
+          className="w-3 h-3 rounded-full border border-black/20 dark:border-white/40 ml-0.5 shrink-0 shadow-2xs"
           style={{ backgroundColor: themeInfo.primaryColor }}
         />
       </button>

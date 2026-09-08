@@ -34,7 +34,7 @@ export const DisclaimerModal: React.FC = () => {
         role="dialog" 
         aria-modal="true" 
         aria-labelledby="disclaimer-title"
-        className="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200/80 overflow-hidden animate-in zoom-in-95 duration-200 ring-1 ring-black/10"
+        className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden animate-in zoom-in-95 duration-200 ring-1 ring-black/10"
       >
         {/* Top Accent Strip */}
         <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-institutional-navy h-2 w-full" />
@@ -43,14 +43,14 @@ export const DisclaimerModal: React.FC = () => {
           {/* Header Badge & Title */}
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-100/80 border border-amber-200 flex items-center justify-center text-amber-800 shrink-0">
-                <AlertCircle className="w-5 h-5 text-amber-700" />
+              <div className="w-10 h-10 rounded-xl bg-amber-100/80 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800/60 flex items-center justify-center text-amber-800 dark:text-amber-400 shrink-0">
+                <AlertCircle className="w-5 h-5 text-amber-700 dark:text-amber-400" />
               </div>
               <div>
-                <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-amber-100 text-amber-900 border border-amber-200 mb-0.5">
+                <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-amber-100 dark:bg-amber-950/60 text-amber-900 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 mb-0.5">
                   General Notice / অবগতির জন্য
                 </span>
-                <h3 id="disclaimer-title" className="text-base sm:text-lg font-bold text-slate-900 font-serif leading-tight">
+                <h3 id="disclaimer-title" className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100 font-serif leading-tight">
                   শিক্ষার্থী প্রকল্প ও সাধারণ ঘোষণা
                 </h3>
               </div>
@@ -58,7 +58,7 @@ export const DisclaimerModal: React.FC = () => {
             <button
               onClick={handleDismiss}
               type="button"
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
               aria-label="Close disclaimer"
             >
               <X className="w-5 h-5" />
@@ -66,17 +66,17 @@ export const DisclaimerModal: React.FC = () => {
           </div>
 
           {/* Primary Highlight Banner */}
-          <div className="bg-amber-50/80 rounded-xl p-4 border border-amber-200/80 space-y-2.5">
-            <p className="text-sm sm:text-[15px] font-bold text-amber-950 leading-relaxed">
+          <div className="bg-amber-50/80 dark:bg-amber-950/30 rounded-xl p-4 border border-amber-200/80 dark:border-amber-800/50 space-y-2.5">
+            <p className="text-sm sm:text-[15px] font-bold text-amber-950 dark:text-amber-200 leading-relaxed">
               &ldquo;Unofficial student project — educational/demo purposes only. Not the official website of Rangpur Zilla School.&rdquo;
             </p>
-            <p className="text-xs sm:text-[13px] text-amber-900/90 leading-relaxed">
+            <p className="text-xs sm:text-[13px] text-amber-900/90 dark:text-amber-300/90 leading-relaxed">
               এই ওয়েবসাইটটি রংপুর জিলা স্কুলের একজন শিক্ষার্থী কর্তৃক শুধুমাত্র শিক্ষামূলক, প্রযুক্তিগত চর্চা ও আধুনিক ইন্টারফেস প্রদর্শনের উদ্দেশ্যে তৈরি করা হয়েছে। এটি স্কুলের কোনো প্রাতিষ্ঠানিক বা অফিশিয়াল পোর্টাল নয়।
             </p>
           </div>
 
           {/* Additional details */}
-          <div className="space-y-1.5 text-xs text-slate-600 leading-relaxed border-l-2 border-slate-200 pl-3">
+          <div className="space-y-1.5 text-xs text-slate-600 dark:text-slate-300 leading-relaxed border-l-2 border-slate-200 dark:border-slate-700 pl-3">
             <p>
               • সমস্ত নোটিশ ও ডেটা মূল সার্ভার থেকে সরাসরি রিড-অনলি হিসেবে প্রদর্শিত হচ্ছে।
             </p>
@@ -86,14 +86,14 @@ export const DisclaimerModal: React.FC = () => {
           </div>
 
           {/* Action Footer */}
-          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-t border-slate-100">
+          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-t border-slate-100 dark:border-slate-800">
             <a
               href="https://github.com/tarangohasan/rangpurzillaschool"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors border border-slate-200"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors border border-slate-200 dark:border-slate-700"
             >
-              <Github className="w-4 h-4 text-slate-700" />
+              <Github className="w-4 h-4 text-slate-700 dark:text-slate-300" />
               <span>GitHub Repository</span>
               <ExternalLink className="w-3 h-3 opacity-60" />
             </a>
@@ -101,7 +101,7 @@ export const DisclaimerModal: React.FC = () => {
             <button
               onClick={handleDismiss}
               type="button"
-              className="px-5 py-2 rounded-xl bg-institutional-navy hover:bg-institutional-navyDark text-white text-xs sm:text-sm font-semibold shadow-sm hover:shadow transition-all text-center cursor-pointer"
+              className="px-5 py-2 rounded-xl bg-institutional-navy dark:bg-sky-600 hover:bg-institutional-navyDark dark:hover:bg-sky-700 text-white text-xs sm:text-sm font-semibold shadow-sm hover:shadow transition-all text-center cursor-pointer"
             >
               বুঝেছি / Understood & Continue
             </button>

@@ -147,10 +147,10 @@
     --theme-surface: #282a36;
     --theme-surface-alt: #343746;
     --theme-text: #f8f8f2;
-    --theme-text-muted: #6272a4;
+    --theme-text-muted: #a6b2d8;
     --theme-border: #44475a;
     --theme-primary: #bd93f9;
-    --theme-primary-dark: #8be9fd;
+    --theme-primary-dark: #7c3aed;
     --theme-primary-light: #ff79c6;
     --theme-accent: #ff79c6;
   }
@@ -216,8 +216,9 @@
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     transition: background-color 0.2s ease, color 0.2s ease;
   }
+}
 
-  /* Universal dark & colored theme card adaptations */
+/* Universal dark & colored theme card adaptations */
   [data-theme]:not([data-theme="light"]) .bg-white {
     background-color: var(--theme-surface) !important;
     color: var(--theme-text);
@@ -237,6 +238,20 @@
     border-color: var(--theme-border) !important;
   }
 
+  [data-theme]:not([data-theme="light"]) .divide-slate-100 > * + *,
+  [data-theme]:not([data-theme="light"]) .divide-slate-200 > * + * {
+    border-color: var(--theme-border) !important;
+  }
+
+  /* Table headers & borders in non-light themes */
+  [data-theme]:not([data-theme="light"]) thead.bg-slate-50,
+  [data-theme]:not([data-theme="light"]) thead {
+    background-color: var(--theme-surface-alt) !important;
+    color: var(--theme-text) !important;
+    border-color: var(--theme-border) !important;
+  }
+
+  /* Text color fixes for dark and colored themes */
   [data-theme]:not([data-theme="light"]) .text-slate-900,
   [data-theme]:not([data-theme="light"]) .text-slate-800 {
     color: var(--theme-text) !important;
@@ -248,9 +263,104 @@
     color: var(--theme-text-muted) !important;
   }
 
+  /* Critical fix: in non-light themes, text-institutional-navy must NOT be dark navy on dark backgrounds */
+  [data-theme]:not([data-theme="light"]) .text-institutional-navy {
+    color: var(--theme-primary) !important;
+  }
+
+  [data-theme]:not([data-theme="light"]) .group:hover .group-hover\:text-institutional-navy,
+  [data-theme]:not([data-theme="light"]) .hover\:text-institutional-navy:hover {
+    color: var(--theme-primary-light) !important;
+  }
+
+  /* Primary button adaptation across all themes */
+  [data-theme]:not([data-theme="light"]) button.bg-institutional-navy,
+  [data-theme]:not([data-theme="light"]) a.bg-institutional-navy {
+    background-color: var(--theme-primary-dark) !important;
+    color: #ffffff !important;
+  }
+  [data-theme]:not([data-theme="light"]) button.bg-institutional-navy:hover,
+  [data-theme]:not([data-theme="light"]) a.bg-institutional-navy:hover {
+    background-color: var(--theme-primary) !important;
+    color: #ffffff !important;
+  }
+  .dark button.bg-institutional-navy:hover,
+  .dark a.bg-institutional-navy:hover {
+    color: #090d16 !important;
+  }
+
+  /* Ensure emerald/green, amber, blue, and purple text are crisp & readable in dark themes */
+  .dark .text-emerald-800,
+  .dark .text-emerald-700 {
+    color: #34d399 !important;
+  }
+
+  .dark .text-amber-700,
+  .dark .text-amber-800,
+  .dark .text-amber-900 {
+    color: #fbbf24 !important;
+  }
+
+  .dark .text-blue-700,
+  .dark .text-blue-800,
+  .dark .text-blue-900 {
+    color: #38bdf8 !important;
+  }
+
+  .dark .text-purple-800,
+  .dark .text-purple-700 {
+    color: #c084fc !important;
+  }
+
+  /* Toned translucent badges in dark mode instead of blinding bright boxes */
+  .dark .bg-emerald-50 {
+    background-color: rgba(16, 185, 129, 0.15) !important;
+    color: #6ee7b7 !important;
+  }
+
+  .dark .bg-amber-50,
+  .dark .bg-amber-100 {
+    background-color: rgba(245, 158, 11, 0.15) !important;
+    color: #fde68a !important;
+    border-color: rgba(245, 158, 11, 0.3) !important;
+  }
+
+  .dark .bg-blue-50 {
+    background-color: rgba(56, 189, 248, 0.15) !important;
+    color: #7dd3fc !important;
+  }
+
+  .dark .bg-purple-50 {
+    background-color: rgba(192, 132, 252, 0.15) !important;
+    color: #e9d5ff !important;
+  }
+
+  /* Notice ticker dark contrast */
+  .dark .bg-amber-50.border-b {
+    background-color: var(--theme-surface) !important;
+    border-color: var(--theme-border) !important;
+    color: var(--theme-text) !important;
+  }
+
+  /* Hover backgrounds for cards and table rows */
   [data-theme]:not([data-theme="light"]) .hover\:bg-slate-100:hover,
-  [data-theme]:not([data-theme="light"]) .hover\:bg-slate-50:hover {
+  [data-theme]:not([data-theme="light"]) .hover\:bg-slate-50:hover,
+  [data-theme]:not([data-theme="light"]) .hover\:bg-slate-50\/80:hover {
     background-color: var(--theme-surface-alt) !important;
+  }
+
+  /* Inputs, selects, and textareas in dark and colored themes */
+  [data-theme]:not([data-theme="light"]) input,
+  [data-theme]:not([data-theme="light"]) select,
+  [data-theme]:not([data-theme="light"]) textarea {
+    background-color: var(--theme-surface-alt) !important;
+    color: var(--theme-text) !important;
+    border-color: var(--theme-border) !important;
+  }
+
+  [data-theme]:not([data-theme="light"]) select option {
+    background-color: var(--theme-surface) !important;
+    color: var(--theme-text) !important;
   }
 
   /* Headings inherit theme text color in colored themes */
@@ -258,7 +368,21 @@
     @apply font-semibold tracking-tight;
     font-family: 'Inter', 'Purno', sans-serif;
   }
-}
+
+  /* Dark mode scrollbars */
+  .dark::-webkit-scrollbar-track,
+  .dark ::-webkit-scrollbar-track {
+    background: var(--theme-bg) !important;
+  }
+  .dark::-webkit-scrollbar-thumb,
+  .dark ::-webkit-scrollbar-thumb {
+    background: var(--theme-border) !important;
+    border-radius: 4px;
+  }
+  .dark::-webkit-scrollbar-thumb:hover,
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: var(--theme-primary-dark) !important;
+  }
 
 .font-bangla {
   font-family: 'Purno', sans-serif;

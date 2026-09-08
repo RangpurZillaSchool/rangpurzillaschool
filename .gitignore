@@ -26,3 +26,4 @@ dist-ssr
 # Scratch exploration files
 scratch/
 legacy_home.html
+*.tsbuildinfo
