@@ -46,7 +46,7 @@ export async function onRequestGet({ request }) {
                 sl,
                 title,
                 date,
-                attachmentUrl: `http://sib.gov.bd/notice_board/127372${id}.pdf`
+                attachmentUrl: `/api/notices/file?url=${encodeURIComponent(`http://sib.gov.bd/notice_board/127372${id}.jpg`)}`
               });
             }
           }

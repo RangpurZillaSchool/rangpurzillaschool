@@ -14,18 +14,27 @@ export const NoticeDetailPage: React.FC = () => {
   const [loadError, setLoadError] = useState(false);
   const [hasTriedFallback, setHasTriedFallback] = useState(false);
 
+  const getNoticeProxyUrl = (noticeId: string | undefined, ext: 'jpg' | 'pdf') => {
+    if (!noticeId) return '';
+    const remote = `http://sib.gov.bd/notice_board/127372${noticeId}.${ext}`;
+    return `/api/notices/file?url=${encodeURIComponent(remote)}`;
+  };
+
   useEffect(() => {
     if (id) {
-      api.getNoticeById(id).then(data => {
+      setLoading(true);
+      setLoadError(false);
+      setHasTriedFallback(false);
+
+      api.getNoticeById(id).then((data) => {
         setNotice(data);
-        if (data?.attachmentUrl) {
-          // If ends with .pdf, start with pdf, else default to .jpg
-          const isPdf = data.attachmentUrl.toLowerCase().endsWith('.pdf');
+        if (data && data.attachmentUrl) {
+          const isPdf = data.attachmentUrl.toLowerCase().includes('.pdf');
           setFileFormat(isPdf ? 'pdf' : 'image');
           setCurrentUrl(data.attachmentUrl);
         } else {
-          // Default to JPG for this notice ID
-          setCurrentUrl(`http://sib.gov.bd/notice_board/127372${id}.jpg`);
+          // Default to JPG for this notice ID via edge proxy
+          setCurrentUrl(getNoticeProxyUrl(id, 'jpg'));
           setFileFormat('image');
         }
         setLoading(false);
@@ -36,19 +45,17 @@ export const NoticeDetailPage: React.FC = () => {
   const handleFormatToggle = (newFormat: 'image' | 'pdf') => {
     setFileFormat(newFormat);
     setLoadError(false);
-    if (newFormat === 'image') {
-      setCurrentUrl(`http://sib.gov.bd/notice_board/127372${id}.jpg`);
-    } else {
-      setCurrentUrl(`http://sib.gov.bd/notice_board/127372${id}.pdf`);
+    if (id) {
+      setCurrentUrl(getNoticeProxyUrl(id, newFormat === 'image' ? 'jpg' : 'pdf'));
     }
   };
 
   const handleImageError = () => {
-    // If JPG failed and we haven't tried PDF yet, automatically try PDF
-    if (!hasTriedFallback) {
+    // If JPG failed and we haven't tried PDF yet, automatically try PDF via edge proxy
+    if (!hasTriedFallback && id) {
       setHasTriedFallback(true);
       setFileFormat('pdf');
-      setCurrentUrl(`http://sib.gov.bd/notice_board/127372${id}.pdf`);
+      setCurrentUrl(getNoticeProxyUrl(id, 'pdf'));
     } else {
       setLoadError(true);
     }
@@ -233,7 +240,7 @@ export const NoticeDetailPage: React.FC = () => {
                   if (!hasTriedFallback) {
                     setHasTriedFallback(true);
                     setFileFormat('image');
-                    setCurrentUrl(`http://sib.gov.bd/notice_board/127372${id}.jpg`);
+                    setCurrentUrl(getNoticeProxyUrl(id, 'jpg'));
                   } else {
                     setLoadError(true);
                   }

@@ -69,18 +69,19 @@ function localApiPlugin(): Plugin {
                 return { status: 200, body: JSON.stringify({ total: notices.length, notices }) };
               }
 
-              if (pathname.startsWith('/api/notices/')) {
+              if (pathname.startsWith('/api/notices/') && pathname !== '/api/notices/file') {
                 const id = pathname.split('/').pop();
                 const data = fs.readFileSync(path.resolve(__dirname, 'src/data/notices.json'), 'utf8');
                 const notices = JSON.parse(data);
                 const found = notices.find((n: any) => n.id === id);
+                const rawUrl = found?.attachmentUrl || `http://sib.gov.bd/notice_board/127372${id}.jpg`;
                 return {
                   status: 200,
                   body: JSON.stringify({
                     id: id,
                     title: found ? found.title : 'বিজ্ঞপ্তি',
                     description: found?.description || '',
-                    fileUrl: found?.attachmentUrl || `http://sib.gov.bd/notice_board/127372${id}.pdf`,
+                    fileUrl: `/api/notices/file?url=${encodeURIComponent(rawUrl)}`,
                     lastUpdate: found?.date || ''
                   })
                 };
@@ -127,6 +128,96 @@ function localApiPlugin(): Plugin {
                   };
                 } catch (imgErr: any) {
                   return { status: 502, body: imgErr.message };
+                }
+              }
+
+              if (pathname === '/api/students/photo') {
+                const imageUrl = url.searchParams.get('url');
+                if (!imageUrl) {
+                  return { status: 400, body: 'Missing url parameter' };
+                }
+                try {
+                  const parsed = new URL(imageUrl);
+                  const allowedHosts = ['automation.sib.gov.bd', 'sib.gov.bd'];
+                  if (!['http:', 'https:'].includes(parsed.protocol) || !allowedHosts.includes(parsed.hostname.toLowerCase())) {
+                    return { status: 403, body: 'Forbidden image origin.' };
+                  }
+                } catch {
+                  return { status: 400, body: 'Invalid image URL' };
+                }
+
+                try {
+                  const imgRes = await fetch(imageUrl, {
+                    signal: AbortSignal.timeout(8000),
+                    headers: {
+                      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+                      'Referer': 'http://www.rangpurzillaschool.edu.bd/'
+                    }
+                  });
+                  if (!imgRes.ok) {
+                    return { status: imgRes.status, body: 'Image fetch failed' };
+                  }
+                  const contentType = (imgRes.headers.get('content-type') || '').toLowerCase();
+                  if (!contentType.startsWith('image/')) {
+                    return { status: 502, body: 'Origin returned non-image content-type.' };
+                  }
+                  const buffer = Buffer.from(await imgRes.arrayBuffer());
+                  return {
+                    status: 200,
+                    headers: {
+                      'Content-Type': contentType,
+                      'Cache-Control': 'public, max-age=43200'
+                    },
+                    rawBody: buffer
+                  };
+                } catch (imgErr: any) {
+                  return { status: 502, body: imgErr.message };
+                }
+              }
+
+              if (pathname === '/api/notices/file') {
+                const fileUrl = url.searchParams.get('url');
+                if (!fileUrl) {
+                  return { status: 400, body: 'Missing url parameter' };
+                }
+                try {
+                  const parsed = new URL(fileUrl);
+                  const allowedHosts = ['sib.gov.bd', 'www.rangpurzillaschool.edu.bd', 'rangpurzillaschool.edu.bd'];
+                  if (!['http:', 'https:'].includes(parsed.protocol) || !allowedHosts.includes(parsed.hostname.toLowerCase())) {
+                    return { status: 403, body: 'Forbidden file origin.' };
+                  }
+                } catch {
+                  return { status: 400, body: 'Invalid file URL' };
+                }
+
+                try {
+                  const fileRes = await fetch(fileUrl, {
+                    signal: AbortSignal.timeout(10000),
+                    headers: {
+                      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+                      'Referer': 'http://www.rangpurzillaschool.edu.bd/'
+                    }
+                  });
+                  if (!fileRes.ok) {
+                    return { status: fileRes.status, body: 'File fetch failed' };
+                  }
+                  let contentType = (fileRes.headers.get('content-type') || '').toLowerCase();
+                  if (fileUrl.toLowerCase().endsWith('.pdf') && (!contentType || contentType.includes('octet-stream'))) {
+                    contentType = 'application/pdf';
+                  } else if (!contentType || contentType === 'text/plain') {
+                    contentType = 'image/jpeg';
+                  }
+                  const buffer = Buffer.from(await fileRes.arrayBuffer());
+                  return {
+                    status: 200,
+                    headers: {
+                      'Content-Type': contentType,
+                      'Cache-Control': 'public, max-age=43200'
+                    },
+                    rawBody: buffer
+                  };
+                } catch (fileErr: any) {
+                  return { status: 502, body: fileErr.message };
                 }
               }
 
@@ -323,11 +414,12 @@ function localApiPlugin(): Plugin {
                     const idMatch = finalHtml.match(new RegExp(`id="ContentPlaceHolder1_grdvStudents_lblID_${idx}"[^>]*>([^<]*)<\\/span>`));
                     const nameMatch = finalHtml.match(new RegExp(`id="ContentPlaceHolder1_grdvStudents_lblName_${idx}"[^>]*>([^<]*)<\\/span>`));
                     const imgMatch = finalHtml.match(new RegExp(`id="ContentPlaceHolder1_grdvStudents_imgStd_${idx}"[^>]*src="([^"]*)"`));
+                    const rawPhoto = imgMatch && imgMatch[1] && !imgMatch[1].includes('no-image') && !imgMatch[1].endsWith('/') ? imgMatch[1] : null;
                     students.push({
                       roll,
                       id: idMatch ? idMatch[1].trim() : '',
                       name: nameMatch ? nameMatch[1].trim() : '',
-                      photo: imgMatch && imgMatch[1] && !imgMatch[1].includes('no-image') ? imgMatch[1] : null
+                      photo: rawPhoto ? `/api/students/photo?url=${encodeURIComponent(rawPhoto)}` : null
                     });
                   }
 

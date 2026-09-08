@@ -44,21 +44,39 @@ async function fetchWithTimeout(url: string, timeoutMs = API_TIMEOUT): Promise<R
 export const api = {
   // Notices
   async getNotices(): Promise<Notice[]> {
+    const normalizeNoticeUrl = (url: string | null | undefined) => {
+      if (!url) return '';
+      if (url.startsWith('/api/')) return url;
+      return `/api/notices/file?url=${encodeURIComponent(url)}`;
+    };
+
     try {
       const res = await fetchWithTimeout('/api/notices');
       if (res.ok) {
         const data = await res.json();
         if (data.notices && data.notices.length > 0) {
-          return data.notices;
+          return data.notices.map((n: Notice) => ({
+            ...n,
+            attachmentUrl: normalizeNoticeUrl(n.attachmentUrl)
+          }));
         }
       }
     } catch (err) {
       console.warn('Live notices fetch failed, using verified fallback:', err);
     }
-    return noticesData as Notice[];
+    return (noticesData as Notice[]).map((n: Notice) => ({
+      ...n,
+      attachmentUrl: normalizeNoticeUrl(n.attachmentUrl)
+    }));
   },
 
   async getNoticeById(id: string): Promise<Notice | null> {
+    const normalizeNoticeUrl = (url: string | null | undefined) => {
+      if (!url) return '';
+      if (url.startsWith('/api/')) return url;
+      return `/api/notices/file?url=${encodeURIComponent(url)}`;
+    };
+
     try {
       const res = await fetchWithTimeout(`/api/notices/${id}`);
       if (res.ok) {
@@ -69,7 +87,7 @@ export const api = {
           title: data.title,
           date: '',
           description: data.description,
-          attachmentUrl: data.fileUrl,
+          attachmentUrl: normalizeNoticeUrl(data.fileUrl || `http://sib.gov.bd/notice_board/127372${id}.jpg`),
           lastUpdate: data.lastUpdate
         };
       }
@@ -77,7 +95,7 @@ export const api = {
       console.warn(`Live notice details fetch failed for ${id}:`, err);
     }
     const found = (noticesData as Notice[]).find(n => n.id === id);
-    return found || null;
+    return found ? { ...found, attachmentUrl: normalizeNoticeUrl(found.attachmentUrl) } : null;
   },
 
   // News
@@ -194,9 +212,20 @@ export const api = {
       );
       const data = await res.json().catch(() => ({}));
       if (res.ok && !data.error) {
+        const normalizeStudentPhoto = (photo: string | null) => {
+          if (!photo) return null;
+          if (photo.startsWith('/api/')) return photo;
+          return `/api/students/photo?url=${encodeURIComponent(photo)}`;
+        };
+
+        const students = (data.students || []).map((s: Student) => ({
+          ...s,
+          photo: normalizeStudentPhoto(s.photo)
+        }));
+
         return {
-          students: data.students || [],
-          total: data.total || (data.students ? data.students.length : 0),
+          students,
+          total: data.total || students.length,
           unavailable: false
         };
       }

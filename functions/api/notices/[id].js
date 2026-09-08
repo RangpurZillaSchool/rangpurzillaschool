@@ -40,7 +40,8 @@ export async function onRequestGet({ request, params }) {
       const title = titleMatch ? titleMatch[1].replace(/<[^>]+>/g, '').trim() : '';
       const description = detailsMatch ? detailsMatch[1].replace(/<[^>]+>/g, '').trim() : '';
       const lastUpdate = updateMatch ? updateMatch[1].replace(/<[^>]+>/g, '').trim() : '';
-      const fileUrl = fileMatch ? fileMatch[1] : `http://sib.gov.bd/notice_board/127372${id}.jpg`;
+      const rawFileUrl = fileMatch ? fileMatch[1] : `http://sib.gov.bd/notice_board/127372${id}.jpg`;
+      const fileUrl = rawFileUrl ? `/api/notices/file?url=${encodeURIComponent(rawFileUrl)}` : null;
 
       return jsonResponse({
         id,

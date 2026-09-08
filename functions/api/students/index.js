@@ -144,11 +144,13 @@ export async function onRequestGet({ request }) {
       const nameMatch = finalHtml.match(new RegExp(`id="ContentPlaceHolder1_grdvStudents_lblName_${idx}"[^>]*>([^<]*)<\\/span>`));
       const imgMatch = finalHtml.match(new RegExp(`id="ContentPlaceHolder1_grdvStudents_imgStd_${idx}"[^>]*src="([^"]*)"`));
 
+      const rawPhoto = imgMatch && imgMatch[1] && !imgMatch[1].includes('no-image') && !imgMatch[1].endsWith('/') ? imgMatch[1] : null;
+
       students.push({
         roll,
         id: idMatch ? idMatch[1].trim() : '',
         name: nameMatch ? nameMatch[1].trim() : '',
-        photo: imgMatch && imgMatch[1] && !imgMatch[1].includes('no-image') && !imgMatch[1].endsWith('/') ? imgMatch[1] : null
+        photo: rawPhoto ? `/api/students/photo?url=${encodeURIComponent(rawPhoto)}` : null
       });
     }
 
