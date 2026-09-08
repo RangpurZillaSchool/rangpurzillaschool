@@ -75,6 +75,7 @@ function localApiPlugin(): Plugin {
                 const notices = JSON.parse(data);
                 const found = notices.find((n: any) => n.id === id);
                 const rawUrl = found?.attachmentUrl || `http://sib.gov.bd/notice_board/127372${id}.jpg`;
+                const isPdf = rawUrl.toLowerCase().endsWith('.pdf');
                 return {
                   status: 200,
                   body: JSON.stringify({
@@ -82,103 +83,23 @@ function localApiPlugin(): Plugin {
                     title: found ? found.title : 'বিজ্ঞপ্তি',
                     description: found?.description || '',
                     fileUrl: `/api/notices/file?url=${encodeURIComponent(rawUrl)}`,
+                    fileType: isPdf ? 'pdf' : 'image',
                     lastUpdate: found?.date || ''
                   })
                 };
               }
 
-              if (pathname === '/api/teachers/photo') {
-                const imageUrl = url.searchParams.get('url');
-                if (!imageUrl) {
-                  return { status: 400, body: 'Missing url parameter' };
-                }
-                try {
-                  const parsed = new URL(imageUrl);
-                  const allowedHosts = ['pds.sib.gov.bd', 'sib.gov.bd'];
-                  if (!['http:', 'https:'].includes(parsed.protocol) || !allowedHosts.includes(parsed.hostname.toLowerCase())) {
-                    return { status: 403, body: 'Forbidden image origin.' };
-                  }
-                } catch {
-                  return { status: 400, body: 'Invalid image URL' };
-                }
-
-                try {
-                  const imgRes = await fetch(imageUrl, {
-                    signal: AbortSignal.timeout(8000),
-                    headers: {
-                      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-                      'Referer': 'http://www.rangpurzillaschool.edu.bd/'
-                    }
-                  });
-                  if (!imgRes.ok) {
-                    return { status: imgRes.status, body: 'Image fetch failed' };
-                  }
-                  const contentType = (imgRes.headers.get('content-type') || '').toLowerCase();
-                  if (!contentType.startsWith('image/')) {
-                    return { status: 502, body: 'Origin returned non-image content-type.' };
-                  }
-                  const buffer = Buffer.from(await imgRes.arrayBuffer());
-                  return {
-                    status: 200,
-                    headers: {
-                      'Content-Type': contentType,
-                      'Cache-Control': 'public, max-age=43200'
-                    },
-                    rawBody: buffer
-                  };
-                } catch (imgErr: any) {
-                  return { status: 502, body: imgErr.message };
-                }
-              }
-
-              if (pathname === '/api/students/photo') {
-                const imageUrl = url.searchParams.get('url');
-                if (!imageUrl) {
-                  return { status: 400, body: 'Missing url parameter' };
-                }
-                try {
-                  const parsed = new URL(imageUrl);
-                  const allowedHosts = ['automation.sib.gov.bd', 'sib.gov.bd'];
-                  if (!['http:', 'https:'].includes(parsed.protocol) || !allowedHosts.includes(parsed.hostname.toLowerCase())) {
-                    return { status: 403, body: 'Forbidden image origin.' };
-                  }
-                } catch {
-                  return { status: 400, body: 'Invalid image URL' };
-                }
-
-                try {
-                  const imgRes = await fetch(imageUrl, {
-                    signal: AbortSignal.timeout(8000),
-                    headers: {
-                      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-                      'Referer': 'http://www.rangpurzillaschool.edu.bd/'
-                    }
-                  });
-                  if (!imgRes.ok) {
-                    return { status: imgRes.status, body: 'Image fetch failed' };
-                  }
-                  const contentType = (imgRes.headers.get('content-type') || '').toLowerCase();
-                  if (!contentType.startsWith('image/')) {
-                    return { status: 502, body: 'Origin returned non-image content-type.' };
-                  }
-                  const buffer = Buffer.from(await imgRes.arrayBuffer());
-                  return {
-                    status: 200,
-                    headers: {
-                      'Content-Type': contentType,
-                      'Cache-Control': 'public, max-age=43200'
-                    },
-                    rawBody: buffer
-                  };
-                } catch (imgErr: any) {
-                  return { status: 502, body: imgErr.message };
-                }
-              }
-
               if (pathname === '/api/notices/file') {
-                const fileUrl = url.searchParams.get('url');
+                const targetUrlParam = url.searchParams.get('url');
+                const noticeIdParam = url.searchParams.get('id');
+
+                let fileUrl = targetUrlParam;
+                if (!fileUrl && noticeIdParam && /^\d+$/.test(noticeIdParam)) {
+                  fileUrl = `http://sib.gov.bd/notice_board/127372${noticeIdParam}.pdf`;
+                }
+
                 if (!fileUrl) {
-                  return { status: 400, body: 'Missing url parameter' };
+                  return { status: 400, body: 'Missing url or id parameter' };
                 }
                 try {
                   const parsed = new URL(fileUrl);
@@ -190,29 +111,102 @@ function localApiPlugin(): Plugin {
                   return { status: 400, body: 'Invalid file URL' };
                 }
 
+                const candidates: string[] = [];
+                const lowerUrl = fileUrl.toLowerCase();
+                if (lowerUrl.endsWith('.pdf')) {
+                  candidates.push(fileUrl, fileUrl.replace(/\.pdf$/i, '.jpg'), fileUrl.replace(/\.pdf$/i, '.jpeg'));
+                } else if (lowerUrl.endsWith('.jpg')) {
+                  candidates.push(fileUrl, fileUrl.replace(/\.jpg$/i, '.pdf'), fileUrl.replace(/\.jpg$/i, '.jpeg'));
+                } else if (lowerUrl.endsWith('.jpeg')) {
+                  candidates.push(fileUrl, fileUrl.replace(/\.jpeg$/i, '.pdf'), fileUrl.replace(/\.jpeg$/i, '.jpg'));
+                } else {
+                  candidates.push(fileUrl);
+                }
+
                 try {
-                  const fileRes = await fetch(fileUrl, {
-                    signal: AbortSignal.timeout(10000),
-                    headers: {
-                      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
-                      'Referer': 'http://www.rangpurzillaschool.edu.bd/'
+                  let winningRes: any = null;
+                  let winningUrl: string | null = null;
+
+                  for (const candidate of candidates) {
+                    try {
+                      const res = await fetch(candidate, {
+                        method: req.method === 'HEAD' ? 'HEAD' : 'GET',
+                        signal: AbortSignal.timeout(8000),
+                        headers: {
+                          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+                          'Referer': 'http://www.rangpurzillaschool.edu.bd/'
+                        }
+                      });
+                      if (res.ok) {
+                        winningRes = res;
+                        winningUrl = candidate;
+                        break;
+                      }
+                    } catch {
+                      // continue
                     }
-                  });
-                  if (!fileRes.ok) {
-                    return { status: fileRes.status, body: 'File fetch failed' };
                   }
-                  let contentType = (fileRes.headers.get('content-type') || '').toLowerCase();
-                  if (fileUrl.toLowerCase().endsWith('.pdf') && (!contentType || contentType.includes('octet-stream'))) {
+
+                  if (!winningRes) {
+                    if (req.method === 'HEAD') {
+                      return {
+                        status: 404,
+                        headers: {
+                          'Cache-Control': 'public, max-age=3600',
+                          'Access-Control-Allow-Origin': '*'
+                        },
+                        body: ''
+                      };
+                    }
+
+                    const fallbackHtml = `<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ফাইল পাওয়া যায়নি</title>
+<style>
+body { font-family: system-ui, -apple-system, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: #f8fafc; color: #334155; }
+.card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 2.5rem 1.5rem; max-width: 420px; text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin: 1rem; }
+.icon { font-size: 2.75rem; margin-bottom: 0.75rem; }
+h2 { font-size: 1.15rem; color: #0f172a; margin: 0 0 0.5rem; font-weight: 700; }
+p { font-size: 0.875rem; color: #64748b; line-height: 1.5; margin: 0; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">📁</div>
+  <h2>সংযুক্ত নথিটি পাওয়া যায়নি</h2>
+  <p>বিদ্যালয়ের মূল আর্কাইভ সার্ভারে এই বিজ্ঞপ্তির সংযুক্ত ফাইলটি সংরক্ষিত নেই (ফাইলটি সার্ভার থেকে অপসারিত হতে পারে)।</p>
+</div>
+</body>
+</html>`;
+                    return {
+                      status: 404,
+                      headers: {
+                        'Content-Type': 'text/html; charset=utf-8',
+                        'Cache-Control': 'public, max-age=3600',
+                        'Access-Control-Allow-Origin': '*'
+                      },
+                      body: fallbackHtml
+                    };
+                  }
+
+                  let contentType = (winningRes.headers.get('content-type') || '').toLowerCase();
+                  if (winningUrl!.toLowerCase().endsWith('.pdf') || contentType.includes('pdf')) {
                     contentType = 'application/pdf';
-                  } else if (!contentType || contentType === 'text/plain') {
+                  } else if (winningUrl!.toLowerCase().endsWith('.jpg') || winningUrl!.toLowerCase().endsWith('.jpeg') || contentType.startsWith('image/')) {
                     contentType = 'image/jpeg';
                   }
-                  const buffer = Buffer.from(await fileRes.arrayBuffer());
+
+                  const buffer = req.method === 'HEAD' ? Buffer.alloc(0) : Buffer.from(await winningRes.arrayBuffer());
                   return {
                     status: 200,
                     headers: {
                       'Content-Type': contentType,
-                      'Cache-Control': 'public, max-age=43200'
+                      'Cache-Control': 'public, max-age=43200',
+                      'Access-Control-Allow-Origin': '*',
+                      'X-Notice-Resolved-Url': winningUrl!
                     },
                     rawBody: buffer
                   };

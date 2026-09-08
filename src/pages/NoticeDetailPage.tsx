@@ -28,12 +28,13 @@ export const NoticeDetailPage: React.FC = () => {
 
       api.getNoticeById(id).then((data) => {
         setNotice(data);
-        if (data && data.attachmentUrl) {
-          const isPdf = data.attachmentUrl.toLowerCase().includes('.pdf');
+        const resolvedUrl = data?.fileUrl || data?.attachmentUrl;
+        if (resolvedUrl) {
+          const isPdf = data?.fileType === 'pdf' || resolvedUrl.toLowerCase().includes('.pdf');
           setFileFormat(isPdf ? 'pdf' : 'image');
-          setCurrentUrl(data.attachmentUrl);
+          setCurrentUrl(resolvedUrl);
         } else {
-          // Default to JPG for this notice ID via edge proxy
+          // Default to edge proxy
           setCurrentUrl(getNoticeProxyUrl(id, 'jpg'));
           setFileFormat('image');
         }
@@ -41,6 +42,35 @@ export const NoticeDetailPage: React.FC = () => {
       });
     }
   }, [id]);
+
+  // Pre-validate file availability and detect content-type via HEAD check
+  useEffect(() => {
+    if (!currentUrl) return;
+
+    let active = true;
+    fetch(currentUrl, { method: 'HEAD' })
+      .then((res) => {
+        if (!active) return;
+        if (!res.ok) {
+          setLoadError(true);
+        } else {
+          setLoadError(false);
+          const ct = (res.headers.get('content-type') || '').toLowerCase();
+          if (ct.includes('application/pdf')) {
+            setFileFormat('pdf');
+          } else if (ct.startsWith('image/')) {
+            setFileFormat('image');
+          }
+        }
+      })
+      .catch(() => {
+        // Fallback to media element error handlers
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [currentUrl]);
 
   const handleFormatToggle = (newFormat: 'image' | 'pdf') => {
     setFileFormat(newFormat);
@@ -51,7 +81,7 @@ export const NoticeDetailPage: React.FC = () => {
   };
 
   const handleImageError = () => {
-    // If JPG failed and we haven't tried PDF yet, automatically try PDF via edge proxy
+    // If JPG failed and we haven't tried PDF yet, try PDF
     if (!hasTriedFallback && id) {
       setHasTriedFallback(true);
       setFileFormat('pdf');
@@ -205,14 +235,17 @@ export const NoticeDetailPage: React.FC = () => {
             <div className="text-center p-8 max-w-md space-y-3">
               <AlertCircle className="w-10 h-10 text-amber-600 mx-auto" />
               <h3 className="text-sm font-bold text-slate-800">
-                সংযুক্ত ফাইলটি সরাসরি প্রিভিউ করা যাচ্ছে না
+                সংযুক্ত নথিটি পাওয়া যায়নি
               </h3>
               <p className="text-xs text-slate-500 leading-relaxed">
-                বিদ্যালয়ের পুরোনো সার্ভারে নথিটি স্ক্যান কপি অথবা বিকল্প ফরম্যাটে থাকতে পারে। অন্য ফরম্যাটে দেখতে উপরের <strong>'ছবি ফরম্যাট'</strong> বা <strong>'পিডিএফ ফরম্যাট'</strong> বোতামে চাপুন অথবা সরাসরি নতুন ট্যাবে খুলুন।
+                বিদ্যালয়ের পুরোনো আর্কাইভ সার্ভারে এই বিজ্ঞপ্তির মূল স্ক্যান ফাইলটি সংরক্ষিত নেই (পুরোনো বিজ্ঞপ্তি হওয়ায় সার্ভার থেকে অপসারিত হয়ে থাকতে পারে)। তবে বিজ্ঞপ্তির শিরোনাম ও তথ্যাদি উপরে দৃশ্যমান রয়েছে।
               </p>
               <div className="pt-2 flex justify-center gap-2">
                 <button
-                  onClick={() => handleFormatToggle(fileFormat === 'image' ? 'pdf' : 'image')}
+                  onClick={() => {
+                    setLoadError(false);
+                    handleFormatToggle(fileFormat === 'image' ? 'pdf' : 'image');
+                  }}
                   className="px-3 py-1.5 rounded-md bg-institutional-navy text-white text-xs font-medium hover:bg-institutional-navyDark transition-colors"
                 >
                   {fileFormat === 'image' ? 'পিডিএফ ফরম্যাটে চেষ্টা করুন' : 'ছবি ফরম্যাটে চেষ্টা করুন'}

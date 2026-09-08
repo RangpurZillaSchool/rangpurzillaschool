@@ -23,6 +23,8 @@ export interface Notice {
   title: string;
   date: string;
   attachmentUrl?: string;
+  fileUrl?: string;
+  fileType?: 'image' | 'pdf';
   description?: string;
   lastUpdate?: string;
 }
