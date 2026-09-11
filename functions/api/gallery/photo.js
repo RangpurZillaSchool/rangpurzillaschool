@@ -34,7 +34,7 @@ export async function onRequestGet({ request }) {
       });
 
       if (!res.ok) {
-        return new Response(Origin returned , { status: res.status });
+        return new Response(`Origin returned ${res.status}`, { status: res.status });
       }
 
       let contentType = (res.headers.get('content-type') || '').toLowerCase();
@@ -49,12 +49,12 @@ export async function onRequestGet({ request }) {
         status: 200,
         headers: {
           'Content-Type': contentType,
-          'Cache-Control': public, max-age=, s-maxage=,
+          'Cache-Control': `public, max-age=${DEFAULT_CACHE_TTL}, s-maxage=${DEFAULT_CACHE_TTL}`,
           'Access-Control-Allow-Origin': '*'
         }
       });
     } catch (err) {
-      return new Response(Failed to fetch gallery image: , { status: 502 });
+      return new Response(`Failed to fetch gallery image: ${err.message}`, { status: 502 });
     }
   });
 }
