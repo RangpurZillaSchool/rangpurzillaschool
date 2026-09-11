@@ -1,4 +1,4 @@
-import { Teacher, Notice, NewsItem, DownloadItem, Student, StudentSectionStat, ExamResult } from '../types';
+import { Teacher, Notice, NewsItem, DownloadItem, Student, StudentSectionStat, ExamResult, PaymentHistoryResponse } from '../types';
 import teachersData from '../data/teachers.json';
 import noticesData from '../data/notices.json';
 import newsData from '../data/news.json';
@@ -261,6 +261,33 @@ export const api = {
 
   // Photo Gallery
   getGalleryPhotos(): string[] {
-    return galleryData as string[];
+    return (galleryData as string[]).map(photoUrl => {
+      if (!photoUrl) return '';
+      if (photoUrl.startsWith('/api/') || photoUrl.startsWith('/')) return photoUrl;
+      return `/api/gallery/photo?url=${encodeURIComponent(photoUrl)}`;
+    });
+  },
+
+  // Payment History
+  async getPaymentHistory(studentId: string, quarter?: string): Promise<PaymentHistoryResponse> {
+    const params = new URLSearchParams({ studentId });
+    if (quarter) params.set('quarter', quarter);
+    try {
+      const res = await fetchWithTimeout(`/api/payments?${params.toString()}`);
+      if (res.ok) {
+        return await res.json();
+      }
+      const data = await res.json().catch(() => ({}));
+      return {
+        success: false,
+        message: data.message || 'শিক্ষার্থীর ফি বিবরণী পাওয়া যায়নি।'
+      };
+    } catch (err: any) {
+      console.warn('Payment fetch failed:', err);
+      return {
+        success: false,
+        message: 'পেমেন্ট সার্ভারে সংযোগ স্থাপন করা সম্ভব হয়নি। অনুগ্রহ করে কিছুক্ষণ পর আবার চেষ্টা করুন।'
+      };
+    }
   }
 };

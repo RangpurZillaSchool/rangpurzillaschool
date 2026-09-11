@@ -7,6 +7,7 @@ import { HistoryPage } from './pages/HistoryPage';
 import { TeachersPage } from './pages/TeachersPage';
 import { StudentsPage } from './pages/StudentsPage';
 import { StudentStatsPage } from './pages/StudentStatsPage';
+import { PaymentHistoryPage } from './pages/PaymentHistoryPage';
 import { NoticesPage } from './pages/NoticesPage';
 import { NoticeDetailPage } from './pages/NoticeDetailPage';
 import { NewsPage } from './pages/NewsPage';
@@ -32,6 +33,9 @@ export const App: React.FC = () => {
         {/* Students */}
         <Route path="students" element={<StudentsPage />} />
         <Route path="students/statistics" element={<StudentStatsPage />} />
+        <Route path="students/payments" element={<PaymentHistoryPage />} />
+        <Route path="payment-history.aspx" element={<PaymentHistoryPage />} />
+        <Route path="payment-history" element={<PaymentHistoryPage />} />
 
         {/* Notices */}
         <Route path="notices" element={<NoticesPage />} />

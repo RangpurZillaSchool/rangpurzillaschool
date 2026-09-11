@@ -215,6 +215,56 @@ p { font-size: 0.875rem; color: #64748b; line-height: 1.5; margin: 0; }
                 }
               }
 
+              if (pathname === '/api/teachers/photo' || pathname === '/api/students/photo' || pathname === '/api/gallery/photo') {
+                const targetUrl = url.searchParams.get('url');
+                if (!targetUrl) {
+                  return { status: 400, body: 'Missing target image url parameter' };
+                }
+
+                try {
+                  const parsed = new URL(targetUrl);
+                  const allowedHosts = ['pds.sib.gov.bd', 'automation.sib.gov.bd', 'sib.gov.bd', 'www.rangpurzillaschool.edu.bd', 'rangpurzillaschool.edu.bd'];
+                  if (!['http:', 'https:'].includes(parsed.protocol) || !allowedHosts.includes(parsed.hostname.toLowerCase())) {
+                    return { status: 403, body: 'Forbidden image origin.' };
+                  }
+                } catch {
+                  return { status: 400, body: 'Invalid target image URL' };
+                }
+
+                try {
+                  const res = await fetch(targetUrl, {
+                    method: req.method === 'HEAD' ? 'HEAD' : 'GET',
+                    signal: AbortSignal.timeout(8000),
+                    headers: {
+                      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)',
+                      'Referer': 'http://www.rangpurzillaschool.edu.bd/'
+                    }
+                  });
+
+                  if (!res.ok) {
+                    return { status: res.status, body: `Origin returned ${res.status}` };
+                  }
+
+                  let contentType = (res.headers.get('content-type') || '').toLowerCase();
+                  if (!contentType.startsWith('image/')) {
+                    contentType = 'image/jpeg';
+                  }
+
+                  const buffer = req.method === 'HEAD' ? Buffer.alloc(0) : Buffer.from(await res.arrayBuffer());
+                  return {
+                    status: 200,
+                    headers: {
+                      'Content-Type': contentType,
+                      'Cache-Control': 'public, max-age=43200',
+                      'Access-Control-Allow-Origin': '*'
+                    },
+                    rawBody: buffer
+                  };
+                } catch (imgErr: any) {
+                  return { status: 502, body: `Failed to fetch image: ${imgErr.message}` };
+                }
+              }
+
               if (pathname === '/api/teachers') {
                 try {
                   const homeRes = await fetch('http://www.rangpurzillaschool.edu.bd/', {
@@ -429,6 +479,185 @@ p { font-size: 0.875rem; color: #64748b; line-height: 1.5; margin: 0; }
                       error: true,
                       code: 'LEGACY_UNAVAILABLE',
                       message: 'Student information is temporarily unavailable.'
+                    })
+                  };
+                }
+              }
+
+              if (pathname === '/api/payments') {
+                const studentId = url.searchParams.get('studentId');
+                const requestedQuarter = url.searchParams.get('quarter');
+
+                if (!studentId) {
+                  return {
+                    status: 400,
+                    body: JSON.stringify({
+                      success: false,
+                      message: 'Parameter studentId is required. Example: /api/payments?studentId=127372261031001'
+                    })
+                  };
+                }
+
+                try {
+                  const homeRes = await fetch('http://www.rangpurzillaschool.edu.bd/', {
+                    headers: { 'User-Agent': 'Mozilla/5.0' }
+                  });
+                  const cookies = homeRes.headers.getSetCookie ? homeRes.headers.getSetCookie() : [homeRes.headers.get('set-cookie')];
+                  const cookieHeader = cookies.filter(Boolean).map((c: string) => c.split(';')[0]).join('; ');
+
+                  const initRes = await fetch('http://www.rangpurzillaschool.edu.bd/payment-history.aspx', {
+                    headers: { 'User-Agent': 'Mozilla/5.0', 'Cookie': cookieHeader, 'Referer': 'http://www.rangpurzillaschool.edu.bd/' }
+                  });
+                  const initHtml = await initRes.text();
+                  const vs = initHtml.match(/id="__VIEWSTATE"\s+value="([^"]*)"/)?.[1] || '';
+                  const vsg = initHtml.match(/id="__VIEWSTATEGENERATOR"\s+value="([^"]*)"/)?.[1] || '';
+
+                  // Search for student
+                  const searchRes = await fetch('http://www.rangpurzillaschool.edu.bd/payment-history.aspx', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/x-www-form-urlencoded',
+                      'User-Agent': 'Mozilla/5.0',
+                      'Cookie': cookieHeader,
+                      'Referer': 'http://www.rangpurzillaschool.edu.bd/payment-history.aspx'
+                    },
+                    body: new URLSearchParams({
+                      '__EVENTTARGET': '',
+                      '__EVENTARGUMENT': '',
+                      '__VIEWSTATE': vs,
+                      '__VIEWSTATEGENERATOR': vsg,
+                      'ctl00$ContentPlaceHolder1$txtID': studentId.trim(),
+                      'ctl00$ContentPlaceHolder1$btnSearch': 'Search'
+                    }).toString()
+                  });
+
+                  const searchHtml = await searchRes.text();
+
+                  const nameMatch = searchHtml.match(/id="ContentPlaceHolder1_lblName"[^>]*>([^<]*)<\/span>/);
+                  const sessionMatch = searchHtml.match(/id="ContentPlaceHolder1_lblSession"[^>]*>([^<]*)<\/span>/);
+                  const classMatch = searchHtml.match(/id="ContentPlaceHolder1_lblClass"[^>]*>([^<]*)<\/span>/);
+                  const shiftMatch = searchHtml.match(/id="ContentPlaceHolder1_lblShift"[^>]*>([^<]*)<\/span>/);
+                  const sectionMatch = searchHtml.match(/id="ContentPlaceHolder1_lblSection"[^>]*>([^<]*)<\/span>/);
+                  const rollMatch = searchHtml.match(/id="ContentPlaceHolder1_lblRollNo"[^>]*>([^<]*)<\/span>/);
+                  const imgMatch = searchHtml.match(/id="ContentPlaceHolder1_imgStudent"[^>]*src="([^"]*)"/);
+
+                  const studentName = nameMatch ? nameMatch[1].trim() : '';
+
+                  if (!studentName) {
+                    return {
+                      status: 200,
+                      body: JSON.stringify({
+                        success: false,
+                        message: 'প্রদত্ত শিক্ষার্থী আইডি অনুযায়ী কোনো তথ্য বা ফি বিবরণী পাওয়া যায়নি।'
+                      })
+                    };
+                  }
+
+                  const rawPhoto = imgMatch && imgMatch[1] && !imgMatch[1].includes('no-image') ? imgMatch[1] : null;
+                  const photo = rawPhoto ? `/api/students/photo?url=${encodeURIComponent(rawPhoto)}` : null;
+
+                  const student = {
+                    id: studentId.trim(),
+                    name: studentName,
+                    session: sessionMatch ? sessionMatch[1].trim() : '',
+                    className: classMatch ? classMatch[1].trim() : '',
+                    shift: shiftMatch ? shiftMatch[1].trim() : '',
+                    section: sectionMatch ? sectionMatch[1].trim() : '',
+                    roll: rollMatch ? rollMatch[1].trim() : '',
+                    photo
+                  };
+
+                  // Parse quarters
+                  const quarters = [...searchHtml.matchAll(/<option[^>]*value="([^"]*)"[^>]*>([^<]*)<\/option>/g)]
+                    .filter(m => m[1] !== 'Select Quarter' && m[1] !== '')
+                    .map(m => ({ value: m[1], label: m[2].trim() }));
+
+                  const selectedQuarter = (requestedQuarter && quarters.some(q => q.value === requestedQuarter))
+                    ? requestedQuarter
+                    : (quarters[0]?.value || '');
+
+                  let receipt: any = null;
+
+                  if (selectedQuarter) {
+                    const vs2 = searchHtml.match(/id="__VIEWSTATE"\s+value="([^"]*)"/)?.[1] || '';
+                    const vsg2 = searchHtml.match(/id="__VIEWSTATEGENERATOR"\s+value="([^"]*)"/)?.[1] || '';
+
+                    const receiptRes = await fetch('http://www.rangpurzillaschool.edu.bd/payment-history.aspx', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'User-Agent': 'Mozilla/5.0',
+                        'Cookie': cookieHeader,
+                        'Referer': 'http://www.rangpurzillaschool.edu.bd/payment-history.aspx'
+                      },
+                      body: new URLSearchParams({
+                        '__EVENTTARGET': '',
+                        '__EVENTARGUMENT': '',
+                        '__VIEWSTATE': vs2,
+                        '__VIEWSTATEGENERATOR': vsg2,
+                        'ctl00$ContentPlaceHolder1$txtID': studentId.trim(),
+                        'ctl00$ContentPlaceHolder1$cmbQuarter': selectedQuarter,
+                        'ctl00$ContentPlaceHolder1$btnShow': 'Get Receipt'
+                      }).toString()
+                    });
+
+                    const receiptHtml = await receiptRes.text();
+
+                    const payQtr = receiptHtml.match(/id="ContentPlaceHolder1_lblPayQtr"[^>]*>([^<]*)<\/span>/)?.[1]?.trim() || '';
+                    const payDate = receiptHtml.match(/id="ContentPlaceHolder1_lblPayDate"[^>]*>([^<]*)<\/span>/)?.[1]?.trim() || '';
+                    const payTrx = receiptHtml.match(/id="ContentPlaceHolder1_lblPayTrx"[^>]*>([^<]*)<\/span>/)?.[1]?.trim() || '';
+                    const payStatus = receiptHtml.match(/id="ContentPlaceHolder1_lblPayStatus"[^>]*>([^<]*)<\/span>/)?.[1]?.trim() || '';
+
+                    const totalGovt = receiptHtml.match(/id="ContentPlaceHolder1_lblTotalGovtFee"[^>]*>([^<]*)<\/span>/)?.[1]?.trim() || '';
+                    const totalNonGovt = receiptHtml.match(/id="ContentPlaceHolder1_lblTotalNonGovtFee"[^>]*>([^<]*)<\/span>/)?.[1]?.trim() || '';
+                    const grandTotal = receiptHtml.match(/id="ContentPlaceHolder1_lblGrandTotal"[^>]*>([^<]*)<\/span>/)?.[1]?.trim() || '';
+
+                    const rows = [...receiptHtml.matchAll(/<tr id="ContentPlaceHolder1_row([^"]*)">([\s\S]*?)<\/tr>/g)];
+                    const items: { head: string; amount: string }[] = [];
+                    for (const r of rows) {
+                      const rowId = r[1];
+                      if (rowId.startsWith('Total')) continue;
+                      const headMatch = r[2].match(/class="leftColumnStyle"[^>]*>([\s\S]*?)<\/td>/);
+                      const amtMatch = r[2].match(/class="rightColumnStyle"[^>]*>[\s\S]*?<span[^>]*>([\s\S]*?)<\/span>/);
+                      if (headMatch && amtMatch) {
+                        items.push({
+                          head: headMatch[1].trim().replace(/\s+/g, ' '),
+                          amount: amtMatch[1].trim()
+                        });
+                      }
+                    }
+
+                    if (payStatus || items.length > 0 || grandTotal) {
+                      receipt = {
+                        quarter: payQtr || selectedQuarter,
+                        date: payDate,
+                        trxId: payTrx,
+                        status: payStatus || 'PAID',
+                        items,
+                        totalGovt,
+                        totalNonGovt,
+                        grandTotal
+                      };
+                    }
+                  }
+
+                  return {
+                    status: 200,
+                    body: JSON.stringify({
+                      success: true,
+                      student,
+                      quarters,
+                      selectedQuarter,
+                      receipt
+                    })
+                  };
+                } catch (payErr: any) {
+                  console.warn('Live dev payment fetch failed:', payErr);
+                  return {
+                    status: 502,
+                    body: JSON.stringify({
+                      success: false,
+                      message: 'বিদ্যালয়ের পেমেন্ট সার্ভার থেকে তথ্য সংগ্রহে সাময়িক বিভ্রাট ঘটেছে।'
                     })
                   };
                 }

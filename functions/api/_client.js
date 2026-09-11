@@ -12,7 +12,8 @@ export const CACHE_TTL = {
   teachers: DEFAULT_CACHE_TTL,
   news: DEFAULT_CACHE_TTL,
   downloads: DEFAULT_CACHE_TTL,
-  studentOptions: DEFAULT_CACHE_TTL
+  studentOptions: DEFAULT_CACHE_TTL,
+  payments: 0 // Instant / Real-time live (no-cache)
 };
 
 let cachedSession = {

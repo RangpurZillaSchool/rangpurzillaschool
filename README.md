@@ -87,6 +87,14 @@
 11. **রোজ প্যাস্টেল (Rose Gold)**: নরম গোলাপী ও মার্জিত মখমল শেড।
 12. **কফি বার্লি (Vintage Coffee)**: রোস্টেড কফি বিন ও উষ্ণ কাঠবাদামী ভাব।
 
+### 💳 ৮. লাইভ পেমেন্ট ও ফি বিবরণী অনুসন্ধান (Live Payment & Fee Dashboard - 0-Cache Instant)
+- **ইনস্ট্যান্ট রিয়েল-টাইম ডাটা (Instant, No-Cache)**: পেমেন্ট ও ফি এর তথ্য অত্যন্ত স্পর্শকাতর ও পরিবর্তনশীল। শিক্ষার্থী বা অভিভাবক ফি প্রদান করার সাথে সাথে যাতে হালনাগাদ স্ট্যাটাস দেখতে পারেন, তাই পেমেন্ট এপিআইতে **কোনো ক্যাশিং রাখা হয়নি (`no-store, no-cache, max-age=0`)**। প্রতি অনুসন্ধানে সরাসরি রংপুর জিলা স্কুলের লাইভ ডাটাবেজ থেকে তথ্য আনা হয়।
+- **দ্বৈত অনুসন্ধান পদ্ধতি**:
+  1. **সরাসরি শিক্ষার্থী আইডি**: ১৪ ডিজিটের শিক্ষার্থী আইডি প্রদান করে অনুসন্ধান।
+  2. **শ্রেণি, শাখা ও রোল নম্বর**: শ্রেণি, কম্বাইন্ড শাখা (`Section A (Morning)`, `Section B (Day)`, `Section C (Morning)`, `Section D (Day)`) এবং রোল নম্বর দিয়ে সরাসরি অনুসন্ধান।
+- **রসিদবিহীন পরিচ্ছন্ন প্রাতিষ্ঠানিক ড্যাশবোর্ড (Clean Dashboard - No Paper Receipts)**: কোনো কৃত্রিম কাগুজে মানি রিসিট লেআউট বা ভুয়া প্রিন্ট বাটনের বদলে একটি পরিচ্ছন্ন তথ্য কার্ড, কোয়ার্টার ড্রপডাউন, পেমেন্ট স্ট্যাটাস ব্যাজ (`PAID`/`DUE`), ট্রানজেকশন আইডি (TRX ID), তারিখ এবং খাত অনুযায়ী সরকারি ও বেসরকারি ফি এর পুঙ্খানুপুঙ্খ বিবরণী প্রদর্শিত হয়।
+- **ইন্টারেক্টিভ পেমেন্ট পপআপ**: `/students` পেজে যেকোনো শিক্ষার্থীর কার্ড বা টেবিল রো-তে ক্লিক করলে সরাসরি পপআপ মোডালে উক্ত শিক্ষার্থীর লাইভ ফি বিবরণী প্রদর্শিত হয়।
+
 ---
 
 ## ৩. কীভাবে কাজ করে (How It Works & Architecture)
@@ -107,10 +115,12 @@ graph TD
     subgraph Cloudflare_Pages_Functions [সার্ভারলেস ব্যাকএন্ড /functions/api/]
         API_Client -->|/api/students| F_Students[students/index.js]
         API_Client -->|/api/students/options| F_Options[students/options.js]
+        API_Client -->|/api/payments| F_Payments[payments/index.js (Instant Real-time)]
         API_Client -->|/api/notices| F_Notices[notices/index.js]
         API_Client -->|/api/teachers| F_Teachers[teachers/index.js]
         API_Client -->|/api/news| F_News[news/index.js]
         API_Client -->|/api/downloads| F_Downloads[downloads/index.js]
+        API_Client -->|/api/gallery/photo| F_PhotoProxy[gallery/photo.js (Image Proxy)]
         
         F_Students --> Client_Helper[_client.js 12h Edge Cache & Stampede Engine]
         F_Options --> Client_Helper
@@ -118,11 +128,13 @@ graph TD
         F_Teachers --> Client_Helper
         F_News --> Client_Helper
         F_Downloads --> Client_Helper
+        F_Payments --> Client_Instant[Live ASP.NET Postback Handshake (No Cache)]
     end
     
     subgraph Legacy_Servers [লেগ্যাসি সরকারি সার্ভার]
         Client_Helper -->|ক্যাশে না থাকলে 12 ঘণ্টায় একবার| RZS_Legacy[rangpurzillaschool.edu.bd]
         Client_Helper -->|ক্যাশে না থাকলে 12 ঘণ্টায় একবার| SIB_Legacy[sib.gov.bd/notice_board]
+        Client_Instant -->|প্রতি রিকোয়েস্টে সরাসরি লাইভ ফেচ| RZS_Pay[rangpurzillaschool.edu.bd/payment-history.aspx]
     end
     
     subgraph Fallback_Data [অফলাইন ও রেজিলিয়েন্স ডেটা]
@@ -191,23 +203,23 @@ rangpurzillaschool/
 │   └── api/
 │       ├── _client.js             # লেগ্যাসি ASP.NET Session ও ViewState হ্যান্ডলার
 │       ├── downloads/index.js     # ডাউনলোড ফাইল এপিআই
+│       ├── gallery/photo.js       # গ্যালারি ছবি প্রক্সি এপিআই (HTTPS Mixed-Content ফিক্স)
 │       ├── news/index.js          # খবর ও সার্কুলার এপিআই
 │       ├── notices/               # নোটিশ বোর্ড ও সিঙ্গেল নোটিশ এপিআই
+│       ├── payments/index.js      # ইনস্ট্যান্ট লাইভ পেমেন্ট ও ফি বিবরণী এপিআই (0-Cache)
 │       ├── students/              # লাইভ শিক্ষার্থী পোস্টব্যাক ইঞ্জিন ও অপশনস এপিআই
 │       └── teachers/index.js      # শিক্ষক-কর্মকর্তা এপিআই
 │
 ├── public/                        # স্ট্যাটিক অ্যাসেটস
 │   ├── _headers                   # ক্যাশিং ও সিকিউরিটি হেডার
 │   ├── _redirects                 # SPA রিডাইরেক্ট রুলস
+│   ├── headmaster.jpg             # প্রধান শিক্ষকের প্রাতিষ্ঠানিক ছবি
 │   └── favicon.ico                # অফিশিয়াল আইকন
 │
 ├── src/
-│   ├── components/layout/         # গ্লোবাল লেআউট কম্পোনেন্টস
-│   │   ├── Header.tsx             # রেস্পনসিভ হেডবার ও মোবাইল ড্রয়ার
-│   │   ├── TopBar.tsx             # EIIN, প্রতিষ্ঠা সাল ও শিক্ষার্থী প্রকল্প ব্যানার
-│   │   ├── NoticeTicker.tsx       # ইনফিনিট নোটিশ মার্কি অ্যানিমেশন
-│   │   ├── Footer.tsx             # প্রাতিষ্ঠানিক ফুটার ও ডিসক্লেইমার ব্যানার
-│   │   └── Layout.tsx             # মেইন লেআউট র‍্যাপার
+│   ├── components/                # গ্লোবাল ও স্পেশালাইজড কম্পোনেন্টস
+│   │   ├── layout/                # হেডার, ফুটার, নোটিশ টিকার, টপবার
+│   │   └── StudentPaymentModal.tsx# ইন্টারেক্টিভ পেমেন্ট পপআপ মোডাল
 │   │
 │   ├── data/                      # ভেরিফাইড প্রাতিষ্ঠানিক ডেটাসেট (Zero Fabricated Data)
 │   │   ├── teachers.json          # ৫৫ জন শিক্ষক-কর্মকর্তার তালিকা
@@ -224,7 +236,8 @@ rangpurzillaschool/
 │   │   ├── AboutPage.tsx          # এক নজরে পরিচিতি
 │   │   ├── HistoryPage.tsx        # ১৮৩২ সালের ঐতিহাসিক প্রেক্ষাপট
 │   │   ├── TeachersPage.tsx       # শিক্ষক ও কর্মকর্তাদের লাইভ ডিরেক্টরি
-│   │   ├── StudentsPage.tsx       # লাইভ শিক্ষার্থী অনুসন্ধান ও কার্ড ভিউ
+│   │   ├── StudentsPage.tsx       # লাইভ শিক্ষার্থী অনুসন্ধান ও ক্লিক পেমেন্ট পপআপ
+│   │   ├── PaymentHistoryPage.tsx # বেতন ও ফি বিবরণীর রসিদবিহীন আধুনিক ড্যাশবোর্ড
 │   │   ├── StudentStatsPage.tsx   # শাখা ও শিফট ভিত্তিক পরিসংখ্যান
 │   │   ├── NoticesPage.tsx        # নোটিশ বোর্ড
 │   │   ├── NoticeDetailPage.tsx   # ডুয়েল ফরম্যাট নোটিশ ভিউয়ার
@@ -241,7 +254,7 @@ rangpurzillaschool/
 │
 ├── index.html                     # ফন্ট প্রিলোড ও মেটা ট্যাগ
 ├── tailwind.config.js             # Tailwind থিম ও কালার কনফিগারেশন
-├── vite.config.ts                 # Vite বিল্ড কনফিগারেশন
+├── vite.config.ts                 # Vite বিল্ড ও লোকাল ডেভ প্রক্সি কনফিগারেশন
 └── wrangler.toml                  # Cloudflare Pages ডিপ্লয়মেন্ট কনফিগারেশন
 ```
 
@@ -251,6 +264,7 @@ rangpurzillaschool/
 
 | রুট (Route) | মেথড | ক্যাশ মেয়াদ (Cache TTL) | বিবরণ (Description) |
 |---|---|---|---|
+| `/api/payments` | `GET` | **ইনস্ট্যান্ট / নো-ক্যাশ** (`0s, no-store`) | শিক্ষার্থী আইডি বা কোয়ার্টার অনুযায়ী লাইভ ফি, পেমেন্ট স্ট্যাটাস ও TRX বিবরণী (`?studentId=...&quarter=...`) |
 | `/api/students` | `GET` | **১২ ঘণ্টা** (`43,200s`) | শ্রেণী, শিফট ও সেকশন অনুযায়ী শিক্ষার্থীর তথ্য (`?class=...&shift=...&section=...`) |
 | `/api/students/options` | `GET` | **১২ ঘণ্টা** (`43,200s`) | লেগ্যাসি সার্ভারের ড্রপডাউন অপশন তালিকা |
 | `/api/notices` | `GET` | **১২ ঘণ্টা** (`43,200s`) | সর্বশেষ নোটিশের তালিকা ও পেজিনেশন |
@@ -258,6 +272,9 @@ rangpurzillaschool/
 | `/api/teachers` | `GET` | **১২ ঘণ্টা** (`43,200s`) | সকল শিক্ষক-কর্মকর্তার তালিকা ও PDS আইডি |
 | `/api/news` | `GET` | **১২ ঘণ্টা** (`43,200s`) | প্রাতিষ্ঠানিক খবর ও নোটিফিকেশন |
 | `/api/downloads` | `GET` | **১২ ঘণ্টা** (`43,200s`) | ভর্তি লটারি, সিলেবাস ও পরীক্ষার রুটিন ডাউনলোডের তালিকা |
+| `/api/gallery/photo` | `GET` | **১২ ঘণ্টা** (`43,200s`) | গ্যালারি ছবির এইচটিটিপিএস সিকিউর প্রক্সি |
+| `/api/teachers/photo` | `GET` | **১২ ঘণ্টা** (`43,200s`) | শিক্ষকদের অফিশিয়াল ছবির এইচটিটিপিএস সিকিউর প্রক্সি |
+| `/api/students/photo` | `GET` | **১২ ঘণ্টা** (`43,200s`) | শিক্ষার্থীদের ছবির এইচটিটিপিএস সিকিউর প্রক্সি |
 
 ---
 

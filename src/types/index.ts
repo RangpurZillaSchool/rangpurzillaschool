@@ -65,3 +65,45 @@ export interface ExamResult {
   passRate: string;
   scholarships: number;
 }
+
+export interface PaymentStudentInfo {
+  id: string;
+  name: string;
+  session: string;
+  className: string;
+  shift: string;
+  section: string;
+  roll: string;
+  photo: string | null;
+}
+
+export interface PaymentQuarterOption {
+  value: string;
+  label: string;
+}
+
+export interface PaymentReceiptItem {
+  head: string;
+  amount: string;
+}
+
+export interface PaymentReceipt {
+  quarter: string;
+  date: string;
+  trxId: string;
+  status: string;
+  items: PaymentReceiptItem[];
+  totalGovt: string;
+  totalNonGovt: string;
+  grandTotal: string;
+}
+
+export interface PaymentHistoryResponse {
+  success: boolean;
+  message?: string;
+  student?: PaymentStudentInfo;
+  quarters?: PaymentQuarterOption[];
+  selectedQuarter?: string;
+  receipt?: PaymentReceipt | null;
+}
+

@@ -64,6 +64,14 @@ export const GalleryPage: React.FC = () => {
               src={photoUrl}
               alt={`রংপুর জিলা স্কুল গ্যালারি ${index + 1}`}
               loading="lazy"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent) {
+                  parent.style.display = 'none';
+                }
+              }}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
             <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

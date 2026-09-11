@@ -66,6 +66,11 @@ export const Footer: React.FC = () => {
               </Link>
             </li>
             <li>
+              <Link to="/students/payments" className="hover:text-amber-400 transition-colors">
+                বেতন ও অন্যান্য ফি প্রদানের তথ্য
+              </Link>
+            </li>
+            <li>
               <Link to="/notices" className="hover:text-amber-400 transition-colors">
                 নোটিশ বোর্ড ও সার্কুলার
               </Link>
