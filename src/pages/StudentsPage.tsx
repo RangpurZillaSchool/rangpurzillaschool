@@ -175,7 +175,7 @@ export const StudentsPage: React.FC = () => {
               onClick={fetchStudents}
               disabled={loading || !selectedClass || !selectedSectionKey}
               type="button"
-              className="w-full py-2 px-4 rounded-md bg-institutional-navy dark:bg-sky-500 hover:bg-institutional-navyDark dark:hover:bg-sky-400 text-white dark:text-slate-950 text-xs sm:text-sm font-semibold transition-all flex items-center justify-center gap-2 shadow-xs disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="w-full py-2 px-4 rounded-md bg-institutional-navy dark:bg-sky-500 hover:bg-institutional-navyDark dark:hover:bg-sky-400 text-white dark:text-sky-950 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-xs disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {loading ? (
                 <>
@@ -453,7 +453,7 @@ export const StudentsPage: React.FC = () => {
                         {selectedClass} ({currentSection?.label})
                       </td>
                       <td className="py-2.5 px-4 text-right">
-                        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-institutional-navy dark:text-sky-400 bg-institutional-navy/5 dark:bg-sky-500/10 px-2 py-1 rounded group-hover:bg-institutional-navy group-hover:text-white dark:group-hover:bg-sky-500 dark:group-hover:text-slate-950 transition-colors">
+                        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-institutional-navy dark:text-sky-400 bg-institutional-navy/5 dark:bg-sky-500/10 px-2 py-1 rounded group-hover:bg-institutional-navy group-hover:text-white dark:group-hover:bg-sky-500 dark:group-hover:text-sky-950 transition-colors">
                           <CreditCard className="w-3 h-3" />
                           <span>পেমেন্ট</span>
                         </span>

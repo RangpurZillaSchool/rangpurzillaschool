@@ -119,7 +119,7 @@ export const NoticesPage: React.FC = () => {
                             href={notice.attachmentUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-1 rounded-sm text-slate-500 hover:text-blue-700 hover:bg-blue-50 transition-colors"
+                            className="p-1 rounded-sm text-slate-500 hover:text-blue-800 hover:bg-blue-100/70 dark:hover:bg-blue-950/60 dark:hover:text-blue-300 transition-colors"
                             title="ফাইল ডাউনলোড"
                           >
                             <Download className="w-3.5 h-3.5" />

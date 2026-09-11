@@ -63,7 +63,7 @@ export const ThemeSelector: React.FC = () => {
                   }}
                   className={`flex items-center justify-between p-2 rounded-lg text-left transition-all border text-xs cursor-pointer group ${
                     isSelected
-                      ? 'bg-amber-50 dark:bg-slate-800 border-amber-400 dark:border-amber-400/80 font-bold text-slate-900 dark:text-white shadow-xs'
+                      ? 'bg-amber-50 dark:bg-slate-800 border-amber-400 dark:border-amber-400/80 font-bold text-amber-950 dark:text-white shadow-xs'
                       : 'border-slate-100 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-800/50 text-slate-700 dark:text-slate-300'
                   }`}
                 >

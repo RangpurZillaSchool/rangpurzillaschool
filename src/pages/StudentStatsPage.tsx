@@ -68,7 +68,7 @@ export const StudentStatsPage: React.FC = () => {
 
         <div className="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
           <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">বিজ্ঞান বিভাগ (৯ম-১০ম)</div>
-          <div className="text-2xl sm:text-3xl font-bold text-purple-900 dark:text-purple-300 font-mono mt-1">
+          <div className="text-2xl sm:text-3xl font-bold text-institutional-navy dark:text-sky-400 font-mono mt-1">
             ৫৩২
           </div>
           <div className="text-[11px] text-slate-400 mt-1">ব্যবসায়: ৪ | মানবিক: ১</div>

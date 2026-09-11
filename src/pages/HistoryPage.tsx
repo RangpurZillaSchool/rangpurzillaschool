@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpen, Calendar, Award, Landmark, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { schoolInfo } from '../data/schoolInfo';
+import { Reveal } from '../components/common/Reveal';
 
 export const HistoryPage: React.FC = () => {
   return (
@@ -10,7 +11,7 @@ export const HistoryPage: React.FC = () => {
       <div>
         <Link
           to="/about/at-a-glance"
-          className="inline-flex items-center gap-1 text-xs font-semibold text-institutional-navy hover:underline mb-3"
+          className="inline-flex items-center gap-1 text-xs font-semibold text-institutional-navy hover:underline mb-3 link-underline-organic"
         >
           <ArrowLeft className="w-3.5 h-3.5" /> এক নজরে পরিচিতি
         </Link>
@@ -29,10 +30,13 @@ export const HistoryPage: React.FC = () => {
       </div>
 
       {/* Main Narrative Article */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 sm:p-9 shadow-xs space-y-6 text-justify">
-        <div className="border-l-4 border-institutional-navy pl-4 py-1 italic text-slate-700 bg-slate-50 text-sm sm:text-base font-serif">
-          &ldquo;১৮৩২ সালে বাংলার তৎকালীন গভর্নর লর্ড উইলিয়াম বেন্টিঙ্ক &lsquo;জমিদার স্কুল&rsquo; নামে এ বিদ্যালয়ের ভিত্তিপ্রস্তর স্থাপন করেন।&rdquo;
-        </div>
+      <Reveal delay={100} direction="up">
+        <div className="bg-white rounded-xl border border-slate-200 p-6 sm:p-9 shadow-xs space-y-6 text-justify card-organic">
+          <blockquote className="relative p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 text-slate-800 dark:text-slate-200 text-sm sm:text-base font-serif italic">
+            <span className="text-institutional-navy dark:text-sky-400 font-bold text-lg mr-1">&ldquo;</span>
+            ১৮৩২ সালে বাংলার তৎকালীন গভর্নর লর্ড উইলিয়াম বেন্টিঙ্ক &lsquo;জমিদার স্কুল&rsquo; নামে এ বিদ্যালয়ের ভিত্তিপ্রস্তর স্থাপন করেন।
+            <span className="text-institutional-navy dark:text-sky-400 font-bold text-lg ml-1">&rdquo;</span>
+          </blockquote>
 
         <div className="space-y-4 text-slate-800 text-sm sm:text-base leading-relaxed">
           {schoolInfo.historyNarrative.map((paragraph, index) => (
@@ -98,6 +102,7 @@ export const HistoryPage: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </Reveal>
+  </div>
+);
 };

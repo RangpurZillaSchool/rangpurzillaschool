@@ -17,11 +17,15 @@ export const NoticeTicker: React.FC = () => {
   if (notices.length === 0) return null;
 
   return (
-    <div className="bg-amber-50 dark:bg-slate-900 border-b border-amber-200/80 dark:border-slate-800 text-amber-950 dark:text-slate-200 text-xs sm:text-sm min-h-[38px] sm:min-h-[44px] flex items-center px-3 sm:px-6 py-1 transition-colors">
+    <div className="bg-amber-50 dark:bg-slate-900 border-b border-amber-200/80 dark:border-slate-800 text-amber-950 dark:text-amber-100 text-xs sm:text-sm min-h-[38px] sm:min-h-[44px] flex items-center px-3 sm:px-6 py-1 transition-colors">
       <div className="max-w-7xl mx-auto flex items-center gap-2 sm:gap-3 w-full">
         {/* Badge */}
         <div className="bg-amber-600 text-white font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-sm flex items-center gap-1 sm:gap-1.5 shrink-0 shadow-xs text-xs">
-          <Bell className="w-3.5 h-3.5 animate-pulse shrink-0" />
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-200 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+          </span>
+          <Bell className="w-3.5 h-3.5 shrink-0" />
           <span className="hidden sm:inline">জরুরি নোটিশ</span>
           <span className="sm:hidden text-[11px]">নোটিশ</span>
         </div>
@@ -42,7 +46,7 @@ export const NoticeTicker: React.FC = () => {
                 <Link
                   key={`n1-${n.id || idx}`}
                   to={`/notices/${n.id}`}
-                  className="hover:underline text-slate-800 dark:text-slate-200 hover:text-amber-800 dark:hover:text-amber-400 inline-flex items-center gap-1.5 font-medium py-1 leading-relaxed text-xs sm:text-sm transition-colors"
+                  className="hover:underline text-amber-950 dark:text-slate-100 hover:text-amber-800 dark:hover:text-amber-300 inline-flex items-center gap-1.5 font-medium py-1 leading-relaxed text-xs sm:text-sm transition-colors"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 inline-block shrink-0"></span>
                   <span>{n.title}</span>
@@ -60,7 +64,7 @@ export const NoticeTicker: React.FC = () => {
                   key={`n2-${n.id || idx}`}
                   to={`/notices/${n.id}`}
                   tabIndex={-1}
-                  className="hover:underline text-slate-800 dark:text-slate-200 hover:text-amber-800 dark:hover:text-amber-400 inline-flex items-center gap-1.5 font-medium py-1 leading-relaxed text-xs sm:text-sm transition-colors"
+                  className="hover:underline text-amber-950 dark:text-slate-100 hover:text-amber-800 dark:hover:text-amber-300 inline-flex items-center gap-1.5 font-medium py-1 leading-relaxed text-xs sm:text-sm transition-colors"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 inline-block shrink-0"></span>
                   <span>{n.title}</span>
