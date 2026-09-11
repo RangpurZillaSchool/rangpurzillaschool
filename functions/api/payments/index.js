@@ -9,10 +9,11 @@ import {
 /**
  * Cloudflare Pages Function: /api/payments
  *
- * NOTE: Unlike student roster and notices (which use 12-hour Edge Caching),
- * payment data is fetched INSTANT (Live Real-Time, 0-cache) on every request.
- * This ensures that when a student or parent pays their fees, their updated
- * status (PAID/DUE) and transaction ID are immediately visible without delay.
+ * NOTE: Fetches live payment history from Rangpur Zilla School's ASP.NET WebForms.
+ * Uses two-step handshake:
+ * 1. btnSearch -> to retrieve student identity, class, shift, roll & quarter dropdown list.
+ * 2. btnShow (with target quarter) -> to retrieve statement, payment status (PAID/UNPAID),
+ *    date, transaction ID, and itemized fees.
  */
 export async function onRequestGet({ request }) {
   const url = new URL(request.url);
@@ -75,19 +76,12 @@ export async function onRequestGet({ request }) {
     const searchHtml = await searchRes.text();
 
     const nameMatch = searchHtml.match(/id="ContentPlaceHolder1_lblName"[^>]*>([^<]*)<\/span>/);
-    const sessionMatch = searchHtml.match(/id="ContentPlaceHolder1_lblSession"[^>]*>([^<]*)<\/span>/);
-    const classMatch = searchHtml.match(/id="ContentPlaceHolder1_lblClass"[^>]*>([^<]*)<\/span>/);
-    const shiftMatch = searchHtml.match(/id="ContentPlaceHolder1_lblShift"[^>]*>([^<]*)<\/span>/);
-    const sectionMatch = searchHtml.match(/id="ContentPlaceHolder1_lblSection"[^>]*>([^<]*)<\/span>/);
-    const rollMatch = searchHtml.match(/id="ContentPlaceHolder1_lblRollNo"[^>]*>([^<]*)<\/span>/);
-    const imgMatch = searchHtml.match(/id="ContentPlaceHolder1_imgStudent"[^>]*src="([^"]*)"/);
-
     const studentName = nameMatch ? nameMatch[1].trim() : '';
 
     if (!studentName) {
       return new Response(JSON.stringify({
         success: false,
-        message: 'প্রদত্ত শিক্ষার্থী আইডি অনুযায়ী কোনো তথ্য বা ফি বিবরণী পাওয়া যায়নি।'
+        message: 'প্রদত্ত শিক্ষার্থী আইডি অনুযায়ী কোনো তথ্য পাওয়া যায়নি।'
       }), {
         status: 200,
         headers: {
@@ -97,6 +91,13 @@ export async function onRequestGet({ request }) {
         }
       });
     }
+
+    const sessionMatch = searchHtml.match(/id="ContentPlaceHolder1_lblSession"[^>]*>([^<]*)<\/span>/);
+    const classMatch = searchHtml.match(/id="ContentPlaceHolder1_lblClass"[^>]*>([^<]*)<\/span>/);
+    const shiftMatch = searchHtml.match(/id="ContentPlaceHolder1_lblShift"[^>]*>([^<]*)<\/span>/);
+    const sectionMatch = searchHtml.match(/id="ContentPlaceHolder1_lblSection"[^>]*>([^<]*)<\/span>/);
+    const rollMatch = searchHtml.match(/id="ContentPlaceHolder1_lblRollNo"[^>]*>([^<]*)<\/span>/);
+    const imgMatch = searchHtml.match(/id="ContentPlaceHolder1_imgStudent"[^>]*src="([^"]*)"/);
 
     const rawPhoto = imgMatch && imgMatch[1] && !imgMatch[1].includes('no-image') ? imgMatch[1] : null;
     const photo = rawPhoto ? `/api/students/photo?url=${encodeURIComponent(rawPhoto)}` : null;
@@ -114,31 +115,37 @@ export async function onRequestGet({ request }) {
 
     // Extract available quarters
     const quarters = [];
-    const qMatches = searchHtml.matchAll(/<option\s+(?:selected="selected"\s+)?value="([^"]+)">([^<]+)<\/option>/g);
+    const qMatches = [...searchHtml.matchAll(/<option\s+(?:selected="selected"\s+)?value="([^"]+)">([^<]+)<\/option>/g)];
     for (const m of qMatches) {
-      if (m[1] && m[1] !== '0') {
+      if (m[1] && !m[1].toLowerCase().includes('select')) {
         quarters.push({ value: m[1], label: m[2].trim() });
       }
     }
 
-    const defaultQMatch = searchHtml.match(/<select[^>]*name="ctl00\$ContentPlaceHolder1\$cmbQuarter"[^>]*>[\s\S]*?<option selected="selected" value="([^"]+)">/);
-    let selectedQuarter = requestedQuarter || (defaultQMatch ? defaultQMatch[1] : (quarters[0]?.value || ''));
+    // Determine target quarter (user specified or default to the first real quarter)
+    const targetQuarter = (requestedQuarter && quarters.some(q => q.value === requestedQuarter))
+      ? requestedQuarter
+      : (quarters[0]?.value || '');
 
-    // Step 3: Fetch receipt for requestedQuarter if different or requested
-    let finalHtml = searchHtml;
-    if (requestedQuarter && defaultQMatch && defaultQMatch[1] !== requestedQuarter) {
-      const postState = extractHiddenFields(searchHtml);
-      const qBody = new URLSearchParams({
+    let receipt = null;
+    let selectedQuarter = targetQuarter;
+
+    // Step 3: Fetch receipt/statement by submitting btnShow with targetQuarter
+    if (targetQuarter) {
+      const vs3 = searchHtml.match(/id="__VIEWSTATE"\s+value="([^"]*)"/)?.[1] || '';
+      const vsg3 = searchHtml.match(/id="__VIEWSTATEGENERATOR"\s+value="([^"]*)"/)?.[1] || '';
+
+      const showBody = new URLSearchParams({
         '__EVENTTARGET': '',
         '__EVENTARGUMENT': '',
-        '__VIEWSTATE': postState.viewState,
-        '__VIEWSTATEGENERATOR': postState.viewStateGenerator,
+        '__VIEWSTATE': vs3,
+        '__VIEWSTATEGENERATOR': vsg3,
         'ctl00$ContentPlaceHolder1$txtID': studentId.trim(),
-        'ctl00$ContentPlaceHolder1$cmbQuarter': requestedQuarter,
+        'ctl00$ContentPlaceHolder1$cmbQuarter': targetQuarter,
         'ctl00$ContentPlaceHolder1$btnShow': 'Show'
       });
 
-      const qRes = await fetch(payUrl, {
+      const showRes = await fetch(payUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -146,59 +153,63 @@ export async function onRequestGet({ request }) {
           'Cookie': cookie,
           'Referer': payUrl
         },
-        body: qBody.toString()
+        body: showBody.toString()
       });
 
-      if (qRes.ok) {
-        finalHtml = await qRes.text();
-        selectedQuarter = requestedQuarter;
-      }
-    }
+      if (showRes.ok) {
+        const showHtml = await showRes.text();
 
-    // Step 4: Parse receipt table
-    let receipt = null;
-    const receiptContainer = finalHtml.match(/id="ContentPlaceHolder1_pnlReceipt"[\s\S]*?<\/table>/);
+        if (showHtml.includes('ContentPlaceHolder1_pnlStatement') || showHtml.includes('ContentPlaceHolder1_lblPayStatus')) {
+          const qMatch = showHtml.match(/id="ContentPlaceHolder1_lblPayQtr"[^>]*>([^<]*)<\/span>/);
+          const dateMatch = showHtml.match(/id="ContentPlaceHolder1_lblPayDate"[^>]*>([^<]*)<\/span>/) ||
+                            showHtml.match(/id="ContentPlaceHolder1_lblDate"[^>]*>([^<]*)<\/span>/);
+          const trxMatch = showHtml.match(/id="ContentPlaceHolder1_lblPayTrx"[^>]*>([^<]*)<\/span>/);
+          const statusMatch = showHtml.match(/id="ContentPlaceHolder1_lblPayStatus"[^>]*>([^<]*)<\/span>/);
+          const govtTotalMatch = showHtml.match(/id="ContentPlaceHolder1_lblTotalGovtFee"[^>]*>([^<]*)<\/span>/);
+          const nonGovtTotalMatch = showHtml.match(/id="ContentPlaceHolder1_lblTotalNonGovtFee"[^>]*>([^<]*)<\/span>/);
+          const grandTotalMatch = showHtml.match(/id="ContentPlaceHolder1_lblGrandTotal"[^>]*>([^<]*)<\/span>/);
 
-    if (receiptContainer) {
-      const qMatch = finalHtml.match(/id="ContentPlaceHolder1_lblQuarter"[^>]*>([^<]*)<\/span>/);
-      const dateMatch = finalHtml.match(/id="ContentPlaceHolder1_lblDate"[^>]*>([^<]*)<\/span>/);
-      const trxMatch = finalHtml.match(/id="ContentPlaceHolder1_lblTrxID"[^>]*>([^<]*)<\/span>/);
-      const statusMatch = finalHtml.match(/id="ContentPlaceHolder1_lblStatus"[^>]*>([^<]*)<\/span>/);
-      const govtTotalMatch = finalHtml.match(/id="ContentPlaceHolder1_lblTotalGovt"[^>]*>([^<]*)<\/span>/);
-      const nonGovtTotalMatch = finalHtml.match(/id="ContentPlaceHolder1_lblTotalNonGovt"[^>]*>([^<]*)<\/span>/);
-      const grandTotalMatch = finalHtml.match(/id="ContentPlaceHolder1_lblGrandTotal"[^>]*>([^<]*)<\/span>/);
+          const payQtr = qMatch ? qMatch[1].trim() : targetQuarter;
+          const payDate = dateMatch ? dateMatch[1].trim() : '';
+          let payTrx = trxMatch ? trxMatch[1].trim() : '';
+          payTrx = payTrx.replace(/[\[\]]/g, '').trim();
 
-      const payQtr = qMatch ? qMatch[1].trim() : '';
-      const payDate = dateMatch ? dateMatch[1].trim() : '';
-      const payTrx = trxMatch ? trxMatch[1].trim() : '';
-      const payStatus = statusMatch ? statusMatch[1].trim() : '';
-      const totalGovt = govtTotalMatch ? govtTotalMatch[1].trim() : '';
-      const totalNonGovt = nonGovtTotalMatch ? nonGovtTotalMatch[1].trim() : '';
-      const grandTotal = grandTotalMatch ? grandTotalMatch[1].trim() : '';
+          const payStatus = statusMatch ? statusMatch[1].trim() : 'UNPAID';
+          const totalGovt = govtTotalMatch ? govtTotalMatch[1].trim() : '';
+          const totalNonGovt = nonGovtTotalMatch ? nonGovtTotalMatch[1].trim() : '';
+          const grandTotal = grandTotalMatch ? grandTotalMatch[1].trim() : '';
 
-      const tableMatch = finalHtml.match(/<table[^>]*id="ContentPlaceHolder1_pnlReceipt"[\s\S]*?<\/table>/);
-      if (tableMatch) {
-        const rows = [...tableMatch[0].matchAll(/<tr[^>]*id="ContentPlaceHolder1_row_([^"]+)"[^>]*>([\s\S]*?)<\/tr>/g)];
-        const items = [];
-        for (const r of rows) {
-          const rowId = r[1];
-          if (rowId.startsWith('Total')) continue;
-          const headMatch = r[2].match(/class="leftColumnStyle"[^>]*>([\s\S]*?)<\/td>/);
-          const amtMatch = r[2].match(/class="rightColumnStyle"[^>]*>[\s\S]*?<span[^>]*>([\s\S]*?)<\/span>/);
-          if (headMatch && amtMatch) {
-            items.push({
-              head: headMatch[1].trim().replace(/\s+/g, ' '),
-              amount: amtMatch[1].trim()
-            });
+          const items = [];
+          const fundWiseIdx = showHtml.indexOf('id="ContentPlaceHolder1_pnlFundWise"');
+          if (fundWiseIdx !== -1) {
+            const tableIdx = showHtml.indexOf('<table', fundWiseIdx);
+            const endTableIdx = showHtml.indexOf('</table>', tableIdx);
+            if (tableIdx !== -1 && endTableIdx !== -1) {
+              const tableHtml = showHtml.substring(tableIdx, endTableIdx + 8);
+              const rows = [...tableHtml.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/g)];
+              for (const r of rows) {
+                const rowContent = r[1];
+                if (rowContent.includes('TotalGovtFee') || rowContent.includes('TotalNonGovtFee') || rowContent.includes('GrandTotal')) {
+                  continue;
+                }
+                const headMatch = rowContent.match(/class="leftColumnStyle"[^>]*>([\s\S]*?)<\/td>/);
+                const amtMatch = rowContent.match(/class="rightColumnStyle"[^>]*>[\s\S]*?<span[^>]*>([\s\S]*?)<\/span>/);
+                if (headMatch && amtMatch) {
+                  const head = headMatch[1].trim().replace(/\s+/g, ' ');
+                  const amt = amtMatch[1].trim();
+                  if (head !== 'আদায়কৃত ফি' && amt !== 'Amount' && amt) {
+                    items.push({ head, amount: amt });
+                  }
+                }
+              }
+            }
           }
-        }
 
-        if (payStatus || items.length > 0 || grandTotal) {
           receipt = {
-            quarter: payQtr || selectedQuarter,
+            quarter: payQtr,
             date: payDate,
             trxId: payTrx,
-            status: payStatus || 'PAID',
+            status: payStatus,
             items,
             totalGovt,
             totalNonGovt,
@@ -208,7 +219,6 @@ export async function onRequestGet({ request }) {
       }
     }
 
-    // Return INSTANT Real-Time response (no-cache)
     return new Response(JSON.stringify({
       success: true,
       student,

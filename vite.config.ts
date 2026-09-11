@@ -597,42 +597,60 @@ p { font-size: 0.875rem; color: #64748b; line-height: 1.5; margin: 0; }
                         '__VIEWSTATEGENERATOR': vsg2,
                         'ctl00$ContentPlaceHolder1$txtID': studentId.trim(),
                         'ctl00$ContentPlaceHolder1$cmbQuarter': selectedQuarter,
-                        'ctl00$ContentPlaceHolder1$btnShow': 'Get Receipt'
+                        'ctl00$ContentPlaceHolder1$btnShow': 'Show'
                       }).toString()
                     });
 
                     const receiptHtml = await receiptRes.text();
 
-                    const payQtr = receiptHtml.match(/id="ContentPlaceHolder1_lblPayQtr"[^>]*>([^<]*)<\/span>/)?.[1]?.trim() || '';
-                    const payDate = receiptHtml.match(/id="ContentPlaceHolder1_lblPayDate"[^>]*>([^<]*)<\/span>/)?.[1]?.trim() || '';
-                    const payTrx = receiptHtml.match(/id="ContentPlaceHolder1_lblPayTrx"[^>]*>([^<]*)<\/span>/)?.[1]?.trim() || '';
-                    const payStatus = receiptHtml.match(/id="ContentPlaceHolder1_lblPayStatus"[^>]*>([^<]*)<\/span>/)?.[1]?.trim() || '';
+                    const qMatch = receiptHtml.match(/id="ContentPlaceHolder1_lblPayQtr"[^>]*>([^<]*)<\/span>/);
+                    const dateMatch = receiptHtml.match(/id="ContentPlaceHolder1_lblPayDate"[^>]*>([^<]*)<\/span>/) ||
+                                      receiptHtml.match(/id="ContentPlaceHolder1_lblDate"[^>]*>([^<]*)<\/span>/);
+                    const trxMatch = receiptHtml.match(/id="ContentPlaceHolder1_lblPayTrx"[^>]*>([^<]*)<\/span>/);
+                    const statusMatch = receiptHtml.match(/id="ContentPlaceHolder1_lblPayStatus"[^>]*>([^<]*)<\/span>/);
 
                     const totalGovt = receiptHtml.match(/id="ContentPlaceHolder1_lblTotalGovtFee"[^>]*>([^<]*)<\/span>/)?.[1]?.trim() || '';
                     const totalNonGovt = receiptHtml.match(/id="ContentPlaceHolder1_lblTotalNonGovtFee"[^>]*>([^<]*)<\/span>/)?.[1]?.trim() || '';
                     const grandTotal = receiptHtml.match(/id="ContentPlaceHolder1_lblGrandTotal"[^>]*>([^<]*)<\/span>/)?.[1]?.trim() || '';
 
-                    const rows = [...receiptHtml.matchAll(/<tr id="ContentPlaceHolder1_row([^"]*)">([\s\S]*?)<\/tr>/g)];
+                    const payQtr = qMatch ? qMatch[1].trim() : selectedQuarter;
+                    const payDate = dateMatch ? dateMatch[1].trim() : '';
+                    let payTrx = trxMatch ? trxMatch[1].trim() : '';
+                    payTrx = payTrx.replace(/[\[\]]/g, '').trim();
+                    const payStatus = statusMatch ? statusMatch[1].trim() : 'UNPAID';
+
                     const items: { head: string; amount: string }[] = [];
-                    for (const r of rows) {
-                      const rowId = r[1];
-                      if (rowId.startsWith('Total')) continue;
-                      const headMatch = r[2].match(/class="leftColumnStyle"[^>]*>([\s\S]*?)<\/td>/);
-                      const amtMatch = r[2].match(/class="rightColumnStyle"[^>]*>[\s\S]*?<span[^>]*>([\s\S]*?)<\/span>/);
-                      if (headMatch && amtMatch) {
-                        items.push({
-                          head: headMatch[1].trim().replace(/\s+/g, ' '),
-                          amount: amtMatch[1].trim()
-                        });
+                    const fundWiseIdx = receiptHtml.indexOf('id="ContentPlaceHolder1_pnlFundWise"');
+                    if (fundWiseIdx !== -1) {
+                      const tableIdx = receiptHtml.indexOf('<table', fundWiseIdx);
+                      const endTableIdx = receiptHtml.indexOf('</table>', tableIdx);
+                      if (tableIdx !== -1 && endTableIdx !== -1) {
+                        const tableHtml = receiptHtml.substring(tableIdx, endTableIdx + 8);
+                        const rows = [...tableHtml.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/g)];
+                        for (const r of rows) {
+                          const rowContent = r[1];
+                          if (rowContent.includes('TotalGovtFee') || rowContent.includes('TotalNonGovtFee') || rowContent.includes('GrandTotal')) {
+                            continue;
+                          }
+                          const headMatch = rowContent.match(/class="leftColumnStyle"[^>]*>([\s\S]*?)<\/td>/);
+                          const amtMatch = rowContent.match(/class="rightColumnStyle"[^>]*>[\s\S]*?<span[^>]*>([\s\S]*?)<\/span>/);
+                          if (headMatch && amtMatch) {
+                            const head = headMatch[1].trim().replace(/\s+/g, ' ');
+                            const amt = amtMatch[1].trim();
+                            if (head !== 'আদায়কৃত ফি' && amt !== 'Amount' && amt) {
+                              items.push({ head, amount: amt });
+                            }
+                          }
+                        }
                       }
                     }
 
                     if (payStatus || items.length > 0 || grandTotal) {
                       receipt = {
-                        quarter: payQtr || selectedQuarter,
+                        quarter: payQtr,
                         date: payDate,
                         trxId: payTrx,
-                        status: payStatus || 'PAID',
+                        status: payStatus,
                         items,
                         totalGovt,
                         totalNonGovt,
