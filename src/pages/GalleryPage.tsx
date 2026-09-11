@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
 import { api } from '../services/api';
 
 export const GalleryPage: React.FC = () => {
   const photos = api.getGalleryPhotos();
   const [activePhoto, setActivePhoto] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (activePhoto) {
+      const origOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = origOverflow;
+      };
+    }
+  }, [activePhoto]);
 
   const openLightbox = (url: string) => setActivePhoto(url);
   const closeLightbox = () => setActivePhoto(null);

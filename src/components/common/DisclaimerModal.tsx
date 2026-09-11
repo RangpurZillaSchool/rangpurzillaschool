@@ -17,6 +17,16 @@ export const DisclaimerModal: React.FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      const origOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = origOverflow;
+      };
+    }
+  }, [isOpen]);
+
   const handleDismiss = () => {
     try {
       localStorage.setItem(STORAGE_KEY, 'true');

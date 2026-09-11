@@ -68,6 +68,16 @@ export const StudentPaymentModal: React.FC<StudentPaymentModalProps> = ({
     }
   }, [isOpen, studentId]);
 
+  useEffect(() => {
+    if (isOpen) {
+      const origOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = origOverflow;
+      };
+    }
+  }, [isOpen]);
+
   const handleQuarterChange = async (quarterVal: string) => {
     if (!studentId || quarterVal === activeQuarter) return;
     setActiveQuarter(quarterVal);

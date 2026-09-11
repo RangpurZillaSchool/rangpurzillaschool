@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { ScrollToTop } from './components/common/ScrollToTop';
 import { Layout } from './components/layout/Layout';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
@@ -18,8 +19,10 @@ import { ContactPage } from './pages/ContactPage';
 
 export const App: React.FC = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         
         {/* About Routes */}
@@ -56,6 +59,7 @@ export const App: React.FC = () => {
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
+    </>
   );
 };
 
