@@ -1,7 +1,7 @@
 # রংপুর জিলা স্কুল | Rangpur Zilla School (EIIN: 127372)
 > **Modern Web Portal & Legacy ASP.NET Web Forms Integration Engine**  
 > *Established 1832 • Government Boys' High School, Rangpur, Bangladesh*  
-> 🔗 **GitHub Repository:** [https://github.com/tarangohasan/rangpurzillaschool](https://github.com/tarangohasan/rangpurzillaschool)
+> 🔗 **GitHub Repository:** [https://github.com/rangpurzillaschool/rangpurzillaschool](https://github.com/rangpurzillaschool/rangpurzillaschool)
 
 ---
 
