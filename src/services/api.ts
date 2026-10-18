@@ -51,7 +51,9 @@ export const api = {
     };
 
     try {
-      const res = await fetchWithTimeout('/api/notices');
+      // ?v=2 is a cache-buster that invalidates responses cached by the old
+      // 12-hour policy; bump it whenever the notices payload shape changes.
+      const res = await fetchWithTimeout('/api/notices?v=2');
       if (res.ok) {
         const data = await res.json();
         if (data.notices && data.notices.length > 0) {

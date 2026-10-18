@@ -23,6 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 
+# Wrangler local dev cache
+.wrangler/
+
 # Scratch exploration files
 scratch/
 legacy_home.html

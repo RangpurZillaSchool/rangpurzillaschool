@@ -22,11 +22,15 @@ import { Reveal } from '../components/common/Reveal';
 
 export const HomePage: React.FC = () => {
   const [notices, setNotices] = useState<Notice[]>([]);
+  const [noticeCount, setNoticeCount] = useState(0);
   const [news, setNews] = useState<NewsItem[]>([]);
   const [downloads, setDownloads] = useState<DownloadItem[]>([]);
 
   useEffect(() => {
-    api.getNotices().then(data => setNotices(data.slice(0, 6)));
+    api.getNotices().then(data => {
+      setNotices(data.slice(0, 6));
+      setNoticeCount(data.length);
+    });
     api.getNews().then(data => setNews(data.slice(0, 4)));
     api.getDownloads().then(data => setDownloads(data.slice(0, 4)));
   }, []);
@@ -306,7 +310,7 @@ export const HomePage: React.FC = () => {
                     to="/notices"
                     className="text-xs text-amber-300 hover:text-white transition-colors link-underline-organic"
                   >
-                    সবগুলো ({notices.length > 0 ? notices.length : 494}+)
+                    সবগুলো ({noticeCount > 0 ? noticeCount : 496}+)
                   </Link>
                 </div>
 

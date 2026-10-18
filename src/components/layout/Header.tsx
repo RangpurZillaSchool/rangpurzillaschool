@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, BookOpen, Users, GraduationCap, Bell, FileText, Award, Image, PhoneCall, Github } from 'lucide-react';
+import { Menu, X, ChevronDown, GraduationCap, Github } from 'lucide-react';
 import { schoolInfo } from '../../data/schoolInfo';
 import { ThemeSelector } from '../common/ThemeSelector';
 
@@ -84,17 +84,6 @@ export const Header: React.FC = () => {
           >
             <GraduationCap className="w-3.5 h-3.5" />
             শিক্ষার্থী তথ্য
-          </Link>
-          <Link
-            to="/notices"
-            className="px-3 py-1.5 rounded-md text-xs font-medium bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-300/40 hover:bg-amber-600 hover:text-white transition-all flex items-center gap-1.5 btn-shimmer group"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-            </span>
-            <Bell className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 group-hover:text-white" />
-            নোটিশ বোর্ড
           </Link>
         </div>
 

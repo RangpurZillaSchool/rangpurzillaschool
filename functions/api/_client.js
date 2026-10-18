@@ -7,8 +7,12 @@ export const DEFAULT_CACHE_TTL = 43200; // 12 hours
 export const CACHE_TTL = {
   default: DEFAULT_CACHE_TTL,
   students: DEFAULT_CACHE_TTL,
-  notices: DEFAULT_CACHE_TTL,
-  noticeDetail: DEFAULT_CACHE_TTL,
+  // Notice list & details: 30 minutes so newly published notices appear quickly
+  // (the legacy board is fetched at most twice an hour, so origin load stays tiny).
+  notices: 1800, // 30 minutes
+  noticeDetail: 1800, // 30 minutes
+  // Scanned notice files (.jpg/.pdf) are immutable once published: keep 12 hours.
+  noticeFiles: DEFAULT_CACHE_TTL,
   teachers: DEFAULT_CACHE_TTL,
   news: DEFAULT_CACHE_TTL,
   downloads: DEFAULT_CACHE_TTL,
@@ -21,9 +25,9 @@ let cachedSession = {
   expiresAt: 0
 };
 
-export async function getSessionCookie() {
+export async function getSessionCookie(forceRefresh = false) {
   const now = Date.now();
-  if (cachedSession.cookie && cachedSession.expiresAt > now) {
+  if (!forceRefresh && cachedSession.cookie && cachedSession.expiresAt > now) {
     return cachedSession.cookie;
   }
 
@@ -47,7 +51,7 @@ export async function getSessionCookie() {
     console.error('Failed to acquire ASP.NET session cookie:', err);
   }
 
-  return cachedSession.cookie || '';
+  return forceRefresh ? '' : cachedSession.cookie || '';
 }
 
 export function extractHiddenFields(html) {

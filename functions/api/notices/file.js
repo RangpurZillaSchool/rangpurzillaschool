@@ -47,8 +47,8 @@ export async function onRequest({ request }) {
     candidates.push(targetUrl);
   }
 
-  // 12-Hour Edge Cache + Single-flight coalescing
-  return withEdgeCacheAndCoalescing(request, CACHE_TTL.notices, async () => {
+  // 12-Hour Edge Cache + Single-flight coalescing (scanned files are immutable)
+  return withEdgeCacheAndCoalescing(request, CACHE_TTL.noticeFiles, async () => {
     try {
       let winningRes = null;
       let winningUrl = null;
@@ -133,7 +133,7 @@ p { font-size: 0.875rem; color: #64748b; line-height: 1.5; margin: 0; }
         status: 200,
         headers: {
           'Content-Type': contentType,
-          'Cache-Control': `public, max-age=${CACHE_TTL.notices}, s-maxage=${CACHE_TTL.notices}`,
+          'Cache-Control': `public, max-age=${CACHE_TTL.noticeFiles}, s-maxage=${CACHE_TTL.noticeFiles}`,
           'Access-Control-Allow-Origin': '*',
           'X-Notice-Resolved-Url': winningUrl
         }
