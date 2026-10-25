@@ -118,19 +118,19 @@ export const StudentPaymentModal: React.FC<StudentPaymentModalProps> = ({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 rounded-2xl shadow-2xl max-w-2xl w-full p-5 sm:p-7 space-y-5 relative max-h-[90vh] overflow-y-auto border border-slate-200 dark:border-slate-800 animate-in zoom-in-95 duration-200"
+        className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 rounded-2xl shadow-2xl max-w-2xl w-full p-4 sm:p-7 space-y-4 sm:space-y-5 relative max-h-[90dvh] overflow-y-auto border border-slate-200 dark:border-slate-800 animate-in zoom-in-95 duration-200"
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-institutional-navy/10 dark:bg-sky-950 flex items-center justify-center text-institutional-navy dark:text-sky-400">
-              <CreditCard className="w-5 h-5" />
+        <div className="flex items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3.5 sm:pb-4">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-institutional-navy/10 dark:bg-sky-950 flex items-center justify-center text-institutional-navy dark:text-sky-400 shrink-0">
+              <CreditCard className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
             </div>
-            <div>
-              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 leading-tight font-serif">
+            <div className="min-w-0">
+              <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 leading-tight font-serif truncate">
                 শিক্ষার্থী পেমেন্ট তথ্য (Payment Info)
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 truncate">
                 রংপুর জিলা স্কুল • লাইভ পেমেন্ট ডাটাবেজ
               </p>
             </div>
@@ -138,7 +138,7 @@ export const StudentPaymentModal: React.FC<StudentPaymentModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            className="p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
@@ -190,12 +190,12 @@ export const StudentPaymentModal: React.FC<StudentPaymentModalProps> = ({
                 )}
               </div>
 
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs flex-1 w-full">
-                <div className="col-span-2 flex items-center justify-between">
-                  <div className="text-sm font-bold text-slate-900 dark:text-slate-100">{student.name}</div>
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-x-4 gap-y-1.5 text-xs flex-1 w-full min-w-0">
+                <div className="xs:col-span-2 flex flex-wrap items-center justify-between gap-1.5 pb-1 border-b border-slate-200/60 dark:border-slate-700/60">
+                  <div className="text-sm font-bold text-slate-900 dark:text-slate-100 break-words">{student.name}</div>
                   <button
                     onClick={() => handleCopy(student.id)}
-                    className="inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:text-institutional-navy cursor-pointer"
+                    className="inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:text-institutional-navy cursor-pointer shrink-0"
                     title="Copy ID"
                   >
                     {copiedId ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}

@@ -23,31 +23,31 @@ export const ContactPage: React.FC = () => {
         {/* Contact Info & Office Details (7 cols) */}
         <div className="lg:col-span-6 space-y-6">
           {/* Main Office Card */}
-          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-xs space-y-5">
+          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 sm:p-6 shadow-xs space-y-4 sm:space-y-5">
             <div className="flex items-center gap-2.5 border-b border-slate-100 dark:border-slate-800 pb-3">
-              <Building2 className="w-5 h-5 text-institutional-navy dark:text-sky-400" />
+              <Building2 className="w-5 h-5 text-institutional-navy dark:text-sky-400 shrink-0" />
               <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 font-serif">
                 বিদ্যালয় কার্যালয় ও প্রশাসন
               </h2>
             </div>
 
             <div className="space-y-4 text-xs sm:text-sm">
-              <div className="flex items-start gap-3.5">
+              <div className="flex items-start gap-3 sm:gap-3.5">
                 <div className="w-9 h-9 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
                   <MapPin className="w-4 h-4" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <div className="font-semibold text-slate-900 dark:text-slate-100">ঠিকানা ও ভৌগোলিক অবস্থান</div>
                   <p className="text-slate-600 dark:text-slate-400 mt-0.5 leading-relaxed">{schoolInfo.address.fullBn}</p>
                   <p className="text-slate-400 dark:text-slate-500 text-xs mt-0.5 font-mono">{schoolInfo.address.fullEn}</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3.5">
+              <div className="flex items-start gap-3 sm:gap-3.5">
                 <div className="w-9 h-9 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
                   <Phone className="w-4 h-4" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <div className="font-semibold text-slate-900 dark:text-slate-100">টেলিফোন ও অফিস মোবাইল</div>
                   <p className="mt-0.5">
                     <a
@@ -61,16 +61,16 @@ export const ContactPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3.5">
+              <div className="flex items-start gap-3 sm:gap-3.5">
                 <div className="w-9 h-9 rounded-lg bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 flex items-center justify-center shrink-0 mt-0.5">
                   <Mail className="w-4 h-4" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <div className="font-semibold text-slate-900 dark:text-slate-100">দাপ্তরিক ই-মেইল</div>
                   <p className="mt-0.5">
                     <a
                       href={`mailto:${schoolInfo.contact.email}`}
-                      className="text-institutional-navy dark:text-sky-400 font-mono font-semibold hover:underline"
+                      className="text-institutional-navy dark:text-sky-400 font-mono font-semibold hover:underline break-all"
                     >
                       {schoolInfo.contact.email}
                     </a>
@@ -79,11 +79,11 @@ export const ContactPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3.5">
+              <div className="flex items-start gap-3 sm:gap-3.5">
                 <div className="w-9 h-9 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0 mt-0.5">
                   <Clock className="w-4 h-4" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <div className="font-semibold text-slate-900 dark:text-slate-100">অফিস ও একাডেমিক সময়সূচি</div>
                   <p className="text-slate-600 dark:text-slate-400 mt-0.5 leading-relaxed">
                     রবিবার – বৃহস্পতিবার: সকাল ৯:০০ – বিকাল ৫:০০
@@ -94,21 +94,21 @@ export const ContactPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3.5">
+              <div className="flex items-start gap-3 sm:gap-3.5">
                 <div className="w-9 h-9 rounded-lg bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-400 flex items-center justify-center shrink-0 mt-0.5">
                   <Globe className="w-4 h-4" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <div className="font-semibold text-slate-900 dark:text-slate-100">অফিসিয়াল ওয়েবসাইট</div>
                   <p className="mt-0.5">
                     <a
                       href={schoolInfo.contact.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-institutional-navy dark:text-sky-400 font-mono text-xs font-semibold hover:underline"
+                      className="inline-flex items-center gap-1.5 text-institutional-navy dark:text-sky-400 font-mono text-xs font-semibold hover:underline break-all"
                     >
-                      <span>{schoolInfo.contact.website}</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
+                      <span>{schoolInfo.contact.website.replace(/^https?:\/\//, '')}</span>
+                      <ExternalLink className="w-3.5 h-3.5 shrink-0" />
                     </a>
                   </p>
                 </div>
@@ -225,14 +225,14 @@ export const ContactPage: React.FC = () => {
 
       {/* Official Government Record Table */}
       <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
-        <div className="bg-slate-50 dark:bg-slate-800/80 px-5 py-3.5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <School className="w-4 h-4 text-institutional-navy dark:text-sky-400" />
-            <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100 font-serif">
+        <div className="bg-slate-50 dark:bg-slate-800/80 px-4 sm:px-5 py-3.5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2 flex-wrap">
+          <div className="flex items-center gap-2 min-w-0">
+            <School className="w-4 h-4 text-institutional-navy dark:text-sky-400 shrink-0" />
+            <h2 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 font-serif">
               যোগাযোগ সংক্রান্ত সরকারি তথ্য বিবরণী (অফিসিয়াল ছক)
             </h2>
           </div>
-          <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 px-2.5 py-0.5 rounded border border-slate-200 dark:border-slate-700">
+          <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900 px-2.5 py-0.5 rounded border border-slate-200 dark:border-slate-700 shrink-0">
             EIIN: {schoolInfo.eiin}
           </span>
         </div>
@@ -241,90 +241,90 @@ export const ContactPage: React.FC = () => {
           <table className="w-full text-left text-xs border-collapse">
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 w-1/3 sm:w-1/4 border-r border-slate-100 dark:border-slate-800">
+                <td className="py-2.5 px-3.5 sm:px-5 font-semibold text-slate-700 dark:text-slate-300 w-2/5 sm:w-1/4 border-r border-slate-100 dark:border-slate-800">
                   বিদ্যালয়ের নাম
                 </td>
-                <td className="py-2.5 px-5 text-slate-900 dark:text-slate-100 font-semibold">
+                <td className="py-2.5 px-3.5 sm:px-5 text-slate-900 dark:text-slate-100 font-semibold">
                   {schoolInfo.nameBn}
                 </td>
               </tr>
               <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                <td className="py-2.5 px-3.5 sm:px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
                   গ্রাম/বাড়ী ও সড়কের বিবরণ
                 </td>
-                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200">
+                <td className="py-2.5 px-3.5 sm:px-5 text-slate-800 dark:text-slate-200">
                   {schoolInfo.address.road}
                 </td>
               </tr>
               <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                <td className="py-2.5 px-3.5 sm:px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
                   ওয়ার্ড নম্বর
                 </td>
-                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200 font-mono">
+                <td className="py-2.5 px-3.5 sm:px-5 text-slate-800 dark:text-slate-200 font-mono">
                   ১৯
                 </td>
               </tr>
               <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                <td className="py-2.5 px-3.5 sm:px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
                   ইউনিয়ন/পৌরসভা/সিটি কর্পোরেশন
                 </td>
-                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200">
+                <td className="py-2.5 px-3.5 sm:px-5 text-slate-800 dark:text-slate-200">
                   {schoolInfo.address.city}
                 </td>
               </tr>
               <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                <td className="py-2.5 px-3.5 sm:px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
                   পোস্ট অফিস
                 </td>
-                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200">
+                <td className="py-2.5 px-3.5 sm:px-5 text-slate-800 dark:text-slate-200">
                   {schoolInfo.address.postOffice}
                 </td>
               </tr>
               <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                <td className="py-2.5 px-3.5 sm:px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
                   পোস্ট কোড
                 </td>
-                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200 font-mono">
+                <td className="py-2.5 px-3.5 sm:px-5 text-slate-800 dark:text-slate-200 font-mono">
                   {schoolInfo.address.postCode}
                 </td>
               </tr>
               <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                <td className="py-2.5 px-3.5 sm:px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
                   পুলিশ স্টেশন
                 </td>
-                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200">
+                <td className="py-2.5 px-3.5 sm:px-5 text-slate-800 dark:text-slate-200">
                   {schoolInfo.address.policeStation}
                 </td>
               </tr>
               <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                <td className="py-2.5 px-3.5 sm:px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
                   উপজেলা
                 </td>
-                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200">
+                <td className="py-2.5 px-3.5 sm:px-5 text-slate-800 dark:text-slate-200">
                   {schoolInfo.address.upazila}
                 </td>
               </tr>
               <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                <td className="py-2.5 px-3.5 sm:px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
                   জেলা
                 </td>
-                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200">
+                <td className="py-2.5 px-3.5 sm:px-5 text-slate-800 dark:text-slate-200">
                   {schoolInfo.address.district}
                 </td>
               </tr>
               <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                <td className="py-2.5 px-3.5 sm:px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
                   বিভাগ
                 </td>
-                <td className="py-2.5 px-5 text-slate-800 dark:text-slate-200">
+                <td className="py-2.5 px-3.5 sm:px-5 text-slate-800 dark:text-slate-200">
                   {schoolInfo.address.division}
                 </td>
               </tr>
               <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                <td className="py-2.5 px-3.5 sm:px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
                   টেলিফোন
                 </td>
-                <td className="py-2.5 px-5">
+                <td className="py-2.5 px-3.5 sm:px-5">
                   <a
                     href={`tel:${schoolInfo.contact.phone.replace(/[^0-9+]/g, '')}`}
                     className="font-mono font-bold text-institutional-navy dark:text-sky-400 hover:underline"
@@ -334,10 +334,10 @@ export const ContactPage: React.FC = () => {
                 </td>
               </tr>
               <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                <td className="py-2.5 px-3.5 sm:px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
                   E-Mail
                 </td>
-                <td className="py-2.5 px-5">
+                <td className="py-2.5 px-3.5 sm:px-5 break-all">
                   <a
                     href={`mailto:${schoolInfo.contact.email}`}
                     className="font-mono text-institutional-navy dark:text-sky-400 hover:underline"
@@ -347,10 +347,10 @@ export const ContactPage: React.FC = () => {
                 </td>
               </tr>
               <tr className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
-                <td className="py-2.5 px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
+                <td className="py-2.5 px-3.5 sm:px-5 font-semibold text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800">
                   Website
                 </td>
-                <td className="py-2.5 px-5">
+                <td className="py-2.5 px-3.5 sm:px-5 break-all">
                   <a
                     href={schoolInfo.contact.website}
                     target="_blank"
@@ -358,7 +358,7 @@ export const ContactPage: React.FC = () => {
                     className="font-mono text-institutional-navy dark:text-sky-400 hover:underline inline-flex items-center gap-1.5"
                   >
                     <span>{schoolInfo.contact.website.replace(/^https?:\/\//, '')}</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
+                    <ExternalLink className="w-3.5 h-3.5 shrink-0" />
                   </a>
                 </td>
               </tr>

@@ -40,10 +40,10 @@ export const Header: React.FC = () => {
   return (
     <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50 shadow-xs transition-colors">
       {/* Main Branding Row */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2.5 sm:gap-3.5 group min-w-0">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-3.5 flex items-center justify-between gap-2">
+        <Link to="/" className="flex items-center gap-2.5 sm:gap-3.5 group min-w-0 flex-1">
           {/* Official Monogram */}
-          <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border border-slate-200 dark:border-slate-700 bg-white p-1 flex items-center justify-center shadow-xs group-hover:border-institutional-navy dark:group-hover:border-sky-400 group-hover:scale-105 group-hover:shadow-md transition-all duration-300 shrink-0">
+          <div className="w-11 h-11 sm:w-16 sm:h-16 rounded-full border border-slate-200 dark:border-slate-700 bg-white p-1 flex items-center justify-center shadow-xs group-hover:border-institutional-navy dark:group-hover:border-sky-400 group-hover:scale-105 group-hover:shadow-md transition-all duration-300 shrink-0">
             <img
               src="/school_logo.png"
               alt="রংপুর জিলা স্কুল মনোগ্রাম"
@@ -56,16 +56,16 @@ export const Header: React.FC = () => {
             />
           </div>
 
-          <div className="min-w-0">
-            <div className="flex items-baseline gap-1.5 sm:gap-2 flex-wrap">
-              <h1 className="text-base sm:text-2xl lg:text-3xl font-bold text-institutional-navy dark:text-sky-400 tracking-tight leading-tight font-serif truncate sm:whitespace-normal transition-colors">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-col sm:flex-row sm:items-baseline gap-0 sm:gap-2">
+              <h1 className="text-[17px] xs:text-lg sm:text-2xl lg:text-3xl font-bold text-institutional-navy dark:text-sky-400 tracking-tight leading-snug font-serif truncate transition-colors">
                 {schoolInfo.nameBn}
               </h1>
-              <span className="text-[10px] sm:text-xs lg:text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider font-sans">
+              <span className="text-[10px] sm:text-xs lg:text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider font-sans truncate">
                 {schoolInfo.nameEn}
               </span>
             </div>
-            <p className="text-[11px] sm:text-[13px] text-slate-600 dark:text-slate-400 mt-0.5 flex items-center gap-1.5 sm:gap-2 flex-wrap">
+            <p className="text-[11px] sm:text-[13px] text-slate-600 dark:text-slate-400 mt-0.5 flex items-center gap-1 sm:gap-2 flex-wrap leading-tight">
               <span className="font-medium text-emerald-800 dark:text-emerald-400 whitespace-nowrap">সরকারি বালক উচ্চ বিদ্যালয়</span>
               <span className="text-slate-300 dark:text-slate-600">•</span>
               <span className="whitespace-nowrap">রংপুর সদর, রংপুর</span>
@@ -88,13 +88,14 @@ export const Header: React.FC = () => {
         </div>
 
         {/* Mobile quick theme + menu button */}
-        <div className="flex items-center gap-1.5 lg:hidden ml-2 shrink-0">
+        <div className="flex items-center gap-1.5 lg:hidden shrink-0">
           <ThemeSelector />
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             type="button"
-            className="p-2 rounded-lg text-slate-700 hover:bg-slate-100 hover:text-institutional-navy border border-slate-200 focus:outline-hidden"
+            className="p-2 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-institutional-navy dark:hover:text-sky-400 border border-slate-200 dark:border-slate-700 focus:outline-none transition-colors cursor-pointer"
             aria-label="Toggle navigation menu"
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -316,178 +317,213 @@ export const Header: React.FC = () => {
 
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 pt-3 pb-6 space-y-2 shadow-xl max-h-[85vh] overflow-y-auto">
-          {/* Explicit Student Project Notice */}
-          <div className="p-3 bg-amber-500/10 rounded-lg border border-amber-300/30 text-xs text-amber-950 dark:text-amber-200 space-y-1.5">
-            <div className="font-semibold flex items-center justify-between gap-1.5 text-amber-800 dark:text-amber-300">
-              <span className="flex items-center gap-1.5">
-                <span className="text-sm">🎓</span>
-                <span>শিক্ষার্থী প্রকল্প (Educational Demo)</span>
-              </span>
-              <a
-                href="https://github.com/tarangohasan/rangpurzillaschool"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-amber-600 hover:bg-amber-700 text-white font-medium text-[10px] transition-colors"
-                title="GitHub Repository"
-              >
-                <Github className="w-2.5 h-2.5" />
-                <span>GitHub</span>
-              </a>
+        <>
+          <div
+            onClick={() => setMobileMenuOpen(false)}
+            className="fixed inset-0 top-[60px] bg-slate-950/40 backdrop-blur-xs z-40 lg:hidden animate-in fade-in duration-150"
+            aria-hidden="true"
+          />
+          <div className="lg:hidden absolute top-full left-0 right-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-3.5 sm:px-5 pt-3 pb-6 space-y-2 shadow-2xl max-h-[calc(100dvh-4.5rem)] overflow-y-auto animate-in slide-in-from-top-2 duration-150">
+            {/* Explicit Student Project Notice */}
+            <div className="p-2.5 sm:p-3 bg-amber-500/10 rounded-lg border border-amber-300/30 text-xs text-amber-950 dark:text-amber-200 space-y-1">
+              <div className="font-semibold flex items-center justify-between gap-1.5 text-amber-800 dark:text-amber-300 flex-wrap">
+                <span className="flex items-center gap-1.5">
+                  <span className="text-sm">🎓</span>
+                  <span>শিক্ষার্থী প্রকল্প (Educational Demo)</span>
+                </span>
+                <a
+                  href="https://github.com/tarangohasan/rangpurzillaschool"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-amber-600 hover:bg-amber-700 text-white font-medium text-[10px] transition-colors shrink-0"
+                  title="GitHub Repository"
+                >
+                  <Github className="w-2.5 h-2.5" />
+                  <span>GitHub</span>
+                </a>
+              </div>
+              <p className="text-[11px] text-amber-900/90 dark:text-amber-300/80 leading-relaxed">
+                এই ওয়েবসাইটটি রংপুর জিলা স্কুলের একজন শিক্ষার্থী কর্তৃক শুধুমাত্র শিক্ষামূলক ও প্রযুক্তিগত প্রদর্শনের উদ্দেশ্যে তৈরি করা হয়েছে।
+              </p>
             </div>
-            <p className="text-[11px] text-amber-900/90 dark:text-amber-300/80 leading-relaxed">
-              এই ওয়েবসাইটটি রংপুর জিলা স্কুলের একজন শিক্ষার্থী কর্তৃক শুধুমাত্র শিক্ষামূলক ও প্রযুক্তিগত প্রদর্শনের উদ্দেশ্যে তৈরি করা হয়েছে।
-            </p>
-          </div>
 
-          <Link
-            to="/"
-            onClick={() => setMobileMenuOpen(false)}
-            className={`block px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
-              isActive('/') ? 'bg-institutional-navy dark:bg-sky-600 text-white' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-            }`}
-          >
-            প্রচ্ছদ (Home)
-          </Link>
-
-          <div className="pt-2 pb-1 border-t border-slate-100 dark:border-slate-800 space-y-1">
-            <span className="px-3 text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">পরিচিতি</span>
             <Link
-              to="/about/history"
+              to="/"
               onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md ml-2"
+              className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                isActive('/') ? 'bg-institutional-navy dark:bg-sky-600 text-white font-semibold' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
             >
-              • সংক্ষিপ্ত ইতিহাস (১৮৩২)
+              প্রচ্ছদ (Home)
             </Link>
-            <Link
-              to="/about/at-a-glance"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md ml-2"
-            >
-              • এক নজরে পরিচিতি
-            </Link>
-          </div>
 
-          <Link
-            to="/teachers"
-            onClick={() => setMobileMenuOpen(false)}
-            className={`block px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
-              isActive('/teachers') ? 'bg-institutional-navy dark:bg-sky-600 text-white' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-            }`}
-          >
-            শিক্ষক ও কর্মকর্তা ({schoolInfo.totalTeachers})
-          </Link>
+            <div className="pt-2 pb-1 border-t border-slate-100 dark:border-slate-800 space-y-1">
+              <span className="px-3 text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">পরিচিতি</span>
+              <div className="grid grid-cols-1 xs:grid-cols-2 gap-1 pt-0.5">
+                <Link
+                  to="/about/history"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block px-3 py-2 text-xs sm:text-sm rounded-lg transition-colors ${
+                    isActive('/about/history')
+                      ? 'bg-institutional-navy dark:bg-sky-600 text-white font-semibold'
+                      : 'text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  • সংক্ষিপ্ত ইতিহাস (১৮৩২)
+                </Link>
+                <Link
+                  to="/about/at-a-glance"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block px-3 py-2 text-xs sm:text-sm rounded-lg transition-colors ${
+                    isActive('/about/at-a-glance')
+                      ? 'bg-institutional-navy dark:bg-sky-600 text-white font-semibold'
+                      : 'text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  • এক নজরে পরিচিতি
+                </Link>
+              </div>
+            </div>
 
-          <div className="pt-2 pb-1 border-t border-slate-100 dark:border-slate-800 space-y-1">
-            <span className="px-3 text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">শিক্ষার্থী</span>
-            <Link
-              to="/students"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md ml-2"
-            >
-              • অধ্যয়নরত শিক্ষার্থীর তালিকা
-            </Link>
-            <Link
-              to="/students/statistics"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md ml-2"
-            >
-              • শিক্ষার্থী পরিসংখ্যান
-            </Link>
-            <Link
-              to="/students/payments"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md ml-2"
-            >
-              • বেতন ও অন্যান্য ফি প্রদানের তথ্য
-            </Link>
-          </div>
+            <div className="pt-2 pb-1 border-t border-slate-100 dark:border-slate-800 space-y-1">
+              <span className="px-3 text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">শিক্ষার্থী কর্নার</span>
+              <div className="space-y-1 pt-0.5">
+                <Link
+                  to="/students"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block px-3 py-2 text-xs sm:text-sm rounded-lg transition-colors ${
+                    isActive('/students')
+                      ? 'bg-institutional-navy dark:bg-sky-600 text-white font-semibold'
+                      : 'text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  • অধ্যয়নরত শিক্ষার্থীর তালিকা
+                </Link>
+                <div className="grid grid-cols-1 xs:grid-cols-2 gap-1">
+                  <Link
+                    to="/students/statistics"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block px-3 py-2 text-xs sm:text-sm rounded-lg transition-colors ${
+                      isActive('/students/statistics')
+                        ? 'bg-institutional-navy dark:bg-sky-600 text-white font-semibold'
+                        : 'text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    • শিক্ষার্থী পরিসংখ্যান
+                  </Link>
+                  <Link
+                    to="/students/payments"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block px-3 py-2 text-xs sm:text-sm rounded-lg transition-colors ${
+                      isActive('/students/payments')
+                        ? 'bg-institutional-navy dark:bg-sky-600 text-white font-semibold'
+                        : 'text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    • বেতন ও ফি প্রদানের তথ্য
+                  </Link>
+                </div>
+              </div>
+            </div>
 
-          <Link
-            to="/notices"
-            onClick={() => setMobileMenuOpen(false)}
-            className={`block px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
-              isActive('/notices') ? 'bg-institutional-navy dark:bg-sky-600 text-white' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-            }`}
-          >
-            নোটিশ বোর্ড
-          </Link>
-
-          <Link
-            to="/news"
-            onClick={() => setMobileMenuOpen(false)}
-            className={`block px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
-              isActive('/news') ? 'bg-institutional-navy dark:bg-sky-600 text-white' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-            }`}
-          >
-            সংবাদ ও ঘোষণা
-          </Link>
-
-          <Link
-            to="/downloads"
-            onClick={() => setMobileMenuOpen(false)}
-            className={`block px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
-              isActive('/downloads') ? 'bg-institutional-navy dark:bg-sky-600 text-white' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-            }`}
-          >
-            ডাউনলোড
-          </Link>
-
-          <Link
-            to="/academics/results"
-            onClick={() => setMobileMenuOpen(false)}
-            className={`block px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
-              isActive('/academics/results') ? 'bg-institutional-navy dark:bg-sky-600 text-white' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-            }`}
-          >
-            পাবলিক পরীক্ষার ফলাফল
-          </Link>
-
-          <Link
-            to="/gallery"
-            onClick={() => setMobileMenuOpen(false)}
-            className={`block px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
-              isActive('/gallery') ? 'bg-institutional-navy dark:bg-sky-600 text-white' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-            }`}
-          >
-            ছবির গ্যালারি
-          </Link>
-
-          <Link
-            to="/contact"
-            onClick={() => setMobileMenuOpen(false)}
-            className={`block px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
-              isActive('/contact') ? 'bg-institutional-navy dark:bg-sky-600 text-white' : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
-            }`}
-          >
-            যোগাযোগ
-          </Link>
-
-          {/* National Portal Links in Mobile Drawer */}
-          <div className="pt-3 border-t border-slate-200 dark:border-slate-800 text-xs space-y-1.5">
-            <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">জাতীয় ই-সেবা</span>
-            <div className="grid grid-cols-2 gap-2 pt-1">
-              <a
-                href="http://gsa.teletalk.com.bd"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 flex items-center justify-between text-xs"
+            <div className="pt-2 border-t border-slate-100 dark:border-slate-800 grid grid-cols-2 gap-1.5">
+              <Link
+                to="/teachers"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                  isActive('/teachers') ? 'bg-institutional-navy dark:bg-sky-600 text-white font-semibold' : 'text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
               >
-                <span>ভর্তি আবেদন</span>
-                <span className="text-slate-400">↗</span>
-              </a>
-              <a
-                href="http://www.konnect.edu.bd/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 flex items-center justify-between text-xs"
+                শিক্ষক ও কর্মকর্তা ({schoolInfo.totalTeachers})
+              </Link>
+
+              <Link
+                to="/notices"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                  isActive('/notices') ? 'bg-institutional-navy dark:bg-sky-600 text-white font-semibold' : 'text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
               >
-                <span>কিশোর বাতায়ন</span>
-                <span className="text-slate-400">↗</span>
-              </a>
+                নোটিশ বোর্ড
+              </Link>
+
+              <Link
+                to="/news"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                  isActive('/news') ? 'bg-institutional-navy dark:bg-sky-600 text-white font-semibold' : 'text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
+              >
+                সংবাদ ও ঘোষণা
+              </Link>
+
+              <Link
+                to="/downloads"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                  isActive('/downloads') ? 'bg-institutional-navy dark:bg-sky-600 text-white font-semibold' : 'text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
+              >
+                ডাউনলোড ফরম
+              </Link>
+
+              <Link
+                to="/academics/results"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                  isActive('/academics/results') ? 'bg-institutional-navy dark:bg-sky-600 text-white font-semibold' : 'text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
+              >
+                পরীক্ষার ফলাফল
+              </Link>
+
+              <Link
+                to="/gallery"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                  isActive('/gallery') ? 'bg-institutional-navy dark:bg-sky-600 text-white font-semibold' : 'text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800'
+                }`}
+              >
+                ছবির গ্যালারি
+              </Link>
+            </div>
+
+            <Link
+              to="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors text-center ${
+                isActive('/contact') ? 'bg-institutional-navy dark:bg-sky-600 text-white font-semibold' : 'text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800'
+              }`}
+            >
+              যোগাযোগ ও ঠিকানা (Contact)
+            </Link>
+
+            {/* National Portal Links in Mobile Drawer */}
+            <div className="pt-2.5 border-t border-slate-200 dark:border-slate-800 text-xs space-y-1.5">
+              <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">জাতীয় ই-সেবা</span>
+              <div className="grid grid-cols-2 gap-2 pt-0.5">
+                <a
+                  href="http://gsa.teletalk.com.bd"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 flex items-center justify-between text-xs border border-slate-200/60 dark:border-slate-700"
+                >
+                  <span>ভর্তি আবেদন</span>
+                  <span className="text-slate-400">↗</span>
+                </a>
+                <a
+                  href="http://www.konnect.edu.bd/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 flex items-center justify-between text-xs border border-slate-200/60 dark:border-slate-700"
+                >
+                  <span>কিশোর বাতায়ন</span>
+                  <span className="text-slate-400">↗</span>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </header>
   );

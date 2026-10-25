@@ -240,20 +240,20 @@ export const PaymentHistoryPage: React.FC = () => {
       </div>
 
       {/* Search Container Card */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs p-5 sm:p-6 space-y-5">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs p-4 sm:p-6 space-y-4 sm:space-y-5">
         {/* Mode Toggle Tabs */}
-        <div className="flex items-center justify-between flex-wrap gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
           <div className="flex items-center gap-2">
-            <Search className="w-4.5 h-4.5 text-institutional-navy dark:text-sky-400" />
-            <h2 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
+            <Search className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-institutional-navy dark:text-sky-400 shrink-0" />
+            <h2 className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
               অনুসন্ধান পদ্ধতি নির্বাচন করুন
             </h2>
           </div>
 
-          <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg w-full sm:w-auto">
             <button
               onClick={() => setSearchMode('id')}
-              className={`px-3.5 py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer ${
+              className={`px-3 py-2 sm:py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer text-center ${
                 searchMode === 'id'
                   ? 'bg-white dark:bg-slate-700 text-institutional-navy dark:text-sky-400 font-bold shadow-xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
@@ -263,7 +263,7 @@ export const PaymentHistoryPage: React.FC = () => {
             </button>
             <button
               onClick={() => setSearchMode('cascade')}
-              className={`px-3.5 py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer ${
+              className={`px-3 py-2 sm:py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer text-center ${
                 searchMode === 'cascade'
                   ? 'bg-white dark:bg-slate-700 text-institutional-navy dark:text-sky-400 font-bold shadow-xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
@@ -281,19 +281,19 @@ export const PaymentHistoryPage: React.FC = () => {
               <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
                 শিক্ষার্থী আইডি (Student ID)
               </label>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2">
                 <input
                   type="text"
                   placeholder="উদাঃ 127372261031001"
                   value={studentIdInput}
                   onChange={(e) => setStudentIdInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && fetchPayment(studentIdInput)}
-                  className="flex-1 px-3.5 py-2.5 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-hidden focus:ring-2 focus:ring-institutional-navy/20 dark:focus:ring-sky-500/20 font-mono"
+                  className="flex-1 min-w-0 px-3.5 py-2.5 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-institutional-navy/20 dark:focus:ring-sky-500/20 font-mono"
                 />
                 <button
                   onClick={() => fetchPayment(studentIdInput)}
                   disabled={loadingPayment || !studentIdInput.trim()}
-                  className="px-5 py-2.5 rounded-lg text-xs font-bold text-white bg-institutional-navy dark:bg-sky-600 hover:bg-institutional-navyDark dark:hover:bg-sky-700 disabled:opacity-50 transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer"
+                  className="px-5 py-2.5 rounded-lg text-xs font-bold text-white bg-institutional-navy dark:bg-sky-600 hover:bg-institutional-navyDark dark:hover:bg-sky-700 disabled:opacity-50 transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
                 >
                   {loadingPayment ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -308,7 +308,7 @@ export const PaymentHistoryPage: React.FC = () => {
         ) : (
           /* Mode 2: Cascading Search: Class -> Direct Section -> Roll (Number Input) */
           <div className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 items-end">
               {/* Step 1: Class */}
               <div>
                 <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
@@ -317,7 +317,7 @@ export const PaymentHistoryPage: React.FC = () => {
                 <select
                   value={selectedClass}
                   onChange={(e) => setSelectedClass(e.target.value)}
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-hidden focus:ring-2 focus:ring-institutional-navy/20 dark:focus:ring-sky-500/20"
+                  className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-institutional-navy/20 dark:focus:ring-sky-500/20"
                 >
                   <option value="">-- শ্রেণি নির্বাচন করুন --</option>
                   {classes.map(c => (
@@ -334,7 +334,7 @@ export const PaymentHistoryPage: React.FC = () => {
                 <select
                   value={selectedSectionKey}
                   onChange={(e) => setSelectedSectionKey(e.target.value)}
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-hidden focus:ring-2 focus:ring-institutional-navy/20 dark:focus:ring-sky-500/20"
+                  className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-institutional-navy/20 dark:focus:ring-sky-500/20"
                 >
                   <option value="">-- শাখা নির্বাচন করুন --</option>
                   {sectionOptions.map(sec => (
@@ -346,7 +346,7 @@ export const PaymentHistoryPage: React.FC = () => {
               {/* Step 3: Roll / Student Number Input */}
               <div>
                 <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                  ৪. রোল / শিক্ষার্থী <span className="text-rose-500">*</span>
+                  ৩. রোল নম্বর (Roll) <span className="text-rose-500">*</span>
                 </label>
                 <input
                   type="number"
@@ -430,11 +430,11 @@ export const PaymentHistoryPage: React.FC = () => {
           {/* Row 1: Student Profile Card & Quarter Selection Card */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Student Profile Card */}
-            <div className="lg:col-span-2 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs p-5 sm:p-6 space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+            <div className="lg:col-span-2 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs p-4 sm:p-6 space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
-                  <User className="w-4 h-4 text-institutional-navy dark:text-sky-400" />
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                  <User className="w-4 h-4 text-institutional-navy dark:text-sky-400 shrink-0" />
+                  <h3 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100">
                     শিক্ষার্থীর প্রোফাইল ও তথ্য (Student Info)
                   </h3>
                 </div>
@@ -450,7 +450,7 @@ export const PaymentHistoryPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5">
                 {/* Photo */}
                 <div className="w-24 h-28 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 shrink-0 shadow-2xs">
                   {student.photo ? (
@@ -472,10 +472,10 @@ export const PaymentHistoryPage: React.FC = () => {
                 </div>
 
                 {/* Details Grid */}
-                <div className="grid grid-cols-2 gap-x-6 gap-y-2.5 text-xs flex-1 w-full">
+                <div className="grid grid-cols-1 xs:grid-cols-2 gap-x-4 sm:gap-x-6 gap-y-2.5 text-xs flex-1 w-full min-w-0">
                   <div>
                     <span className="text-slate-500 dark:text-slate-400">শিক্ষার্থীর নাম:</span>
-                    <div className="font-bold text-slate-900 dark:text-slate-100 text-sm mt-0.5">{student.name}</div>
+                    <div className="font-bold text-slate-900 dark:text-slate-100 text-sm mt-0.5 break-words">{student.name}</div>
                   </div>
                   <div>
                     <span className="text-slate-500 dark:text-slate-400">শিক্ষাবর্ষ:</span>
@@ -497,7 +497,7 @@ export const PaymentHistoryPage: React.FC = () => {
                   </div>
                   <div>
                     <span className="text-slate-500 dark:text-slate-400">আইডি নম্বর:</span>
-                    <div className="font-mono text-slate-700 dark:text-slate-300 mt-0.5">{student.id}</div>
+                    <div className="font-mono text-slate-700 dark:text-slate-300 mt-0.5 break-all">{student.id}</div>
                   </div>
                 </div>
               </div>

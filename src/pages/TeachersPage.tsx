@@ -72,38 +72,36 @@ export const TeachersPage: React.FC = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs space-y-3">
-        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+      <div className="bg-white rounded-xl border border-slate-200 p-3.5 sm:p-4 shadow-xs space-y-3">
+        <div className="flex items-center justify-between gap-2 sm:gap-3">
           {/* Search box */}
-          <div className="relative flex-grow">
+          <div className="relative flex-1 min-w-0">
             <input
               type="text"
-              placeholder="শিক্ষকের নাম, পদবী, পিডিএস আইডি বা জেলা দিয়ে খুঁজুন..."
+              placeholder="নাম, পদবী, পিডিএস আইডি বা জেলা..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-300 rounded-md pl-9 pr-4 py-2 text-xs sm:text-sm focus:outline-hidden focus:ring-2 focus:ring-institutional-navy focus:bg-white"
+              className="w-full bg-slate-50 border border-slate-300 rounded-md pl-9 pr-3 py-2 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-institutional-navy focus:bg-white"
             />
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
           </div>
 
           {/* View Toggles */}
-          <div className="flex items-center gap-2 self-end md:self-auto">
-            <div className="flex items-center bg-slate-100 border border-slate-200 rounded-md p-0.5">
-              <button
-                onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded-sm ${viewMode === 'grid' ? 'bg-white shadow-xs text-institutional-navy font-semibold' : 'text-slate-600 hover:text-slate-900'}`}
-                title="কার্ড ভিউ"
-              >
-                <LayoutGrid className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setViewMode('table')}
-                className={`p-1.5 rounded-sm ${viewMode === 'table' ? 'bg-white shadow-xs text-institutional-navy font-semibold' : 'text-slate-600 hover:text-slate-900'}`}
-                title="টেবিল ভিউ"
-              >
-                <List className="w-4 h-4" />
-              </button>
-            </div>
+          <div className="flex items-center bg-slate-100 border border-slate-200 rounded-md p-0.5 shrink-0">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`p-1.5 rounded-sm cursor-pointer ${viewMode === 'grid' ? 'bg-white shadow-xs text-institutional-navy font-semibold' : 'text-slate-600 hover:text-slate-900'}`}
+              title="কার্ড ভিউ"
+            >
+              <LayoutGrid className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setViewMode('table')}
+              className={`p-1.5 rounded-sm cursor-pointer ${viewMode === 'table' ? 'bg-white shadow-xs text-institutional-navy font-semibold' : 'text-slate-600 hover:text-slate-900'}`}
+              title="টেবিল ভিউ"
+            >
+              <List className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
@@ -136,15 +134,15 @@ export const TeachersPage: React.FC = () => {
         </div>
       ) : viewMode === 'grid' ? (
         /* Card Grid View */
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4">
           {filteredTeachers.map((teacher) => (
             <div
               key={teacher.pdsId}
-              className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs hover:border-institutional-navy hover:shadow-md transition-all flex flex-col justify-between group"
+              className="bg-white rounded-xl border border-slate-200 p-4 sm:p-5 shadow-xs hover:border-institutional-navy hover:shadow-md transition-all flex flex-col justify-between group"
             >
-              <div>
-                {/* Photo & Badge */}
-                <div className="flex items-start justify-between gap-3 mb-3">
+              <div className="flex sm:block items-start gap-3.5">
+                {/* Photo & Desktop Badge */}
+                <div className="flex items-start justify-between gap-3 sm:mb-3 shrink-0">
                   <div className="w-16 h-20 rounded-md overflow-hidden bg-slate-100 border border-slate-200 shrink-0">
                     <img
                       src={teacher.photo || ''}
@@ -158,7 +156,7 @@ export const TeachersPage: React.FC = () => {
                     />
                   </div>
 
-                  <div className="text-right">
+                  <div className="hidden sm:block text-right">
                     <span className="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-sm border border-slate-200">
                       PDS: {teacher.pdsId}
                     </span>
@@ -169,17 +167,27 @@ export const TeachersPage: React.FC = () => {
                 </div>
 
                 {/* Name & Designation */}
-                <h3 className="text-sm font-bold text-slate-900 group-hover:text-institutional-navy leading-snug">
-                  {teacher.name}
-                </h3>
-                <p className="text-xs font-semibold text-emerald-800 mt-1">
-                  {teacher.designation}
-                </p>
-                {teacher.originalPost !== teacher.designation && (
-                  <p className="text-[11px] text-slate-500 mt-0.5">
-                    মূলপদ: {teacher.originalPost}
+                <div className="min-w-0 flex-1">
+                  <div className="flex sm:hidden items-center justify-between gap-1.5 mb-1">
+                    <span className="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded-sm border border-slate-200">
+                      PDS: {teacher.pdsId}
+                    </span>
+                    <span className="text-[11px] text-slate-400 font-mono">
+                      #{teacher.sl}
+                    </span>
+                  </div>
+                  <h3 className="text-sm font-bold text-slate-900 group-hover:text-institutional-navy leading-snug">
+                    {teacher.name}
+                  </h3>
+                  <p className="text-xs font-semibold text-emerald-800 mt-1">
+                    {teacher.designation}
                   </p>
-                )}
+                  {teacher.originalPost !== teacher.designation && (
+                    <p className="text-[11px] text-slate-500 mt-0.5">
+                      মূলপদ: {teacher.originalPost}
+                    </p>
+                  )}
+                </div>
               </div>
 
               {/* Metadata */}

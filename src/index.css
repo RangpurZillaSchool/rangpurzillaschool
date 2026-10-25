@@ -207,19 +207,28 @@
     --theme-accent: #b45309;
   }
 
+  html {
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
     /* Inter for English, Purno for all Bengali text */
     font-family: 'Inter', 'Purno', system-ui, -apple-system, sans-serif;
     background-color: var(--theme-bg);
     color: var(--theme-text);
-    antialiased: true;
+    overflow-x: clip;
+    max-width: 100vw;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     transition: background-color 0.2s ease, color 0.2s ease;
   }
 }
 
 /* Universal dark & colored theme card adaptations */
-  [data-theme]:not([data-theme="light"]) .bg-white {
+  [data-theme]:not([data-theme="light"]) .bg-white,
+  [data-theme]:not([data-theme="light"]) .dark\:bg-slate-900,
+  [data-theme]:not([data-theme="light"]) .dark\:bg-slate-950 {
     background-color: var(--theme-surface) !important;
     color: var(--theme-text);
   }
@@ -233,13 +242,19 @@
   [data-theme]:not([data-theme="light"]) .bg-slate-100,
   [data-theme]:not([data-theme="light"]) .bg-slate-100\/80,
   [data-theme]:not([data-theme="light"]) .bg-slate-100\/90,
-  [data-theme]:not([data-theme="light"]) .bg-slate-200 {
+  [data-theme]:not([data-theme="light"]) .bg-slate-200,
+  [data-theme]:not([data-theme="light"]) .dark\:bg-slate-800,
+  [data-theme]:not([data-theme="light"]) .dark\:bg-slate-800\/60,
+  [data-theme]:not([data-theme="light"]) .dark\:bg-slate-800\/80 {
     background-color: var(--theme-surface-alt) !important;
   }
 
   [data-theme]:not([data-theme="light"]) .border-slate-200,
   [data-theme]:not([data-theme="light"]) .border-slate-100,
-  [data-theme]:not([data-theme="light"]) .border-slate-300 {
+  [data-theme]:not([data-theme="light"]) .border-slate-300,
+  [data-theme]:not([data-theme="light"]) .dark\:border-slate-800,
+  [data-theme]:not([data-theme="light"]) .dark\:border-slate-700,
+  [data-theme]:not([data-theme="light"]) .dark\:border-slate-700\/60 {
     border-color: var(--theme-border) !important;
   }
 
@@ -582,7 +597,9 @@
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  padding-block: 0.08em;
   animation: text-shimmer 6s ease-in-out infinite;
 }
 
@@ -596,8 +613,24 @@
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  padding-block: 0.08em;
   animation: text-shimmer 5s ease-in-out infinite;
+}
+
+/* Hide scrollbars on horizontal chip lists while preserving touch scroll */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.focus\:outline-hidden:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 
 /* Organic Cards & Micro-interactions */
@@ -660,7 +693,8 @@
 /* Organic Link Underline (GPU composited transform) */
 .link-underline-organic {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
 }
 
 .link-underline-organic::after {

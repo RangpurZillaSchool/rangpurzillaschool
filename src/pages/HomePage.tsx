@@ -13,7 +13,8 @@ import {
   CheckCircle,
   ExternalLink,
   Clock,
-  ArrowRight
+  ArrowRight,
+  Landmark
 } from 'lucide-react';
 import { schoolInfo } from '../data/schoolInfo';
 import { api } from '../services/api';
@@ -36,9 +37,9 @@ export const HomePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="space-y-10 pb-16">
+    <div className="space-y-8 sm:space-y-10 pb-12 sm:pb-16">
       {/* 1. Hero Section - Institutional & Trustworthy */}
-      <section className="relative bg-gradient-to-b from-institutional-navy to-institutional-navyDark text-white pt-10 pb-14 sm:pt-14 sm:pb-20 px-4 sm:px-6 overflow-hidden">
+      <section className="relative bg-gradient-to-b from-institutional-navy to-institutional-navyDark text-white pt-7 pb-12 sm:pt-14 sm:pb-20 px-4 sm:px-6 overflow-hidden">
         {/* Organic Aurora Ambient Orbs */}
         <div className="absolute -top-28 -left-28 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl pointer-events-none animate-aurora" />
         <div className="absolute top-1/2 -right-28 w-[30rem] h-[30rem] bg-sky-500/15 rounded-full blur-3xl pointer-events-none animate-aurora-reverse" />
@@ -48,54 +49,56 @@ export const HomePage: React.FC = () => {
         <div className="absolute inset-0 opacity-5 bg-[linear-gradient(to_right,#ffffff10_1px,transparent_1px),linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] bg-[size:24px_24px]"></div>
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
             {/* Left 8 Cols: Main Pitch */}
-            <div className="lg:col-span-8 space-y-4 sm:space-y-5">
+            <div className="lg:col-span-8 space-y-3.5 sm:space-y-5">
               <div className="flex flex-wrap items-center gap-2">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold backdrop-blur-xs animate-float-slow">
-                  <span className="relative flex h-2 w-2">
+                <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-[11px] sm:text-xs font-semibold backdrop-blur-xs sm:animate-float-slow">
+                  <span className="relative flex h-2 w-2 shrink-0">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                   </span>
                   <span>ঐতিহ্যের ১৯৪ বছর | ১৮৩২ — ২০২৬</span>
                 </div>
                 {/* Explicit Student Project Notice Badge */}
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-400/10 border border-blue-400/30 text-blue-200 text-xs font-medium backdrop-blur-xs">
+                <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-blue-400/10 border border-blue-400/30 text-blue-200 text-[11px] sm:text-xs font-medium backdrop-blur-xs">
                   <span>🎓</span>
-                  <span>শিক্ষার্থী প্রকল্প (Educational Purpose Only)</span>
+                  <span>শিক্ষার্থী প্রকল্প (Educational Demo)</span>
                 </div>
               </div>
 
-              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white font-serif leading-tight">
+              <h1 className="text-2xl xs:text-[26px] sm:text-4xl lg:text-5xl font-bold tracking-tight text-white font-serif leading-snug sm:leading-tight">
                 <span className="animate-shimmer-text inline-block">উত্তরবঙ্গের শ্রেষ্ঠ বিদ্যাপীঠ</span> <br />
-                <span className="animate-shimmer-gold inline-block mt-1">{schoolInfo.nameBn}</span>
+                <span className="animate-shimmer-gold inline-block mt-0.5 sm:mt-1">{schoolInfo.nameBn}</span>
               </h1>
 
               <p className="text-slate-200 text-xs sm:text-base leading-relaxed max-w-2xl font-light">
                 ১৮৩২ খ্রিষ্টাব্দে তৎকালীন ব্রিটিশ ভারতের গভর্নর লর্ড উইলিয়াম বেন্টিঙ্ক কর্তৃক প্রতিষ্ঠিত। শতবর্ষের ঐতিহ্য, সুশৃঙ্খল পরিবেশ ও আধুনিক পাঠদানের সমন্বয়ে মেধা ও নৈতিকতা বিকাশের আদর্শ শিক্ষা প্রতিষ্ঠান।
               </p>
 
-              {/* Action Buttons - Mobile Responsive Stack */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 pt-1 sm:pt-2">
+              {/* Action Buttons - Mobile Responsive Stack & Premium Buttons */}
+              <div className="flex flex-col xs:flex-row xs:flex-wrap items-stretch xs:items-center gap-2.5 sm:gap-3 pt-1 sm:pt-2">
                 <Link
                   to="/students"
-                  className="px-5 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2 text-center btn-shimmer group"
+                  className="w-full xs:w-auto inline-flex items-center justify-center gap-2 px-4.5 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold text-sm transition-all shadow-md btn-shimmer whitespace-nowrap shrink-0 group"
                 >
-                  <GraduationCap className="w-4 h-4 transition-transform group-hover:scale-110" />
-                  অধ্যয়নরত শিক্ষার্থী তালিকা
+                  <GraduationCap className="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" />
+                  <span>অধ্যয়নরত শিক্ষার্থী তালিকা</span>
                 </Link>
                 <Link
                   to="/notices"
-                  className="px-5 py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold text-sm transition-all border border-white/20 flex items-center justify-center gap-2 text-center btn-shimmer group backdrop-blur-xs"
+                  className="w-full xs:w-auto inline-flex items-center justify-center gap-2 px-4.5 py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold text-sm transition-all border border-white/20 backdrop-blur-xs btn-shimmer whitespace-nowrap shrink-0 group"
                 >
-                  <FileText className="w-4 h-4 transition-transform group-hover:scale-110" />
-                  সকল নোটিশ দেখুন
+                  <FileText className="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" />
+                  <span>সকল নোটিশ দেখুন</span>
                 </Link>
                 <Link
                   to="/about/history"
-                  className="px-4 py-2.5 rounded-lg bg-white/5 hover:bg-white/10 sm:bg-transparent text-slate-200 hover:text-white text-sm font-medium transition-all flex items-center justify-center gap-1.5 text-center border border-white/10 sm:border-transparent group link-underline-organic"
+                  className="w-full xs:w-auto inline-flex items-center justify-center gap-2 px-4.5 py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold text-sm transition-all border border-white/20 backdrop-blur-xs btn-shimmer whitespace-nowrap shrink-0 group"
                 >
-                  <span>বিদ্যালয়ের ইতিহাস</span> <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  <Landmark className="w-4 h-4 text-amber-300 shrink-0 group-hover:scale-110 transition-transform" />
+                  <span>বিদ্যালয়ের ইতিহাস</span>
+                  <ChevronRight className="w-3.5 h-3.5 opacity-80 shrink-0 group-hover:translate-x-0.5 transition-transform" />
                 </Link>
               </div>
             </div>
@@ -202,24 +205,24 @@ export const HomePage: React.FC = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Left Column: Headmaster's Desk + Brief History */}
-          <div className="lg:col-span-8 space-y-8">
+          <div className="lg:col-span-8 space-y-6 sm:space-y-8">
             {/* Principal / Headmaster Message Card */}
             <Reveal delay={150} direction="up">
-              <div className="bg-white rounded-xl border border-slate-200 p-6 sm:p-7 shadow-xs card-organic group/card">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-5">
+              <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-7 shadow-xs card-organic group/card">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-3.5 sm:pb-4 mb-4 sm:mb-5">
                   <div>
                     <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-sm inline-flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
                       প্রধান শিক্ষকের বাণী
                     </span>
-                    <h2 className="text-xl font-bold text-slate-900 font-serif mt-1 group-hover/card:text-institutional-navy transition-colors">
+                    <h2 className="text-lg sm:text-xl font-bold text-slate-900 font-serif mt-1 group-hover/card:text-institutional-navy transition-colors">
                       জ্ঞান, শৃঙ্খলা ও নেতৃত্বের সূতিকাগার
                     </h2>
                   </div>
                   <Building className="w-6 h-6 text-slate-300 hidden sm:block transition-transform group-hover/card:scale-110 group-hover/card:text-institutional-navy" />
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-6 items-start">
+                <div className="flex flex-col sm:flex-row gap-5 sm:gap-6 items-start">
                   <div className="shrink-0 text-center mx-auto sm:mx-0">
                     <div className="w-28 h-36 rounded-lg overflow-hidden border-2 border-slate-200 shadow-sm bg-slate-100 mx-auto transition-all duration-300 group-hover/card:border-institutional-navy/40 group-hover/card:shadow-md">
                       <img
@@ -240,7 +243,7 @@ export const HomePage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="space-y-3 text-slate-700 text-sm leading-relaxed text-justify">
+                  <div className="space-y-3 text-slate-700 text-sm leading-relaxed text-left sm:text-justify">
                     <p>
                       {schoolInfo.headmaster.message}
                     </p>
@@ -260,18 +263,18 @@ export const HomePage: React.FC = () => {
 
             {/* School History Highlights */}
             <Reveal delay={200} direction="up">
-              <div className="bg-white rounded-xl border border-slate-200 p-6 sm:p-7 shadow-xs space-y-4 card-organic">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                  <h2 className="text-lg font-bold text-slate-900 font-serif flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-institutional-navy" />
-                    সংক্ষিপ্ত ইতিহাস ও প্রেক্ষাপট
+              <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-7 shadow-xs space-y-4 card-organic">
+                <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                  <h2 className="text-base sm:text-lg font-bold text-slate-900 font-serif flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-institutional-navy shrink-0" />
+                    <span>সংক্ষিপ্ত ইতিহাস ও প্রেক্ষাপট</span>
                   </h2>
-                  <Link to="/about/history" className="text-xs font-semibold text-institutional-navy link-underline-organic">
+                  <Link to="/about/history" className="text-xs font-semibold text-institutional-navy link-underline-organic shrink-0">
                     সম্পূর্ণ ইতিহাস
                   </Link>
                 </div>
 
-                <div className="space-y-3 text-slate-700 text-sm leading-relaxed text-justify">
+                <div className="space-y-3 text-slate-700 text-sm leading-relaxed text-left sm:text-justify">
                   {schoolInfo.historyNarrative.slice(0, 3).map((paragraph, idx) => (
                     <p key={idx}>{paragraph}</p>
                   ))}

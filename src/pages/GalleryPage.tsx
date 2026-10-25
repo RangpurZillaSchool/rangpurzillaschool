@@ -63,12 +63,12 @@ export const GalleryPage: React.FC = () => {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 sm:gap-4">
         {photos.map((photoUrl, index) => (
           <div
             key={index}
             onClick={() => openLightbox(photoUrl)}
-            className="group relative aspect-4/3 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shadow-xs cursor-pointer hover:shadow-md transition-all"
+            className="group relative aspect-[4/3] rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shadow-xs cursor-pointer hover:shadow-md transition-all"
           >
             <img
               src={photoUrl}
@@ -95,44 +95,44 @@ export const GalleryPage: React.FC = () => {
       {activePhoto && (
         <div
           onClick={closeLightbox}
-          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 backdrop-blur-xs"
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-3 sm:p-4 backdrop-blur-xs"
         >
           <button
             onClick={closeLightbox}
-            className="absolute top-4 right-4 p-2 text-white/80 hover:text-white rounded-full bg-white/10 hover:bg-white/20 transition-all cursor-pointer"
+            className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 p-2 text-white/90 hover:text-white rounded-full bg-black/50 hover:bg-black/70 border border-white/15 transition-all cursor-pointer"
             aria-label="Close lightbox"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
           <button
             onClick={prevPhoto}
-            className="absolute left-4 top-1/2 -translate-y-1/2 p-3 text-white/80 hover:text-white rounded-full bg-white/10 hover:bg-white/20 transition-all cursor-pointer"
+            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-3 text-white/90 hover:text-white rounded-full bg-black/50 hover:bg-black/70 border border-white/15 transition-all cursor-pointer"
             aria-label="Previous photo"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
           <div
             onClick={(e) => e.stopPropagation()}
-            className="max-w-4xl max-h-[85vh] rounded-lg overflow-hidden"
+            className="max-w-4xl max-h-[85dvh] rounded-lg overflow-hidden"
           >
             <img
               src={activePhoto}
               alt="গ্যালারি দৃশ্য"
-              className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+              className="max-w-full max-h-[80dvh] sm:max-h-[85dvh] object-contain rounded-lg shadow-2xl mx-auto"
             />
-            <div className="text-center text-xs text-white/70 mt-2 font-mono">
+            <div className="text-center text-xs text-white/80 mt-2 font-mono">
               ছবি {currentIndex + 1} / {photos.length}
             </div>
           </div>
 
           <button
             onClick={nextPhoto}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-3 text-white/80 hover:text-white rounded-full bg-white/10 hover:bg-white/20 transition-all cursor-pointer"
+            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-3 text-white/90 hover:text-white rounded-full bg-black/50 hover:bg-black/70 border border-white/15 transition-all cursor-pointer"
             aria-label="Next photo"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
         </div>
       )}

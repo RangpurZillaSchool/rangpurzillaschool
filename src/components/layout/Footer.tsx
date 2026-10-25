@@ -7,7 +7,7 @@ export const Footer: React.FC = () => {
   return (
     <footer className="bg-institutional-navyDark text-slate-300 border-t border-institutional-navy text-sm mt-auto">
       {/* Upper Footer: Columns */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7 sm:gap-8">
         {/* Col 1: Institutional Identity */}
         <div>
           <div className="flex items-center gap-3 mb-4">
@@ -194,16 +194,16 @@ export const Footer: React.FC = () => {
       {/* Explicit Student Creator & Educational Purpose Disclaimer Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8">
         <div className="p-4 sm:p-5 rounded-xl bg-slate-900/90 border border-amber-400/30 text-xs text-slate-300 shadow-md">
-          <div className="flex items-start gap-3.5">
-            <div className="p-2.5 rounded-lg bg-amber-400/10 text-amber-400 shrink-0 mt-0.5">
+          <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-3.5">
+            <div className="p-2 sm:p-2.5 rounded-lg bg-amber-400/10 text-amber-400 shrink-0">
               <GraduationCap className="w-5 h-5" />
             </div>
-            <div className="space-y-1.5 min-w-0">
+            <div className="space-y-1.5 min-w-0 w-full">
               <div className="flex items-center gap-2 flex-wrap">
-                <h4 className="font-bold text-amber-300 text-sm">
+                <h4 className="font-bold text-amber-300 text-xs sm:text-sm leading-snug">
                   শিক্ষামূলক প্রদর্শনী প্রকল্প বিষয়ক ঘোষণা (Educational Purpose Disclaimer)
                 </h4>
-                <span className="px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-[10px] font-semibold">
+                <span className="px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-[10px] font-semibold shrink-0">
                   Student Project • Not Official
                 </span>
               </div>
@@ -218,11 +218,11 @@ export const Footer: React.FC = () => {
                   href="https://github.com/tarangohasan/rangpurzillaschool"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium text-xs transition-colors border border-white/20"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium text-xs transition-colors border border-white/20 max-w-full"
                 >
-                  <Github className="w-3.5 h-3.5 text-amber-400" />
-                  <span>GitHub Repository: tarangohasan/rangpurzillaschool</span>
-                  <ExternalLink className="w-3 h-3 opacity-60" />
+                  <Github className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <span className="truncate">GitHub: tarangohasan/rangpurzillaschool</span>
+                  <ExternalLink className="w-3 h-3 opacity-60 shrink-0" />
                 </a>
               </div>
             </div>

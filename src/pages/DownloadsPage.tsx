@@ -65,82 +65,122 @@ export const DownloadsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Table */}
+      {/* List / Table */}
       <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
         {loading ? (
-          <div className="p-12 text-center text-sm text-slate-600">
+          <div className="p-10 sm:p-12 text-center text-sm text-slate-600">
             ডাউনলোড তালিকা লোড হচ্ছে...
           </div>
         ) : displayed.length === 0 ? (
-          <div className="p-12 text-center text-sm text-slate-600">
+          <div className="p-10 sm:p-12 text-center text-sm text-slate-600">
             কোন ফাইল পাওয়া যায়নি।
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
-                <tr>
-                  <th className="py-3 px-4 w-16 text-center">ক্রমিক</th>
-                  <th className="py-3 px-4 w-32">তারিখ</th>
-                  <th className="py-3 px-4">নথির শিরোনাম ও বিষয়</th>
-                  <th className="py-3 px-4 w-32 text-right">ডাউনলোড</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {displayed.map((item, idx) => (
-                  <tr key={idx} className="hover:bg-slate-50/80 transition-colors group">
-                    <td className="py-3 px-4 text-center font-mono text-slate-400">
-                      {item.sl}
-                    </td>
-                    <td className="py-3 px-4 font-mono text-slate-500 whitespace-nowrap">
-                      <div className="flex items-center gap-1.5">
-                        <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                        <span>{item.date}</span>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4 font-semibold text-slate-900 group-hover:text-blue-700 leading-snug">
-                      {item.title}
-                    </td>
-                    <td className="py-3 px-4 text-right whitespace-nowrap">
-                      {item.fileUrl ? (
-                        <a
-                          href={item.fileUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-institutional-navy hover:bg-institutional-navyDark text-white text-[11px] font-medium transition-colors shadow-xs"
-                        >
-                          <Download className="w-3 h-3" />
-                          <span>পিডিএফ</span>
-                        </a>
-                      ) : (
-                        <span className="text-slate-400 text-[11px]">সংযুক্ত নেই</span>
-                      )}
-                    </td>
+          <>
+            {/* Mobile Card List View (< md) */}
+            <div className="md:hidden divide-y divide-slate-100 dark:divide-slate-800">
+              {displayed.map((item, idx) => (
+                <div key={idx} className="p-3.5 sm:p-4 hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors space-y-2.5">
+                  <div className="flex items-center justify-between gap-2 text-[11px] font-mono text-slate-500">
+                    <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold">
+                      #{item.sl}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3 text-slate-400" />
+                      <span>{item.date}</span>
+                    </span>
+                  </div>
+
+                  <div className="font-semibold text-slate-900 dark:text-slate-100 text-xs sm:text-sm leading-snug">
+                    {item.title}
+                  </div>
+
+                  <div className="pt-0.5 flex justify-end">
+                    {item.fileUrl ? (
+                      <a
+                        href={item.fileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-institutional-navy hover:bg-institutional-navyDark text-white text-[11px] font-medium transition-colors shadow-xs"
+                      >
+                        <Download className="w-3 h-3" />
+                        <span>পিডিএফ ডাউনলোড</span>
+                      </a>
+                    ) : (
+                      <span className="text-slate-400 text-[11px]">সংযুক্ত নেই</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table View (md+) */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                  <tr>
+                    <th className="py-3 px-4 w-16 text-center">ক্রমিক</th>
+                    <th className="py-3 px-4 w-32">তারিখ</th>
+                    <th className="py-3 px-4">নথির শিরোনাম ও বিষয়</th>
+                    <th className="py-3 px-4 w-32 text-right">ডাউনলোড</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {displayed.map((item, idx) => (
+                    <tr key={idx} className="hover:bg-slate-50/80 transition-colors group">
+                      <td className="py-3 px-4 text-center font-mono text-slate-400">
+                        {item.sl}
+                      </td>
+                      <td className="py-3 px-4 font-mono text-slate-500 whitespace-nowrap">
+                        <div className="flex items-center gap-1.5">
+                          <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                          <span>{item.date}</span>
+                        </div>
+                      </td>
+                      <td className="py-3 px-4 font-semibold text-slate-900 group-hover:text-blue-700 leading-snug">
+                        {item.title}
+                      </td>
+                      <td className="py-3 px-4 text-right whitespace-nowrap">
+                        {item.fileUrl ? (
+                          <a
+                            href={item.fileUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-institutional-navy hover:bg-institutional-navyDark text-white text-[11px] font-medium transition-colors shadow-xs"
+                          >
+                            <Download className="w-3 h-3" />
+                            <span>পিডিএফ</span>
+                          </a>
+                        ) : (
+                          <span className="text-slate-400 text-[11px]">সংযুক্ত নেই</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between text-xs text-slate-600">
-            <div>
+          <div className="p-3.5 sm:p-4 border-t border-slate-100 bg-slate-50 flex flex-col xs:flex-row items-center justify-between gap-2.5 text-xs text-slate-600">
+            <div className="text-center xs:text-left">
               পৃষ্ঠা <strong>{currentPage}</strong> / <strong>{totalPages}</strong> (মোট {filtered.length} টি নথি)
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5 w-full xs:w-auto justify-center">
               <button
                 onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
                 disabled={currentPage === 1}
-                className="px-3 py-1.5 rounded-sm bg-white border border-slate-200 hover:bg-slate-100 disabled:opacity-50 text-xs font-semibold"
+                className="flex-1 xs:flex-initial px-3 py-1.5 rounded-sm bg-white border border-slate-200 hover:bg-slate-100 disabled:opacity-50 text-xs font-semibold cursor-pointer"
               >
                 পূর্ববর্তী
               </button>
               <button
                 onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className="px-3 py-1.5 rounded-sm bg-white border border-slate-200 hover:bg-slate-100 disabled:opacity-50 text-xs font-semibold"
+                className="flex-1 xs:flex-initial px-3 py-1.5 rounded-sm bg-white border border-slate-200 hover:bg-slate-100 disabled:opacity-50 text-xs font-semibold cursor-pointer"
               >
                 পরবর্তী
               </button>

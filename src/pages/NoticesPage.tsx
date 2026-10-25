@@ -68,90 +68,139 @@ export const NoticesPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Notices Table */}
+      {/* Notices List / Table */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
         {loading ? (
-          <div className="p-12 text-center text-sm text-slate-600">
+          <div className="p-10 sm:p-12 text-center text-sm text-slate-600">
             নোটিশ বোর্ড লোড হচ্ছে...
           </div>
         ) : displayedNotices.length === 0 ? (
-          <div className="p-12 text-center text-sm text-slate-600">
+          <div className="p-10 sm:p-12 text-center text-sm text-slate-600">
             কোন নোটিশ পাওয়া যায়নি।
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
-                <tr>
-                  <th className="py-3 px-4 w-16 text-center">ক্রমিক</th>
-                  <th className="py-3 px-4 w-32">প্রকাশের তারিখ</th>
-                  <th className="py-3 px-4">নোটিশের বিষয় / শিরোনাম</th>
-                  <th className="py-3 px-4 w-36 text-right">সংযুক্তি / বিবরণ</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {displayedNotices.map((notice) => (
-                  <tr key={notice.id} className="hover:bg-slate-50/80 transition-colors group">
-                    <td className="py-3 px-4 text-center font-mono text-slate-400 font-medium">
-                      {notice.sl}
-                    </td>
-                    <td className="py-3 px-4 text-slate-600 font-mono whitespace-nowrap">
-                      <div className="flex items-center gap-1.5">
-                        <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                        <span>{notice.date}</span>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4 font-semibold text-slate-900 group-hover:text-institutional-navy text-sm leading-snug">
-                      <Link to={`/notices/${notice.id}`} className="hover:underline">
-                        {notice.title}
-                      </Link>
-                    </td>
-                    <td className="py-3 px-4 text-right whitespace-nowrap">
-                      <div className="flex items-center justify-end gap-2">
-                        <Link
-                          to={`/notices/${notice.id}`}
-                          className="px-2.5 py-1 rounded-sm bg-slate-100 hover:bg-institutional-navy hover:text-white text-slate-700 text-[11px] font-medium transition-colors"
-                        >
-                          বিস্তারিত
-                        </Link>
-                        {notice.attachmentUrl && (
-                          <a
-                            href={notice.attachmentUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-1 rounded-sm text-slate-500 hover:text-blue-800 hover:bg-blue-100/70 dark:hover:bg-blue-950/60 dark:hover:text-blue-300 transition-colors"
-                            title="ফাইল ডাউনলোড"
-                          >
-                            <Download className="w-3.5 h-3.5" />
-                          </a>
-                        )}
-                      </div>
-                    </td>
+          <>
+            {/* Mobile Card List View (< md) */}
+            <div className="md:hidden divide-y divide-slate-100">
+              {displayedNotices.map((notice) => (
+                <div key={notice.id} className="p-3.5 sm:p-4 hover:bg-slate-50/80 transition-colors space-y-2">
+                  <div className="flex items-center justify-between gap-2 text-[11px] font-mono text-slate-500">
+                    <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-semibold">
+                      #{notice.sl}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3 text-slate-400" />
+                      <span>{notice.date}</span>
+                    </span>
+                  </div>
+
+                  <Link
+                    to={`/notices/${notice.id}`}
+                    className="block font-semibold text-slate-900 hover:text-institutional-navy text-xs sm:text-sm leading-snug"
+                  >
+                    {notice.title}
+                  </Link>
+
+                  <div className="pt-1 flex items-center justify-between gap-2">
+                    <Link
+                      to={`/notices/${notice.id}`}
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-100 hover:bg-institutional-navy hover:text-white text-slate-700 text-[11px] font-medium transition-colors"
+                    >
+                      <span>বিস্তারিত দেখুন</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </Link>
+                    {notice.attachmentUrl && (
+                      <a
+                        href={notice.attachmentUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-blue-700 bg-blue-50 hover:bg-blue-100 text-[11px] font-medium transition-colors"
+                        title="ফাইল ডাউনলোড"
+                      >
+                        <Download className="w-3 h-3" />
+                        <span>ডাউনলোড</span>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table View (md+) */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
+                  <tr>
+                    <th className="py-3 px-4 w-16 text-center">ক্রমিক</th>
+                    <th className="py-3 px-4 w-32">প্রকাশের তারিখ</th>
+                    <th className="py-3 px-4">নোটিশের বিষয় / শিরোনাম</th>
+                    <th className="py-3 px-4 w-36 text-right">সংযুক্তি / বিবরণ</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {displayedNotices.map((notice) => (
+                    <tr key={notice.id} className="hover:bg-slate-50/80 transition-colors group">
+                      <td className="py-3 px-4 text-center font-mono text-slate-400 font-medium">
+                        {notice.sl}
+                      </td>
+                      <td className="py-3 px-4 text-slate-600 font-mono whitespace-nowrap">
+                        <div className="flex items-center gap-1.5">
+                          <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                          <span>{notice.date}</span>
+                        </div>
+                      </td>
+                      <td className="py-3 px-4 font-semibold text-slate-900 group-hover:text-institutional-navy text-sm leading-snug">
+                        <Link to={`/notices/${notice.id}`} className="hover:underline">
+                          {notice.title}
+                        </Link>
+                      </td>
+                      <td className="py-3 px-4 text-right whitespace-nowrap">
+                        <div className="flex items-center justify-end gap-2">
+                          <Link
+                            to={`/notices/${notice.id}`}
+                            className="px-2.5 py-1 rounded-sm bg-slate-100 hover:bg-institutional-navy hover:text-white text-slate-700 text-[11px] font-medium transition-colors"
+                          >
+                            বিস্তারিত
+                          </Link>
+                          {notice.attachmentUrl && (
+                            <a
+                              href={notice.attachmentUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-1 rounded-sm text-slate-500 hover:text-blue-800 hover:bg-blue-100/70 dark:hover:bg-blue-950/60 dark:hover:text-blue-300 transition-colors"
+                              title="ফাইল ডাউনলোড"
+                            >
+                              <Download className="w-3.5 h-3.5" />
+                            </a>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
 
         {/* Pagination Bar */}
         {totalPages > 1 && (
-          <div className="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between text-xs text-slate-600">
-            <div>
+          <div className="p-3.5 sm:p-4 border-t border-slate-100 bg-slate-50 flex flex-col xs:flex-row items-center justify-between gap-2.5 text-xs text-slate-600">
+            <div className="text-center xs:text-left">
               পৃষ্ঠা <strong>{currentPage}</strong> / <strong>{totalPages}</strong> (মোট {filteredNotices.length} টি নোটিশ)
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5 w-full xs:w-auto justify-center">
               <button
                 onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}
                 disabled={currentPage === 1}
-                className="px-3 py-1.5 rounded-sm bg-white border border-slate-200 hover:bg-slate-100 disabled:opacity-50 text-xs font-semibold"
+                className="flex-1 xs:flex-initial px-3 py-1.5 rounded-sm bg-white border border-slate-200 hover:bg-slate-100 disabled:opacity-50 text-xs font-semibold cursor-pointer"
               >
                 পূর্ববর্তী
               </button>
               <button
                 onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className="px-3 py-1.5 rounded-sm bg-white border border-slate-200 hover:bg-slate-100 disabled:opacity-50 text-xs font-semibold"
+                className="flex-1 xs:flex-initial px-3 py-1.5 rounded-sm bg-white border border-slate-200 hover:bg-slate-100 disabled:opacity-50 text-xs font-semibold cursor-pointer"
               >
                 পরবর্তী
               </button>

@@ -39,17 +39,17 @@ export const DisclaimerModal: React.FC = () => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-950/75 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-slate-950/75 backdrop-blur-sm animate-in fade-in duration-200">
       <div 
         role="dialog" 
         aria-modal="true" 
         aria-labelledby="disclaimer-title"
-        className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden animate-in zoom-in-95 duration-200 ring-1 ring-black/10"
+        className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full max-h-[90dvh] overflow-y-auto shadow-2xl border border-slate-200/80 dark:border-slate-800 animate-in zoom-in-95 duration-200 ring-1 ring-black/10"
       >
         {/* Top Accent Strip */}
-        <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-institutional-navy h-2 w-full" />
+        <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-institutional-navy h-2 w-full shrink-0" />
 
-        <div className="p-6 sm:p-7 space-y-5">
+        <div className="p-4 sm:p-7 space-y-4 sm:space-y-5">
           {/* Header Badge & Title */}
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">

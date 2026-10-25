@@ -8,12 +8,12 @@ import { DisclaimerModal } from '../common/DisclaimerModal';
 
 export const Layout: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
+    <div className="min-h-screen flex flex-col bg-slate-50 w-full max-w-full overflow-x-clip">
       <DisclaimerModal />
       <TopBar />
       <Header />
       <NoticeTicker />
-      <main className="flex-grow">
+      <main className="flex-grow min-w-0 w-full">
         <Outlet />
       </main>
       <Footer />

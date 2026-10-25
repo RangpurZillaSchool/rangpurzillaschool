@@ -80,12 +80,12 @@ export const ExamResultsPage: React.FC = () => {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
+      <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1 text-xs">
         {exams.map(e => (
           <button
             key={e.value}
             onClick={() => setSelectedExam(e.value)}
-            className={`px-3 py-1.5 rounded-md whitespace-nowrap transition-all font-medium cursor-pointer ${
+            className={`px-3 py-1.5 rounded-md whitespace-nowrap shrink-0 transition-all font-medium cursor-pointer ${
               selectedExam === e.value
                 ? 'bg-institutional-navy dark:bg-sky-600 text-white font-semibold shadow-xs'
                 : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
@@ -99,40 +99,40 @@ export const ExamResultsPage: React.FC = () => {
       {/* Results Table */}
       <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs border-collapse">
+          <table className="w-full text-left text-xs border-collapse whitespace-nowrap">
             <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
               <tr>
-                <th className="py-3 px-4">পরীক্ষার নাম</th>
-                <th className="py-3 px-4">সাল</th>
-                <th className="py-3 px-4 text-right">মোট পরীক্ষার্থী</th>
-                <th className="py-3 px-4 text-right">উত্তীর্ণ ছাত্র</th>
-                <th className="py-3 px-4 text-right">জিপিএ ৫.০০</th>
-                <th className="py-3 px-4 text-right">পাসের হার</th>
-                <th className="py-3 px-4 text-right">বৃত্তিপ্রাপ্ত</th>
+                <th className="py-3 px-3 sm:px-4">পরীক্ষার নাম</th>
+                <th className="py-3 px-3 sm:px-4">সাল</th>
+                <th className="py-3 px-3 sm:px-4 text-right">মোট পরীক্ষার্থী</th>
+                <th className="py-3 px-3 sm:px-4 text-right">উত্তীর্ণ ছাত্র</th>
+                <th className="py-3 px-3 sm:px-4 text-right">জিপিএ ৫.০০</th>
+                <th className="py-3 px-3 sm:px-4 text-right">পাসের হার</th>
+                <th className="py-3 px-3 sm:px-4 text-right">বৃত্তিপ্রাপ্ত</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filtered.map((item, idx) => (
                 <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
-                  <td className="py-2.5 px-4 font-semibold text-slate-900">
+                  <td className="py-2.5 px-3 sm:px-4 font-semibold text-slate-900">
                     {item.examName}
                   </td>
-                  <td className="py-2.5 px-4 font-mono font-bold text-institutional-navy">
+                  <td className="py-2.5 px-3 sm:px-4 font-mono font-bold text-institutional-navy">
                     {item.year}
                   </td>
-                  <td className="py-2.5 px-4 font-mono text-slate-700 text-right">
+                  <td className="py-2.5 px-3 sm:px-4 font-mono text-slate-700 text-right">
                     {item.total}
                   </td>
-                  <td className="py-2.5 px-4 font-mono text-slate-700 text-right">
+                  <td className="py-2.5 px-3 sm:px-4 font-mono text-slate-700 text-right">
                     {item.passed}
                   </td>
-                  <td className="py-2.5 px-4 font-mono font-bold text-amber-700 text-right">
+                  <td className="py-2.5 px-3 sm:px-4 font-mono font-bold text-amber-700 text-right">
                     {item.gpa5 > 0 ? item.gpa5 : '-'}
                   </td>
-                  <td className="py-2.5 px-4 font-mono text-emerald-700 font-semibold text-right">
+                  <td className="py-2.5 px-3 sm:px-4 font-mono text-emerald-700 font-semibold text-right">
                     {item.passRate}
                   </td>
-                  <td className="py-2.5 px-4 font-mono text-blue-700 text-right">
+                  <td className="py-2.5 px-3 sm:px-4 font-mono text-blue-700 text-right">
                     {item.scholarships > 0 ? item.scholarships : '-'}
                   </td>
                 </tr>

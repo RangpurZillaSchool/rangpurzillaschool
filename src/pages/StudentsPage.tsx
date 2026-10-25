@@ -195,16 +195,16 @@ export const StudentsPage: React.FC = () => {
 
       {/* Initial Blank State (Before Search) */}
       {!hasSearched && !loading && (
-        <div className="bg-white dark:bg-slate-900 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 p-12 text-center space-y-4 shadow-2xs">
-          <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 text-institutional-navy dark:text-sky-400 flex items-center justify-center mx-auto">
-            <GraduationCap className="w-8 h-8" />
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 p-6 sm:p-12 text-center space-y-3.5 sm:space-y-4 shadow-2xs">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-slate-100 dark:bg-slate-800 text-institutional-navy dark:text-sky-400 flex items-center justify-center mx-auto">
+            <GraduationCap className="w-7 h-7 sm:w-8 sm:h-8" />
           </div>
           <div className="max-w-md mx-auto space-y-1.5">
-            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 font-serif">
+            <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 font-serif">
               কোন শ্রেণি ও শাখা নির্বাচন করা হয়নি
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              সার্ভার থেকে শিক্ষার্থী তথ্য দেখতে উপরের ড্রপডাউন হতে প্রথমে <strong>শ্রেণি</strong>, এরপর <strong>শিফট</strong> ও <strong>শাখা</strong> নির্বাচন করে <strong>'শিক্ষার্থী দেখুন'</strong> বাটনে চাপুন।
+              সার্ভার থেকে শিক্ষার্থী তথ্য দেখতে উপরের ড্রপডাউন হতে প্রথমে <strong>শ্রেণি</strong> এবং <strong>শাখা</strong> নির্বাচন করে <strong>'শিক্ষার্থী দেখুন'</strong> বাটনে চাপুন।
             </p>
           </div>
         </div>
@@ -212,27 +212,27 @@ export const StudentsPage: React.FC = () => {
 
       {/* Results Bar (Only when searched) */}
       {hasSearched && !loading && filteredStudents.length > 0 && (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-100/90 dark:bg-slate-800/90 p-3 rounded-lg border border-slate-200 dark:border-slate-700 text-xs">
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-3 bg-slate-100/90 dark:bg-slate-800/90 p-3 rounded-lg border border-slate-200 dark:border-slate-700 text-xs">
+          <div className="flex items-center justify-between sm:justify-start gap-2 flex-wrap">
             <span className="font-semibold text-slate-800 dark:text-slate-200">
               {selectedClass} শ্রেণির {currentSection?.label} এর তালিকা:
             </span>
-            <span className="bg-institutional-navy dark:bg-sky-500/20 text-white dark:text-sky-300 font-mono px-2 py-0.5 rounded-sm font-bold border border-transparent dark:border-sky-500/30">
+            <span className="bg-institutional-navy dark:bg-sky-500/20 text-white dark:text-sky-300 font-mono px-2 py-0.5 rounded-sm font-bold border border-transparent dark:border-sky-500/30 shrink-0">
               {filteredStudents.length} জন
             </span>
           </div>
 
-          <div className="flex items-center gap-3 w-full sm:w-auto">
+          <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
             {/* Search within results */}
-            <div className="relative flex-grow sm:w-60">
+            <div className="relative flex-1 min-w-0 sm:w-60">
               <input
                 type="text"
                 placeholder="নাম, রোল বা আইডি দিয়ে খুঁজুন..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-md pl-8 pr-3 py-1.5 text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-hidden focus:ring-1 focus:ring-institutional-navy dark:focus:ring-sky-400"
+                className="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-md pl-8 pr-3 py-1.5 text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-institutional-navy dark:focus:ring-sky-400"
               />
-              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
+              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2" />
             </div>
 
             {/* View Toggles */}

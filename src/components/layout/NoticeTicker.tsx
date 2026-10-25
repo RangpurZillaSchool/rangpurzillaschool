@@ -17,10 +17,13 @@ export const NoticeTicker: React.FC = () => {
   if (notices.length === 0) return null;
 
   return (
-    <div className="bg-amber-50 dark:bg-slate-900 border-b border-amber-200/80 dark:border-slate-800 text-amber-950 dark:text-amber-100 text-xs sm:text-sm min-h-[38px] sm:min-h-[44px] flex items-center px-3 sm:px-6 py-1 transition-colors">
-      <div className="max-w-7xl mx-auto flex items-center gap-2 sm:gap-3 w-full">
+    <div className="bg-amber-50 dark:bg-slate-900 border-b border-amber-200/80 dark:border-slate-800 text-amber-950 dark:text-amber-100 text-xs sm:text-sm min-h-[38px] sm:min-h-[44px] flex items-center px-3 sm:px-6 py-1 transition-colors overflow-hidden">
+      <div className="max-w-7xl mx-auto flex items-center gap-2 sm:gap-3 w-full min-w-0">
         {/* Badge */}
-        <div className="bg-amber-600 text-white font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-sm flex items-center gap-1 sm:gap-1.5 shrink-0 shadow-xs text-xs">
+        <Link
+          to="/notices"
+          className="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-sm flex items-center gap-1 sm:gap-1.5 shrink-0 shadow-xs text-xs transition-colors"
+        >
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-200 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
@@ -28,13 +31,15 @@ export const NoticeTicker: React.FC = () => {
           <Bell className="w-3.5 h-3.5 shrink-0" />
           <span className="hidden sm:inline">জরুরি নোটিশ</span>
           <span className="sm:hidden text-[11px]">নোটিশ</span>
-        </div>
+        </Link>
 
         {/* Ticker Content */}
         <div
-          className="flex-grow overflow-hidden relative"
+          className="flex-1 min-w-0 overflow-hidden relative"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
+          onTouchStart={() => setIsPaused(true)}
+          onTouchEnd={() => setIsPaused(false)}
         >
           <div
             className="animate-marquee flex items-center"
@@ -50,7 +55,7 @@ export const NoticeTicker: React.FC = () => {
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 inline-block shrink-0"></span>
                   <span>{n.title}</span>
-                  <span className="text-[10px] sm:text-[11px] text-amber-700 dark:text-amber-300 bg-amber-100/80 dark:bg-amber-950/60 px-1.5 py-0.2 rounded-sm shrink-0 hidden sm:inline border border-amber-300/30 dark:border-amber-700/30">
+                  <span className="text-[10px] sm:text-[11px] text-amber-700 dark:text-amber-300 bg-amber-100/80 dark:bg-amber-950/60 px-1.5 py-0.5 rounded-sm shrink-0 hidden sm:inline border border-amber-300/30 dark:border-amber-700/30">
                     {n.date}
                   </span>
                 </Link>
@@ -68,7 +73,7 @@ export const NoticeTicker: React.FC = () => {
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500 inline-block shrink-0"></span>
                   <span>{n.title}</span>
-                  <span className="text-[10px] sm:text-[11px] text-amber-700 dark:text-amber-300 bg-amber-100/80 dark:bg-amber-950/60 px-1.5 py-0.2 rounded-sm shrink-0 hidden sm:inline border border-amber-300/30 dark:border-amber-700/30">
+                  <span className="text-[10px] sm:text-[11px] text-amber-700 dark:text-amber-300 bg-amber-100/80 dark:bg-amber-950/60 px-1.5 py-0.5 rounded-sm shrink-0 hidden sm:inline border border-amber-300/30 dark:border-amber-700/30">
                     {n.date}
                   </span>
                 </Link>
@@ -78,7 +83,7 @@ export const NoticeTicker: React.FC = () => {
         </div>
 
         {/* Controls */}
-        <div className="hidden sm:flex items-center gap-1.5 shrink-0">
+        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
           <button
             onClick={() => setIsPaused(!isPaused)}
             title={isPaused ? "চালু করুন" : "থামান"}

@@ -29,56 +29,56 @@ export const AboutPage: React.FC = () => {
           {/* Metadata Card */}
           <Reveal delay={100} direction="up">
             <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden card-organic">
-            <div className="bg-institutional-navy text-white px-6 py-4 flex items-center justify-between">
-              <h2 className="font-bold text-base font-serif flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-amber-400" />
-                মৌলিক পরিচিতি বিবরণী (EIIN: {schoolInfo.eiin})
+            <div className="bg-institutional-navy text-white px-4 sm:px-6 py-3.5 sm:py-4 flex items-center justify-between gap-2 flex-wrap">
+              <h2 className="font-bold text-sm sm:text-base font-serif flex items-center gap-2">
+                <ShieldCheck className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-amber-400 shrink-0" />
+                <span>মৌলিক পরিচিতি বিবরণী (EIIN: {schoolInfo.eiin})</span>
               </h2>
-              <span className="text-xs text-amber-300 font-mono">কোড: ১২৭৩৭২</span>
+              <span className="text-xs text-amber-300 font-mono shrink-0">কোড: ১২৭৩৭২</span>
             </div>
 
             <div className="divide-y divide-slate-100 text-xs sm:text-sm">
-              <div className="grid grid-cols-1 sm:grid-cols-3 p-4 hover:bg-slate-50">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-0.5 sm:gap-2 p-3.5 sm:p-4 hover:bg-slate-50">
                 <div className="font-semibold text-slate-600">বিদ্যালয়ের নাম (বাংলা)</div>
                 <div className="sm:col-span-2 font-bold text-slate-900">{schoolInfo.nameBn}</div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 p-4 hover:bg-slate-50">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-0.5 sm:gap-2 p-3.5 sm:p-4 hover:bg-slate-50">
                 <div className="font-semibold text-slate-600">বিদ্যালয়ের নাম (ইংরেজি)</div>
                 <div className="sm:col-span-2 font-semibold text-slate-800 font-sans">{schoolInfo.nameEn}</div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 p-4 hover:bg-slate-50">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-0.5 sm:gap-2 p-3.5 sm:p-4 hover:bg-slate-50">
                 <div className="font-semibold text-slate-600">ইআইআইএন (EIIN)</div>
                 <div className="sm:col-span-2 font-mono font-bold text-institutional-navy">{schoolInfo.eiin}</div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 p-4 hover:bg-slate-50">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-0.5 sm:gap-2 p-3.5 sm:p-4 hover:bg-slate-50">
                 <div className="font-semibold text-slate-600">প্রতিষ্ঠা কাল</div>
                 <div className="sm:col-span-2 text-slate-800">{schoolInfo.established} (ভিত্তিপ্রস্তর: লর্ড উইলিয়াম বেন্টিঙ্ক)</div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 p-4 hover:bg-slate-50">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-0.5 sm:gap-2 p-3.5 sm:p-4 hover:bg-slate-50">
                 <div className="font-semibold text-slate-600">প্রতিষ্ঠানের ধরন</div>
                 <div className="sm:col-span-2 text-slate-800">{schoolInfo.type}</div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 p-4 hover:bg-slate-50">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-0.5 sm:gap-2 p-3.5 sm:p-4 hover:bg-slate-50">
                 <div className="font-semibold text-slate-600">শিক্ষা স্তর</div>
                 <div className="sm:col-span-2 text-slate-800">{schoolInfo.levels}</div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 p-4 hover:bg-slate-50">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-0.5 sm:gap-2 p-3.5 sm:p-4 hover:bg-slate-50">
                 <div className="font-semibold text-slate-600">চালু শিফট</div>
                 <div className="sm:col-span-2 text-slate-800 font-medium">
                   ১. প্রভাতি শিফট (সকাল ৭:০০ হতে) | ২. দিবা শিফট (দুপুর ১২:০০ হতে)
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 p-4 hover:bg-slate-50">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-0.5 sm:gap-2 p-3.5 sm:p-4 hover:bg-slate-50">
                 <div className="font-semibold text-slate-600">অবস্থান ও ঠিকানা</div>
                 <div className="sm:col-span-2 text-slate-800">
                   {schoolInfo.address.fullBn}
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 p-4 hover:bg-slate-50">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-0.5 sm:gap-2 p-3.5 sm:p-4 hover:bg-slate-50">
                 <div className="font-semibold text-slate-600">ওয়ার্ড ও থানা</div>
                 <div className="sm:col-span-2 text-slate-800">ওয়ার্ড নম্বর ১৯, থানা: কোতয়ালী, রংপুর</div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 p-4 hover:bg-slate-50">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-0.5 sm:gap-2 p-3.5 sm:p-4 hover:bg-slate-50">
                 <div className="font-semibold text-slate-600">পোস্ট অফিস ও কোড</div>
                 <div className="sm:col-span-2 text-slate-800 font-mono">পোস্ট: রংপুর, কোড: ৫৪০০</div>
               </div>
@@ -88,11 +88,11 @@ export const AboutPage: React.FC = () => {
 
           {/* Vision and Mission */}
           <Reveal delay={200} direction="up">
-            <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-3 card-organic">
+            <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 shadow-xs space-y-3 card-organic">
               <h3 className="font-bold text-base text-slate-900 font-serif">
                 প্রাতিষ্ঠানিক লক্ষ্য ও উদ্দেশ্য
               </h3>
-              <p className="text-slate-700 text-sm leading-relaxed text-justify">
+              <p className="text-slate-700 text-sm leading-relaxed text-left sm:text-justify">
                 রংপুর জিলা স্কুলের মূল ব্রত হলো ভবিষ্যৎ প্রজন্মকে নৈতিকতা, মানবিক মূল্যবোধ ও আধুনিক বিজ্ঞানভিত্তিক জ্ঞানে ঋদ্ধ করে গড়ে তোলা। প্রায় দুই শতাব্দীর গৌরবকে ধারণ করে আমরা শিক্ষার্থীদের পাঠ্যপুস্তকের পাশাপাশি ক্রীড়া, সাংস্কৃতিক ও সহ-শিক্ষা কার্যক্রমে অগ্রণী করে গড়ে তুলছি।
               </p>
             </div>
