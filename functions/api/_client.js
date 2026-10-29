@@ -129,9 +129,12 @@ export function normalizeUrlKey(urlString) {
  * Executes a request with Cloudflare Edge Cache (caches.default) + Single-flight coalescing
  */
 export async function withEdgeCacheAndCoalescing(request, ttl, fetcher, normalizeFn = normalizeUrlKey) {
-  const normalizedKey = normalizeFn(request.url);
+  // Include the HTTP method in the cache key so that HEAD pre-validation
+  // requests (e.g. notice file availability checks) never poison the cache
+  // entry used by subsequent GET requests with an empty body.
+  const normalizedKey = `${request.method || 'GET'}:${normalizeFn(request.url)}`;
   const cacheKeyRequest = new Request(normalizedKey, {
-    method: 'GET',
+    method: request.method || 'GET',
     headers: request.headers
   });
 

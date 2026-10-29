@@ -34,7 +34,7 @@ function localApiPlugin(): Plugin {
           return next();
         }
 
-        const normalizedKey = normalizeDevUrlKey(req.url);
+        const normalizedKey = `${req.method || 'GET'}:${normalizeDevUrlKey(req.url)}`;
         const url = new URL(req.url, 'http://localhost');
         const pathname = url.pathname;
 
